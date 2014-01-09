@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 34%{?dist}
+Release: 35%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1509,6 +1509,34 @@ Patch733: kvm-qemu-iotests-Adjust-test-result-039.patch
 Patch734: kvm-virtio-net-don-t-update-mac_table-in-error-state.patch
 # For bz#1032904 - qemu-img can not create libiscsi qcow2_v3 image
 Patch735: kvm-qcow2-Zero-initialise-first-cluster-for-new-images.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch736: kvm-option-Add-assigned-flag-to-QEMUOptionParameter.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch737: kvm-qcow2-refcount-Snapshot-update-for-zero-clusters.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch738: kvm-qemu-iotests-Snapshotting-zero-clusters.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch739: kvm-block-Image-file-option-amendment.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch740: kvm-qcow2-cache-Empty-cache.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch741: kvm-qcow2-cluster-Expand-zero-clusters.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch742: kvm-qcow2-Save-refcount-order-in-BDRVQcowState.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch743: kvm-qcow2-Implement-bdrv_amend_options.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch744: kvm-qcow2-Correct-bitmap-size-in-zero-expansion.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch745: kvm-qcow2-Free-only-newly-allocated-clusters-on-error.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch746: kvm-qcow2-Add-missing-space-in-error-message.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch747: kvm-qemu-iotest-qcow2-image-option-amendment.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch748: kvm-qemu-iotests-New-test-case-in-061.patch
+# For bz#1033490 - Cannot upgrade/downgrade qcow2 images
+Patch749: kvm-qemu-iotests-Preallocated-zero-clusters-in-061.patch
 
 
 BuildRequires: zlib-devel
@@ -2431,6 +2459,20 @@ CAC emulation development files.
 %patch733 -p1
 %patch734 -p1
 %patch735 -p1
+%patch736 -p1
+%patch737 -p1
+%patch738 -p1
+%patch739 -p1
+%patch740 -p1
+%patch741 -p1
+%patch742 -p1
+%patch743 -p1
+%patch744 -p1
+%patch745 -p1
+%patch746 -p1
+%patch747 -p1
+%patch748 -p1
+%patch749 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -2859,6 +2901,24 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %endif
 
 %changelog
+* Thu Jan 09 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-35.el7
+- kvm-option-Add-assigned-flag-to-QEMUOptionParameter.patch [bz#1033490]
+- kvm-qcow2-refcount-Snapshot-update-for-zero-clusters.patch [bz#1033490]
+- kvm-qemu-iotests-Snapshotting-zero-clusters.patch [bz#1033490]
+- kvm-block-Image-file-option-amendment.patch [bz#1033490]
+- kvm-qcow2-cache-Empty-cache.patch [bz#1033490]
+- kvm-qcow2-cluster-Expand-zero-clusters.patch [bz#1033490]
+- kvm-qcow2-Save-refcount-order-in-BDRVQcowState.patch [bz#1033490]
+- kvm-qcow2-Implement-bdrv_amend_options.patch [bz#1033490]
+- kvm-qcow2-Correct-bitmap-size-in-zero-expansion.patch [bz#1033490]
+- kvm-qcow2-Free-only-newly-allocated-clusters-on-error.patch [bz#1033490]
+- kvm-qcow2-Add-missing-space-in-error-message.patch [bz#1033490]
+- kvm-qemu-iotest-qcow2-image-option-amendment.patch [bz#1033490]
+- kvm-qemu-iotests-New-test-case-in-061.patch [bz#1033490]
+- kvm-qemu-iotests-Preallocated-zero-clusters-in-061.patch [bz#1033490]
+- Resolves: bz#1033490
+  (Cannot upgrade/downgrade qcow2 images)
+
 * Wed Jan 08 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-34.el7
 - kvm-block-stream-Don-t-stream-unbacked-devices.patch [bz#965636]
 - kvm-qemu-io-Let-open-pass-options-to-block-driver.patch [bz#1004347]
