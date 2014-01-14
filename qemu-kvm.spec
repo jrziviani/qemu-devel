@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 35%{?dist}
+Release: 36%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1537,6 +1537,33 @@ Patch747: kvm-qemu-iotest-qcow2-image-option-amendment.patch
 Patch748: kvm-qemu-iotests-New-test-case-in-061.patch
 # For bz#1033490 - Cannot upgrade/downgrade qcow2 images
 Patch749: kvm-qemu-iotests-Preallocated-zero-clusters-in-061.patch
+# For bz#972773 - RHEL7: Clarify support statement in KVM help
+Patch750: kvm-Add-support-statement-to-help-output.patch
+# For bz#903910 - RHEL7 does not have equivalent functionality for __com.redhat_qxl_screendump
+Patch751: kvm-__com.redhat_qxl_screendump-add-docs.patch
+# For bz#999836 - -m 1 crashes
+Patch752: kvm-vl-Round-memory-sizes-below-2MiB-up-to-2MiB.patch
+# For bz#1044845 - QEMU seccomp sandbox - exit if seccomp_init() fails
+Patch753: kvm-seccomp-exit-if-seccomp_init-fails.patch
+# For bz#1034876 - export acpi tables to guests
+Patch754: kvm-configure-make-iasl-option-actually-work.patch
+# For bz#1034876 - export acpi tables to guests
+Patch755: kvm-acpi-build-disable-with-no-acpi.patch
+# For bz#1039513 - backport remote wakeup for ehci
+Patch756: kvm-ehci-implement-port-wakeup.patch
+# For bz#1026712 - Qemu core dumpd when boot guest with driver name as "virtio-pci"
+# For bz#1046007 - qemu-kvm aborted when hot plug PCI device to guest with romfile and rombar=0
+Patch757: kvm-qdev-monitor-Fix-crash-when-device_add-is-called-wit.patch
+# For bz#1035001 - VHDX: journal log should not be replayed by default, but rather via qemu-img check -r all
+Patch758: kvm-block-vhdx-improve-error-message-and-.bdrv_check-imp.patch
+# For bz#1017650 - need to update qemu-img man pages on "VHDX" format
+Patch759: kvm-docs-updated-qemu-img-man-page-and-qemu-doc-to-refle.patch
+# For bz#1052340 - pvticketlocks: default on
+Patch760: kvm-enable-pvticketlocks-by-default.patch
+# For bz#997817 - -boot order and -boot once regressed since RHEL-6
+Patch761: kvm-fix-boot-strict-regressed-in-commit-6ef4716.patch
+# For bz#997817 - -boot order and -boot once regressed since RHEL-6
+Patch762: kvm-vl-make-boot_strict-variable-static-not-used-outside.patch
 
 
 BuildRequires: zlib-devel
@@ -1548,6 +1575,7 @@ BuildRequires: cyrus-sasl-devel
 BuildRequires: libtool
 BuildRequires: libaio-devel
 BuildRequires: rsync
+BuildRequires: python
 BuildRequires: pciutils-devel
 BuildRequires: pulseaudio-libs-devel
 BuildRequires: libiscsi-devel
@@ -1602,6 +1630,12 @@ BuildRequires: texinfo
 # For rdma
 %if 0%{?have_librdma:1}
 BuildRequires: librdmacm-devel
+%endif
+# iasl and cpp for acpi generation (not a hard requirement as we can use
+# pre-compiled files, but it's better to use this)
+%ifarch %{ix86} x86_64
+BuildRequires: iasl
+BuildRequires: cpp
 %endif
 
 %if 0%{!?build_only_sub:1}
@@ -2473,6 +2507,19 @@ CAC emulation development files.
 %patch747 -p1
 %patch748 -p1
 %patch749 -p1
+%patch750 -p1
+%patch751 -p1
+%patch752 -p1
+%patch753 -p1
+%patch754 -p1
+%patch755 -p1
+%patch756 -p1
+%patch757 -p1
+%patch758 -p1
+%patch759 -p1
+%patch760 -p1
+%patch761 -p1
+%patch762 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -2901,6 +2948,50 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %endif
 
 %changelog
+* Tue Jan 14 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-36.el7
+- kvm-Add-support-statement-to-help-output.patch [bz#972773]
+- kvm-__com.redhat_qxl_screendump-add-docs.patch [bz#903910]
+- kvm-vl-Round-memory-sizes-below-2MiB-up-to-2MiB.patch [bz#999836]
+- kvm-seccomp-exit-if-seccomp_init-fails.patch [bz#1044845]
+- kvm-redhat-qemu-kvm.spec-require-python-for-build.patch [bz#1034876]
+- kvm-redhat-qemu-kvm.spec-require-iasl.patch [bz#1034876]
+- kvm-configure-make-iasl-option-actually-work.patch [bz#1034876]
+- kvm-redhat-qemu-kvm.spec-add-cpp-as-build-dependency.patch [bz#1034876]
+- kvm-acpi-build-disable-with-no-acpi.patch [bz#1045386]
+- kvm-ehci-implement-port-wakeup.patch [bz#1039513]
+- kvm-qdev-monitor-Fix-crash-when-device_add-is-called-wit.patch [bz#1026712 bz#1046007]
+- kvm-block-vhdx-improve-error-message-and-.bdrv_check-imp.patch [bz#1035001]
+- kvm-docs-updated-qemu-img-man-page-and-qemu-doc-to-refle.patch [bz#1017650]
+- kvm-enable-pvticketlocks-by-default.patch [bz#1052340]
+- kvm-fix-boot-strict-regressed-in-commit-6ef4716.patch [bz#997817]
+- kvm-vl-make-boot_strict-variable-static-not-used-outside.patch [bz#997817]
+- Resolves: bz#1017650
+  (need to update qemu-img man pages on "VHDX" format)
+- Resolves: bz#1026712
+  (Qemu core dumpd when boot guest with driver name as "virtio-pci")
+- Resolves: bz#1034876
+  (export acpi tables to guests)
+- Resolves: bz#1035001
+  (VHDX: journal log should not be replayed by default, but rather via qemu-img check -r all)
+- Resolves: bz#1039513
+  (backport remote wakeup for ehci)
+- Resolves: bz#1044845
+  (QEMU seccomp sandbox - exit if seccomp_init() fails)
+- Resolves: bz#1045386
+  (qemu-kvm: hw/i386/acpi-build.c:135: acpi_get_pm_info: Assertion `obj' failed.)
+- Resolves: bz#1046007
+  (qemu-kvm aborted when hot plug PCI device to guest with romfile and rombar=0)
+- Resolves: bz#1052340
+  (pvticketlocks: default on)
+- Resolves: bz#903910
+  (RHEL7 does not have equivalent functionality for __com.redhat_qxl_screendump)
+- Resolves: bz#972773
+  (RHEL7: Clarify support statement in KVM help)
+- Resolves: bz#997817
+  (-boot order and -boot once regressed since RHEL-6)
+- Resolves: bz#999836
+  (-m 1 crashes)
+
 * Thu Jan 09 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-35.el7
 - kvm-option-Add-assigned-flag-to-QEMUOptionParameter.patch [bz#1033490]
 - kvm-qcow2-refcount-Snapshot-update-for-zero-clusters.patch [bz#1033490]
