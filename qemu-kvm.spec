@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 36%{?dist}
+Release: 37%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1564,6 +1564,86 @@ Patch760: kvm-enable-pvticketlocks-by-default.patch
 Patch761: kvm-fix-boot-strict-regressed-in-commit-6ef4716.patch
 # For bz#997817 - -boot order and -boot once regressed since RHEL-6
 Patch762: kvm-vl-make-boot_strict-variable-static-not-used-outside.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch763: kvm-bitmap-use-long-as-index.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch764: kvm-memory-cpu_physical_memory_set_dirty_flags-result-is.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch765: kvm-memory-cpu_physical_memory_set_dirty_range-return-vo.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch766: kvm-exec-use-accessor-function-to-know-if-memory-is-dirt.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch767: kvm-memory-create-function-to-set-a-single-dirty-bit.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch768: kvm-exec-drop-useless-if.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch769: kvm-exec-create-function-to-get-a-single-dirty-bit.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch770: kvm-memory-make-cpu_physical_memory_is_dirty-return-bool.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch771: kvm-memory-all-users-of-cpu_physical_memory_get_dirty-us.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch772: kvm-memory-set-single-dirty-flags-when-possible.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch773: kvm-memory-cpu_physical_memory_set_dirty_range-always-di.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch774: kvm-memory-cpu_physical_memory_mask_dirty_range-always-c.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch775: kvm-memory-use-bit-2-for-migration.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch776: kvm-memory-make-sure-that-client-is-always-inside-range.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch777: kvm-memory-only-resize-dirty-bitmap-when-memory-size-inc.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch778: kvm-memory-cpu_physical_memory_clear_dirty_flag-result-i.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch779: kvm-bitmap-Add-bitmap_zero_extend-operation.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch780: kvm-memory-split-dirty-bitmap-into-three.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch781: kvm-memory-unfold-cpu_physical_memory_clear_dirty_flag-i.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch782: kvm-memory-unfold-cpu_physical_memory_set_dirty-in-its-o.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch783: kvm-memory-unfold-cpu_physical_memory_set_dirty_flag.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch784: kvm-memory-make-cpu_physical_memory_get_dirty-the-main-f.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch785: kvm-memory-cpu_physical_memory_get_dirty-is-used-as-retu.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch786: kvm-memory-s-mask-clear-cpu_physical_memory_mask_dirty_r.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch787: kvm-memory-use-find_next_bit-to-find-dirty-bits.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch788: kvm-memory-cpu_physical_memory_set_dirty_range-now-uses-.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch789: kvm-memory-cpu_physical_memory_clear_dirty_range-now-use.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch790: kvm-memory-s-dirty-clean-in-cpu_physical_memory_is_dirty.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch791: kvm-memory-make-cpu_physical_memory_reset_dirty-take-a-l.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch792: kvm-exec-Remove-unused-global-variable-phys_ram_fd.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch793: kvm-memory-cpu_physical_memory_set_dirty_tracking-should.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch794: kvm-memory-move-private-types-to-exec.c.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch795: kvm-memory-split-cpu_physical_memory_-functions-to-its-o.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch796: kvm-memory-unfold-memory_region_test_and_clear.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch797: kvm-use-directly-cpu_physical_memory_-api-for-tracki.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch798: kvm-refactor-start-address-calculation.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch799: kvm-memory-move-bitmap-synchronization-to-its-own-functi.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch800: kvm-memory-syncronize-kvm-bitmap-using-bitmaps-operation.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch801: kvm-ram-split-function-that-synchronizes-a-range.patch
+# For bz#997559 - Improve live migration bitmap handling
+Patch802: kvm-migration-synchronize-memory-bitmap-64bits-at-a-time.patch
 
 
 BuildRequires: zlib-devel
@@ -2520,6 +2600,46 @@ CAC emulation development files.
 %patch760 -p1
 %patch761 -p1
 %patch762 -p1
+%patch763 -p1
+%patch764 -p1
+%patch765 -p1
+%patch766 -p1
+%patch767 -p1
+%patch768 -p1
+%patch769 -p1
+%patch770 -p1
+%patch771 -p1
+%patch772 -p1
+%patch773 -p1
+%patch774 -p1
+%patch775 -p1
+%patch776 -p1
+%patch777 -p1
+%patch778 -p1
+%patch779 -p1
+%patch780 -p1
+%patch781 -p1
+%patch782 -p1
+%patch783 -p1
+%patch784 -p1
+%patch785 -p1
+%patch786 -p1
+%patch787 -p1
+%patch788 -p1
+%patch789 -p1
+%patch790 -p1
+%patch791 -p1
+%patch792 -p1
+%patch793 -p1
+%patch794 -p1
+%patch795 -p1
+%patch796 -p1
+%patch797 -p1
+%patch798 -p1
+%patch799 -p1
+%patch800 -p1
+%patch801 -p1
+%patch802 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -2948,6 +3068,50 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %endif
 
 %changelog
+* Wed Jan 15 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-37.el7
+- kvm-bitmap-use-long-as-index.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_set_dirty_flags-result-is.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_set_dirty_range-return-vo.patch [bz#997559]
+- kvm-exec-use-accessor-function-to-know-if-memory-is-dirt.patch [bz#997559]
+- kvm-memory-create-function-to-set-a-single-dirty-bit.patch [bz#997559]
+- kvm-exec-drop-useless-if.patch [bz#997559]
+- kvm-exec-create-function-to-get-a-single-dirty-bit.patch [bz#997559]
+- kvm-memory-make-cpu_physical_memory_is_dirty-return-bool.patch [bz#997559]
+- kvm-memory-all-users-of-cpu_physical_memory_get_dirty-us.patch [bz#997559]
+- kvm-memory-set-single-dirty-flags-when-possible.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_set_dirty_range-always-di.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_mask_dirty_range-always-c.patch [bz#997559]
+- kvm-memory-use-bit-2-for-migration.patch [bz#997559]
+- kvm-memory-make-sure-that-client-is-always-inside-range.patch [bz#997559]
+- kvm-memory-only-resize-dirty-bitmap-when-memory-size-inc.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_clear_dirty_flag-result-i.patch [bz#997559]
+- kvm-bitmap-Add-bitmap_zero_extend-operation.patch [bz#997559]
+- kvm-memory-split-dirty-bitmap-into-three.patch [bz#997559]
+- kvm-memory-unfold-cpu_physical_memory_clear_dirty_flag-i.patch [bz#997559]
+- kvm-memory-unfold-cpu_physical_memory_set_dirty-in-its-o.patch [bz#997559]
+- kvm-memory-unfold-cpu_physical_memory_set_dirty_flag.patch [bz#997559]
+- kvm-memory-make-cpu_physical_memory_get_dirty-the-main-f.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_get_dirty-is-used-as-retu.patch [bz#997559]
+- kvm-memory-s-mask-clear-cpu_physical_memory_mask_dirty_r.patch [bz#997559]
+- kvm-memory-use-find_next_bit-to-find-dirty-bits.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_set_dirty_range-now-uses-.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_clear_dirty_range-now-use.patch [bz#997559]
+- kvm-memory-s-dirty-clean-in-cpu_physical_memory_is_dirty.patch [bz#997559]
+- kvm-memory-make-cpu_physical_memory_reset_dirty-take-a-l.patch [bz#997559]
+- kvm-exec-Remove-unused-global-variable-phys_ram_fd.patch [bz#997559]
+- kvm-memory-cpu_physical_memory_set_dirty_tracking-should.patch [bz#997559]
+- kvm-memory-move-private-types-to-exec.c.patch [bz#997559]
+- kvm-memory-split-cpu_physical_memory_-functions-to-its-o.patch [bz#997559]
+- kvm-memory-unfold-memory_region_test_and_clear.patch [bz#997559]
+- kvm-use-directly-cpu_physical_memory_-api-for-tracki.patch [bz#997559]
+- kvm-refactor-start-address-calculation.patch [bz#997559]
+- kvm-memory-move-bitmap-synchronization-to-its-own-functi.patch [bz#997559]
+- kvm-memory-syncronize-kvm-bitmap-using-bitmaps-operation.patch [bz#997559]
+- kvm-ram-split-function-that-synchronizes-a-range.patch [bz#997559]
+- kvm-migration-synchronize-memory-bitmap-64bits-at-a-time.patch [bz#997559]
+- Resolves: bz#997559
+  (Improve live migration bitmap handling)
+
 * Tue Jan 14 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-36.el7
 - kvm-Add-support-statement-to-help-output.patch [bz#972773]
 - kvm-__com.redhat_qxl_screendump-add-docs.patch [bz#903910]
