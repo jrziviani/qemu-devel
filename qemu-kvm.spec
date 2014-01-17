@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 37%{?dist}
+Release: 38%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -84,7 +84,7 @@ URL: http://www.qemu.org/
 %if %{rhev}
 ExclusiveArch: x86_64
 %endif
-Requires: seabios-bin
+Requires: seabios-bin >= 1.7.2.2-5
 Requires: sgabios-bin
 Requires: seavgabios-bin
 Requires: ipxe-roms-qemu
@@ -122,6 +122,7 @@ Source14: rhel6-virtio.rom
 Source15: rhel6-pcnet.rom
 Source16: rhel6-rtl8139.rom
 Source17: rhel6-ne2k_pci.rom
+Source18: bios-256k.bin
 
 # libcacard build fixes (heading upstream)
 Patch1: 0000-libcacard-fix-missing-symbols-in-libcacard.so.patch
@@ -1644,6 +1645,32 @@ Patch800: kvm-memory-syncronize-kvm-bitmap-using-bitmaps-operation.patch
 Patch801: kvm-ram-split-function-that-synchronizes-a-range.patch
 # For bz#997559 - Improve live migration bitmap handling
 Patch802: kvm-migration-synchronize-memory-bitmap-64bits-at-a-time.patch
+# For bz#947785 - In rhel6.4 guest  sound recorder doesn't work when  playing audio
+Patch803: kvm-intel-hda-fix-position-buffer.patch
+# For bz#1003467 - Backport migration fixes from post qemu 1.6
+Patch804: kvm-The-calculation-of-bytes_xfer-in-qemu_put_buffer-is-.patch
+# For bz#1003467 - Backport migration fixes from post qemu 1.6
+Patch805: kvm-migration-Fix-rate-limit.patch
+# For bz#1017636 - PATCH: fix qemu using 50% host cpu when audio is playing
+Patch806: kvm-audio-honor-QEMU_AUDIO_TIMER_PERIOD-instead-of-wakin.patch
+# For bz#1017636 - PATCH: fix qemu using 50% host cpu when audio is playing
+Patch807: kvm-audio-Lower-default-wakeup-rate-to-100-times-second.patch
+# For bz#1017636 - PATCH: fix qemu using 50% host cpu when audio is playing
+Patch808: kvm-audio-adjust-pulse-to-100Hz-wakeup-rate.patch
+# For bz#918907 - provide backwards-compatible RHEL specific machine types in QEMU - CPU features
+Patch809: kvm-pc-Fix-rhel6.-3dnow-3dnowext-compat-bits.patch
+# For bz#1038603 - make seabios 256k for rhel7 machine types
+Patch810: kvm-add-firmware-to-machine-options.patch
+# For bz#1038603 - make seabios 256k for rhel7 machine types
+Patch811: kvm-switch-rhel7-machine-types-to-big-bios.patch
+# For bz#1034518 - boot order wrong with q35
+Patch812: kvm-pci-fix-pci-bridge-fw-path.patch
+# For bz#1031098 - Disable device smbus-eeprom
+Patch813: kvm-hw-cannot_instantiate_with_device_add_yet-due-to-poi.patch
+# For bz#1031098 - Disable device smbus-eeprom
+Patch814: kvm-qdev-Document-that-pointer-properties-kill-device_ad.patch
+# For bz#1044742 - Cannot create guest on remote RHEL7 host using F20 virt-manager, libvirt's qemu -no-hpet detection is broken
+Patch815: kvm-Add-back-no-hpet-but-ignore-it.patch
 
 
 BuildRequires: zlib-devel
@@ -1835,6 +1862,7 @@ CAC emulation development files.
 
 %prep
 %setup -q -n qemu-%{version}
+cp %{SOURCE18} pc-bios # keep "make check" happy
 %patch1 -p1
 #%%patch2 -p1
 #%%patch3 -p1
@@ -2640,6 +2668,19 @@ CAC emulation development files.
 %patch800 -p1
 %patch801 -p1
 %patch802 -p1
+%patch803 -p1
+%patch804 -p1
+%patch805 -p1
+%patch806 -p1
+%patch807 -p1
+%patch808 -p1
+%patch809 -p1
+%patch810 -p1
+%patch811 -p1
+%patch812 -p1
+%patch813 -p1
+%patch814 -p1
+%patch815 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -2830,7 +2871,7 @@ dobuild --target-list="$buildarch"
     # Provided by package vgabios
     rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/vgabios*bin
     # Provided by package seabios
-    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/bios.bin
+    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/bios*.bin
     # Provided by package sgabios
     rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/sgabios.bin
 
@@ -2857,6 +2898,7 @@ dobuild --target-list="$buildarch"
     rom_link ../seavgabios/vgabios-stdvga.bin vgabios-stdvga.bin
     rom_link ../seavgabios/vgabios-vmware.bin vgabios-vmware.bin
     rom_link ../seabios/bios.bin bios.bin
+    rom_link ../seabios/bios-256k.bin bios-256k.bin
     rom_link ../sgabios/sgabios.bin sgabios.bin
 %endif
 
@@ -3013,6 +3055,7 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
     %{_datadir}/%{pkgname}/acpi-dsdt.aml
     %{_datadir}/%{pkgname}/q35-acpi-dsdt.aml
     %{_datadir}/%{pkgname}/bios.bin
+    %{_datadir}/%{pkgname}/bios-256k.bin
     %{_datadir}/%{pkgname}/sgabios.bin
     %{_datadir}/%{pkgname}/linuxboot.bin
     %{_datadir}/%{pkgname}/multiboot.bin
@@ -3068,6 +3111,38 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %endif
 
 %changelog
+* Fri Jan 17 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-38.el7
+- kvm-intel-hda-fix-position-buffer.patch [bz#947785]
+- kvm-The-calculation-of-bytes_xfer-in-qemu_put_buffer-is-.patch [bz#1003467]
+- kvm-migration-Fix-rate-limit.patch [bz#1003467]
+- kvm-audio-honor-QEMU_AUDIO_TIMER_PERIOD-instead-of-wakin.patch [bz#1017636]
+- kvm-audio-Lower-default-wakeup-rate-to-100-times-second.patch [bz#1017636]
+- kvm-audio-adjust-pulse-to-100Hz-wakeup-rate.patch [bz#1017636]
+- kvm-pc-Fix-rhel6.-3dnow-3dnowext-compat-bits.patch [bz#918907]
+- kvm-add-firmware-to-machine-options.patch [bz#1038603]
+- kvm-switch-rhel7-machine-types-to-big-bios.patch [bz#1038603]
+- kvm-add-bios-256k.bin-from-seabios-bin-1.7.2.2-10.el7.no.patch [bz#1038603]
+- kvm-pci-fix-pci-bridge-fw-path.patch [bz#1034518]
+- kvm-hw-cannot_instantiate_with_device_add_yet-due-to-poi.patch [bz#1031098]
+- kvm-qdev-Document-that-pointer-properties-kill-device_ad.patch [bz#1031098]
+- kvm-Add-back-no-hpet-but-ignore-it.patch [bz#1044742]
+- Resolves: bz#1003467
+  (Backport migration fixes from post qemu 1.6)
+- Resolves: bz#1017636
+  (PATCH: fix qemu using 50% host cpu when audio is playing)
+- Resolves: bz#1031098
+  (Disable device smbus-eeprom)
+- Resolves: bz#1034518
+  (boot order wrong with q35)
+- Resolves: bz#1038603
+  (make seabios 256k for rhel7 machine types)
+- Resolves: bz#1044742
+  (Cannot create guest on remote RHEL7 host using F20 virt-manager, libvirt's qemu -no-hpet detection is broken)
+- Resolves: bz#918907
+  (provide backwards-compatible RHEL specific machine types in QEMU - CPU features)
+- Resolves: bz#947785
+  (In rhel6.4 guest  sound recorder doesn't work when  playing audio)
+
 * Wed Jan 15 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-37.el7
 - kvm-bitmap-use-long-as-index.patch [bz#997559]
 - kvm-memory-cpu_physical_memory_set_dirty_flags-result-is.patch [bz#997559]
