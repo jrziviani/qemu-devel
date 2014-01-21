@@ -132,6 +132,8 @@ int main(int argc, char **argv)
 
 #define MAX_VIRTIO_CONSOLES 1
 
+#define RHEL_MAX_CPUS 384
+
 static const char *data_dir[16];
 static int data_dir_idx;
 const char *bios_name = NULL;
@@ -1335,6 +1337,20 @@ static MachineClass *find_default_machine(GSList *machines)
     }
 
     return NULL;
+}
+
+/* Maximum number of CPUs limited for Red Hat Enterprise Linux */
+static void limit_max_cpus_in_machines(void)
+{
+    GSList *el, *machines = object_class_get_list(TYPE_MACHINE, false);
+
+    for (el = machines; el; el = el->next) {
+        MachineClass *mc = el->data;
+
+        if (mc->max_cpus > RHEL_MAX_CPUS) {
+            mc->max_cpus = RHEL_MAX_CPUS;
+        }
+    }
 }
 
 static int machine_help_func(QemuOpts *opts, MachineState *machine)
@@ -3864,6 +3880,8 @@ int main(int argc, char **argv, char **envp)
                      "mutually exclusive");
         exit(EXIT_FAILURE);
     }
+    /* Maximum number of CPUs limited for Red Hat Enterprise Linux */
+    limit_max_cpus_in_machines();
 
     configure_rtc(qemu_find_opts_singleton("rtc"));
 
