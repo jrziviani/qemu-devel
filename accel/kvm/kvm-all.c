@@ -1587,6 +1587,18 @@ static int kvm_init(MachineState *ms)
     soft_vcpus_limit = kvm_recommended_vcpus(s);
     hard_vcpus_limit = kvm_max_vcpus(s);
 
+#ifdef HOST_PPC64
+    /*
+     * On POWER, the kernel advertises a soft limit based on the
+     * number of CPU threads on the host.  We want to allow exceeding
+     * this for testing purposes, so we don't want to set hard limit
+     * to soft limit as on x86.
+     */
+#else
+    /* RHEL doesn't support nr_vcpus > soft_vcpus_limit */
+    hard_vcpus_limit = soft_vcpus_limit;
+#endif
+
     while (nc->name) {
         if (nc->num > soft_vcpus_limit) {
             warn_report("Number of %s cpus requested (%d) exceeds "

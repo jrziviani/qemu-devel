@@ -135,6 +135,8 @@ int main(int argc, char **argv)
 #define MAX_VIRTIO_CONSOLES 1
 #define MAX_SCLP_CONSOLES 1
 
+#define RHEL_MAX_CPUS 384
+
 static const char *data_dir[16];
 static int data_dir_idx;
 const char *bios_name = NULL;
@@ -1518,6 +1520,20 @@ MachineClass *find_default_machine(void)
 
     g_slist_free(machines);
     return mc;
+}
+
+/* Maximum number of CPUs limited for Red Hat Enterprise Linux */
+static void limit_max_cpus_in_machines(void)
+{
+    GSList *el, *machines = object_class_get_list(TYPE_MACHINE, false);
+
+    for (el = machines; el; el = el->next) {
+        MachineClass *mc = el->data;
+
+        if (mc->max_cpus > RHEL_MAX_CPUS) {
+            mc->max_cpus = RHEL_MAX_CPUS;
+        }
+    }
 }
 
 MachineInfoList *qmp_query_machines(Error **errp)
@@ -4081,6 +4097,9 @@ int main(int argc, char **argv, char **envp)
     loc_set_none();
 
     replay_configure(icount_opts);
+
+    /* Maximum number of CPUs limited for Red Hat Enterprise Linux */
+    limit_max_cpus_in_machines();
 
     machine_class = select_machine();
 
