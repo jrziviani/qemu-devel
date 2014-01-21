@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 38%{?dist}
+Release: 39%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1671,6 +1671,28 @@ Patch813: kvm-hw-cannot_instantiate_with_device_add_yet-due-to-poi.patch
 Patch814: kvm-qdev-Document-that-pointer-properties-kill-device_ad.patch
 # For bz#1044742 - Cannot create guest on remote RHEL7 host using F20 virt-manager, libvirt's qemu -no-hpet detection is broken
 Patch815: kvm-Add-back-no-hpet-but-ignore-it.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch816: kvm-Revert-qdev-monitor-Fix-crash-when-device_add-is-cal.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch817: kvm-Revert-qdev-Do-not-let-the-user-try-to-device_add-wh.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch818: kvm-qdev-monitor-Clean-up-qdev_device_add-variable-namin.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch819: kvm-qdev-monitor-Fix-crash-when-device_add-is-called.2.patch.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch820: kvm-qdev-monitor-Avoid-qdev-as-variable-name.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch821: kvm-qdev-monitor-Inline-qdev_init-for-device_add.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch822: kvm-qdev-Do-not-let-the-user-try-to-device_add-when-it.2.patch.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch823: kvm-qdev-monitor-Avoid-device_add-crashing-on-non-device.patch
+# For bz#669524 - Confusing error message from -device <unknown dev>
+Patch824: kvm-qdev-monitor-Improve-error-message-for-device-nonexi.patch
+# For bz#1003535 - qemu-kvm core dump when boot vm with more than 32 virtio disks/nics
+Patch825: kvm-exec-change-well-known-physical-sections-to-macros.patch
+# For bz#1003535 - qemu-kvm core dump when boot vm with more than 32 virtio disks/nics
+Patch826: kvm-exec-separate-sections-and-nodes-per-address-space.patch
 
 
 BuildRequires: zlib-devel
@@ -2681,6 +2703,17 @@ cp %{SOURCE18} pc-bios # keep "make check" happy
 %patch813 -p1
 %patch814 -p1
 %patch815 -p1
+%patch816 -p1
+%patch817 -p1
+%patch818 -p1
+%patch819 -p1
+%patch820 -p1
+%patch821 -p1
+%patch822 -p1
+%patch823 -p1
+%patch824 -p1
+%patch825 -p1
+%patch826 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -3111,6 +3144,23 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %endif
 
 %changelog
+* Tue Jan 21 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-39.el7
+- kvm-Revert-qdev-monitor-Fix-crash-when-device_add-is-cal.patch [bz#669524]
+- kvm-Revert-qdev-Do-not-let-the-user-try-to-device_add-wh.patch [bz#669524]
+- kvm-qdev-monitor-Clean-up-qdev_device_add-variable-namin.patch [bz#669524]
+- kvm-qdev-monitor-Fix-crash-when-device_add-is-called.2.patch.patch [bz#669524]
+- kvm-qdev-monitor-Avoid-qdev-as-variable-name.patch [bz#669524]
+- kvm-qdev-monitor-Inline-qdev_init-for-device_add.patch [bz#669524]
+- kvm-qdev-Do-not-let-the-user-try-to-device_add-when-it.2.patch.patch [bz#669524]
+- kvm-qdev-monitor-Avoid-device_add-crashing-on-non-device.patch [bz#669524]
+- kvm-qdev-monitor-Improve-error-message-for-device-nonexi.patch [bz#669524]
+- kvm-exec-change-well-known-physical-sections-to-macros.patch [bz#1003535]
+- kvm-exec-separate-sections-and-nodes-per-address-space.patch [bz#1003535]
+- Resolves: bz#1003535
+  (qemu-kvm core dump when boot vm with more than 32 virtio disks/nics)
+- Resolves: bz#669524
+  (Confusing error message from -device <unknown dev>)
+
 * Fri Jan 17 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-38.el7
 - kvm-intel-hda-fix-position-buffer.patch [bz#947785]
 - kvm-The-calculation-of-bytes_xfer-in-qemu_put_buffer-is-.patch [bz#1003467]
