@@ -70,7 +70,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 40%{?dist}
+Release: 41%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1755,6 +1755,14 @@ Patch857: kvm-use-recommended-max-vcpu-count.patch
 Patch858: kvm-pc-Create-pc_compat_rhel-functions.patch
 # For bz#1049706 - MIss CPUID_EXT_X2APIC in Westmere cpu model
 Patch859: kvm-pc-Enable-x2apic-by-default-on-more-recent-CPU-model.patch
+# For bz#1019221 - Iscsi miss id sub-option in help output
+Patch860: kvm-help-add-id-suboption-to-iscsi.patch
+# For bz#1037503 - fix thin provisioning support for block device backends
+Patch861: kvm-scsi-disk-add-UNMAP-limits-to-block-limits-VPD-page.patch
+# For bz#1034876 - export acpi tables to guests
+Patch862: kvm-qdev-Fix-32-bit-compilation-in-print_size.patch
+# For bz#1034876 - export acpi tables to guests
+Patch863: kvm-qdev-Use-clz-in-print_size.patch
 
 
 BuildRequires: zlib-devel
@@ -2816,6 +2824,10 @@ cp %{SOURCE18} pc-bios # keep "make check" happy
 %patch857 -p1
 %patch858 -p1
 %patch859 -p1
+%patch860 -p1
+%patch861 -p1
+%patch862 -p1
+%patch863 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -3228,6 +3240,18 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %{_libdir}/pkgconfig/libcacard.pc
 
 %changelog
+* Wed Jan 22 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-41.el7
+- kvm-help-add-id-suboption-to-iscsi.patch [bz#1019221]
+- kvm-scsi-disk-add-UNMAP-limits-to-block-limits-VPD-page.patch [bz#1037503]
+- kvm-qdev-Fix-32-bit-compilation-in-print_size.patch [bz#1034876]
+- kvm-qdev-Use-clz-in-print_size.patch [bz#1034876]
+- Resolves: bz#1019221
+  (Iscsi miss id sub-option in help output)
+- Resolves: bz#1034876
+  (export acpi tables to guests)
+- Resolves: bz#1037503
+  (fix thin provisioning support for block device backends)
+
 * Wed Jan 22 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-40.el7
 - kvm-avoid-a-bogus-COMPLETED-CANCELLED-transition.patch [bz#1053699]
 - kvm-introduce-MIG_STATE_CANCELLING-state.patch [bz#1053699]
