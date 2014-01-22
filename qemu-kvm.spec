@@ -1,11 +1,7 @@
 # Build time setting
 %define rhev 0
 
-%if %{rhev}
-    %bcond_with     guest_agent     # disabled
-%else
-    %bcond_without  guest_agent     # enabled
-%endif
+%bcond_without  guest_agent     # enabled
 
 %global SLOF_gittagdate 20120731
 
@@ -74,7 +70,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 39%{?dist}
+Release: 40%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1693,6 +1689,72 @@ Patch824: kvm-qdev-monitor-Improve-error-message-for-device-nonexi.patch
 Patch825: kvm-exec-change-well-known-physical-sections-to-macros.patch
 # For bz#1003535 - qemu-kvm core dump when boot vm with more than 32 virtio disks/nics
 Patch826: kvm-exec-separate-sections-and-nodes-per-address-space.patch
+# For bz#1053699 - Backport Cancelled race condition fixes
+Patch827: kvm-avoid-a-bogus-COMPLETED-CANCELLED-transition.patch
+# For bz#1053699 - Backport Cancelled race condition fixes
+Patch828: kvm-introduce-MIG_STATE_CANCELLING-state.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch829: kvm-vvfat-use-bdrv_new-to-allocate-BlockDriverState.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch830: kvm-block-implement-reference-count-for-BlockDriverState.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch831: kvm-block-make-bdrv_delete-static.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch832: kvm-migration-omit-drive-ref-as-we-have-bdrv_ref-now.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch833: kvm-xen_disk-simplify-blk_disconnect-with-refcnt.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch834: kvm-nbd-use-BlockDriverState-refcnt.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch835: kvm-block-use-BDS-ref-for-block-jobs.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch836: kvm-block-Make-BlockJobTypes-const.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch837: kvm-blockjob-rename-BlockJobType-to-BlockJobDriver.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch838: kvm-qapi-Introduce-enum-BlockJobType.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch839: kvm-qapi-make-use-of-new-BlockJobType.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch840: kvm-mirror-Don-t-close-target.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch841: kvm-mirror-Move-base-to-MirrorBlockJob.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch842: kvm-block-Add-commit_active_start.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch843: kvm-commit-Support-commit-active-layer.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch844: kvm-qemu-iotests-prefill-some-data-to-test-image.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch845: kvm-qemu-iotests-Update-test-cases-for-commit-active.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch846: kvm-commit-Remove-unused-check.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch847: kvm-blockdev-use-bdrv_getlength-in-qmp_drive_mirror.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch848: kvm-qemu-iotests-make-assert_no_active_block_jobs-common.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch849: kvm-block-drive-mirror-Check-for-NULL-backing_hd.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch850: kvm-qemu-iotests-Extend-041-for-unbacked-mirroring.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch851: kvm-qapi-schema-Update-description-for-NewImageMode.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch852: kvm-block-drive-mirror-Reuse-backing-HD-for-sync-none.patch
+# For bz#921890 - Core dump when block mirror with "sync" is "none" and mode is "absolute-paths"
+Patch853: kvm-qemu-iotests-Fix-test-041.patch
+# For bz#1035644 - rhel7.0host + windows guest + virtio-win + 'chkdsk' in the guest gives qemu assertion in scsi_dma_complete
+Patch854: kvm-scsi-bus-fix-transfer-length-and-direction-for-VERIF.patch
+# For bz#1035644 - rhel7.0host + windows guest + virtio-win + 'chkdsk' in the guest gives qemu assertion in scsi_dma_complete
+Patch855: kvm-scsi-disk-fix-VERIFY-emulation.patch
+# For bz#1041301 - live snapshot merge (commit) of the active layer
+Patch856: kvm-block-ensure-bdrv_drain_all-works-during-bdrv_delete.patch
+# For bz#998708 - qemu-kvm: maximum vcpu should be recommended maximum
+Patch857: kvm-use-recommended-max-vcpu-count.patch
+# For bz#1049706 - MIss CPUID_EXT_X2APIC in Westmere cpu model
+Patch858: kvm-pc-Create-pc_compat_rhel-functions.patch
+# For bz#1049706 - MIss CPUID_EXT_X2APIC in Westmere cpu model
+Patch859: kvm-pc-Enable-x2apic-by-default-on-more-recent-CPU-model.patch
 
 
 BuildRequires: zlib-devel
@@ -1787,14 +1849,15 @@ the KVM kernel modules, and emulates the hardware for a full system such as
 a PC and its assocated peripherals.
 
 As qemu-kvm requires no host kernel patches to run, it is safe and easy to use.
-%if !%{rhev}
-%package -n qemu-img
+
+%package -n qemu-img%{?pkgsuffix}
 Summary: QEMU command line tool for manipulating disk images
 Group: Development/Tools
 
-%description -n qemu-img
+%rhel_rhev_conflicts qemu-img
+
+%description -n qemu-img%{?pkgsuffix}
 This package provides a command line tool for manipulating disk images.
-%endif
 
 %if 0%{!?build_only_sub:1}
 %package -n qemu-kvm-common%{?pkgsuffix}
@@ -1845,42 +1908,48 @@ This package does not need to be installed on the host OS.
 
 %endif
 
-%if !%{rhev}
-    %if 0%{!?build_only_sub:1}
-%package tools
+%if 0%{!?build_only_sub:1}
+%package -n qemu-kvm-tools%{?pkgsuffix}
 Summary: KVM debugging and diagnostics tools
 Group: Development/Tools
 
-%description tools
+%rhel_rhev_conflicts qemu-kvm-tools
+
+%description -n qemu-kvm-tools%{?pkgsuffix}
 This package contains some diagnostics and debugging tools for KVM,
 such as kvm_stat.
-    %endif
+%endif
 
-%package -n libcacard
+%package -n libcacard%{?pkgsuffix}
 Summary:        Common Access Card (CAC) Emulation
 Group:          Development/Libraries
 
-%description -n libcacard
+%rhel_rhev_conflicts libcacard
+
+%description -n libcacard%{?pkgsuffix}
 Common Access Card (CAC) emulation library.
 
-%package -n libcacard-tools
+%package -n libcacard-tools%{?pkgsuffix}
 Summary:        CAC Emulation tools
 Group:          Development/Libraries
 Requires:       libcacard = %{epoch}:%{version}-%{release}
 # older qemu-img has vscclient which is now in libcacard-tools
 Requires:       qemu-img >= 3:1.3.0-5
 
-%description -n libcacard-tools
+%rhel_rhev_conflicts libcacard-tools
+
+%description -n libcacard-tools%{?pkgsuffix}
 CAC emulation tools.
 
-%package -n libcacard-devel
+%package -n libcacard-devel%{?pkgsuffix}
 Summary:        CAC Emulation devel
 Group:          Development/Libraries
 Requires:       libcacard = %{epoch}:%{version}-%{release}
 
-%description -n libcacard-devel
+%rhel_rhev_conflicts libcacard-devel
+
+%description -n libcacard-devel%{?pkgsuffix}
 CAC emulation development files.
-%endif
 
 %prep
 %setup -q -n qemu-%{version}
@@ -2714,6 +2783,39 @@ cp %{SOURCE18} pc-bios # keep "make check" happy
 %patch824 -p1
 %patch825 -p1
 %patch826 -p1
+%patch827 -p1
+%patch828 -p1
+%patch829 -p1
+%patch830 -p1
+%patch831 -p1
+%patch832 -p1
+%patch833 -p1
+%patch834 -p1
+%patch835 -p1
+%patch836 -p1
+%patch837 -p1
+%patch838 -p1
+%patch839 -p1
+%patch840 -p1
+%patch841 -p1
+%patch842 -p1
+%patch843 -p1
+%patch844 -p1
+%patch845 -p1
+%patch846 -p1
+%patch847 -p1
+%patch848 -p1
+%patch849 -p1
+%patch850 -p1
+%patch851 -p1
+%patch852 -p1
+%patch853 -p1
+%patch854 -p1
+%patch855 -p1
+%patch856 -p1
+%patch857 -p1
+%patch858 -p1
+%patch859 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -2970,10 +3072,9 @@ dobuild --target-list="$buildarch"
     install -m 0644 %{SOURCE12} $RPM_BUILD_ROOT%{_sysconfdir}/%{pkgname}
 %endif
 
-%if !%{rhev}
-    make %{?_smp_mflags} $buildldflags DESTDIR=$RPM_BUILD_ROOT install-libcacard
-    find $RPM_BUILD_ROOT -name "libcacard.so*" -exec chmod +x \{\} \;
-%endif
+make %{?_smp_mflags} $buildldflags DESTDIR=$RPM_BUILD_ROOT install-libcacard
+find $RPM_BUILD_ROOT -name "libcacard.so*" -exec chmod +x \{\} \;
+
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 
 %if 0%{?build_only_sub}
@@ -2991,19 +3092,6 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
     chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man8/*
 %endif
 
-%if %{rhev}
-    # Remove files unpackacked for rhev build
-    rm -rf ${RPM_BUILD_ROOT}%{_includedir}/cacard
-    rm -rf ${RPM_BUILD_ROOT}%{_bindir}/qemu-img
-    rm -rf ${RPM_BUILD_ROOT}%{_bindir}/qemu-io
-    rm -rf ${RPM_BUILD_ROOT}%{_bindir}/qemu-nbd
-    rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man1/qemu-img.1*
-    rm -rf ${RPM_BUILD_ROOT}%{_mandir}/man8/qemu-nbd.8*
-    rm -rf ${RPM_BUILD_ROOT}%{_bindir}/vscclient
-    rm -rf ${RPM_BUILD_ROOT}%{_libdir}/libcacard.so*
-    rm -rf ${RPM_BUILD_ROOT}%{_libdir}/pkgconfig/libcacard.pc
-    rm -rf ${RPM_BUILD_ROOT}%{_bindir}/kvm_stat
-%endif
 
 %if 0%{!?build_only_sub:1}
 %check
@@ -3112,38 +3200,84 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
     %{?kvm_files:}
     %{?qemu_kvm_files:}
 
-    %if !%{rhev}
-%files tools
-        %defattr(-,root,root,-)
-        %{_bindir}/kvm_stat
-    %endif
+%files -n qemu-kvm-tools%{?pkgsuffix}
+    %defattr(-,root,root,-)
+    %{_bindir}/kvm_stat
 %endif
 
-%if !%{rhev}
-%files -n qemu-img
-    %defattr(-,root,root)
-    %{_bindir}/qemu-img
-    %{_bindir}/qemu-io
-    %{_bindir}/qemu-nbd
-    %{_mandir}/man1/qemu-img.1*
-    %{_mandir}/man8/qemu-nbd.8*
+%files -n qemu-img%{?pkgsuffix}
+%defattr(-,root,root)
+%{_bindir}/qemu-img
+%{_bindir}/qemu-io
+%{_bindir}/qemu-nbd
+%{_mandir}/man1/qemu-img.1*
+%{_mandir}/man8/qemu-nbd.8*
 
-%files -n libcacard
-    %defattr(-,root,root,-)
-    %{_libdir}/libcacard.so.*
+%files -n libcacard%{?pkgsuffix}
+%defattr(-,root,root,-)
+%{_libdir}/libcacard.so.*
 
-%files -n libcacard-tools
-    %defattr(-,root,root,-)
-    %{_bindir}/vscclient
+%files -n libcacard-tools%{?pkgsuffix}
+%defattr(-,root,root,-)
+%{_bindir}/vscclient
 
-%files -n libcacard-devel
-    %defattr(-,root,root,-)
-    %{_includedir}/cacard
-    %{_libdir}/libcacard.so
-    %{_libdir}/pkgconfig/libcacard.pc
-%endif
+%files -n libcacard-devel%{?pkgsuffix}
+%defattr(-,root,root,-)
+%{_includedir}/cacard
+%{_libdir}/libcacard.so
+%{_libdir}/pkgconfig/libcacard.pc
 
 %changelog
+* Wed Jan 22 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-40.el7
+- kvm-avoid-a-bogus-COMPLETED-CANCELLED-transition.patch [bz#1053699]
+- kvm-introduce-MIG_STATE_CANCELLING-state.patch [bz#1053699]
+- kvm-vvfat-use-bdrv_new-to-allocate-BlockDriverState.patch [bz#1041301]
+- kvm-block-implement-reference-count-for-BlockDriverState.patch [bz#1041301]
+- kvm-block-make-bdrv_delete-static.patch [bz#1041301]
+- kvm-migration-omit-drive-ref-as-we-have-bdrv_ref-now.patch [bz#1041301]
+- kvm-xen_disk-simplify-blk_disconnect-with-refcnt.patch [bz#1041301]
+- kvm-nbd-use-BlockDriverState-refcnt.patch [bz#1041301]
+- kvm-block-use-BDS-ref-for-block-jobs.patch [bz#1041301]
+- kvm-block-Make-BlockJobTypes-const.patch [bz#1041301]
+- kvm-blockjob-rename-BlockJobType-to-BlockJobDriver.patch [bz#1041301]
+- kvm-qapi-Introduce-enum-BlockJobType.patch [bz#1041301]
+- kvm-qapi-make-use-of-new-BlockJobType.patch [bz#1041301]
+- kvm-mirror-Don-t-close-target.patch [bz#1041301]
+- kvm-mirror-Move-base-to-MirrorBlockJob.patch [bz#1041301]
+- kvm-block-Add-commit_active_start.patch [bz#1041301]
+- kvm-commit-Support-commit-active-layer.patch [bz#1041301]
+- kvm-qemu-iotests-prefill-some-data-to-test-image.patch [bz#1041301]
+- kvm-qemu-iotests-Update-test-cases-for-commit-active.patch [bz#1041301]
+- kvm-commit-Remove-unused-check.patch [bz#1041301]
+- kvm-blockdev-use-bdrv_getlength-in-qmp_drive_mirror.patch [bz#921890]
+- kvm-qemu-iotests-make-assert_no_active_block_jobs-common.patch [bz#921890]
+- kvm-block-drive-mirror-Check-for-NULL-backing_hd.patch [bz#921890]
+- kvm-qemu-iotests-Extend-041-for-unbacked-mirroring.patch [bz#921890]
+- kvm-qapi-schema-Update-description-for-NewImageMode.patch [bz#921890]
+- kvm-block-drive-mirror-Reuse-backing-HD-for-sync-none.patch [bz#921890]
+- kvm-qemu-iotests-Fix-test-041.patch [bz#921890]
+- kvm-scsi-bus-fix-transfer-length-and-direction-for-VERIF.patch [bz#1035644]
+- kvm-scsi-disk-fix-VERIFY-emulation.patch [bz#1035644]
+- kvm-block-ensure-bdrv_drain_all-works-during-bdrv_delete.patch [bz#1041301]
+- kvm-use-recommended-max-vcpu-count.patch [bz#998708]
+- kvm-pc-Create-pc_compat_rhel-functions.patch [bz#1049706]
+- kvm-pc-Enable-x2apic-by-default-on-more-recent-CPU-model.patch [bz#1049706]
+- kvm-Build-all-subpackages-for-RHEV.patch [bz#1007204]
+- Resolves: bz#1007204
+  (qemu-img-rhev  qemu-kvm-rhev-tools are not built for qemu-kvm-1.5.3-3.el7)
+- Resolves: bz#1035644
+  (rhel7.0host + windows guest + virtio-win + 'chkdsk' in the guest gives qemu assertion in scsi_dma_complete)
+- Resolves: bz#1041301
+  (live snapshot merge (commit) of the active layer)
+- Resolves: bz#1049706
+  (MIss CPUID_EXT_X2APIC in Westmere cpu model)
+- Resolves: bz#1053699
+  (Backport Cancelled race condition fixes)
+- Resolves: bz#921890
+  (Core dump when block mirror with "sync" is "none" and mode is "absolute-paths")
+- Resolves: bz#998708
+  (qemu-kvm: maximum vcpu should be recommended maximum)
+
 * Tue Jan 21 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-39.el7
 - kvm-Revert-qdev-monitor-Fix-crash-when-device_add-is-cal.patch [bz#669524]
 - kvm-Revert-qdev-Do-not-let-the-user-try-to-device_add-wh.patch [bz#669524]
