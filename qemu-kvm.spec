@@ -1,7 +1,11 @@
 # Build time setting
 %define rhev 0
 
-%bcond_without  guest_agent     # enabled
+%if %{rhev}
+    %bcond_with     guest_agent     # disabled
+%else
+    %bcond_without  guest_agent     # enabled
+%endif
 
 %global SLOF_gittagdate 20120731
 
