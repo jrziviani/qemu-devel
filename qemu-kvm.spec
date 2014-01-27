@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 42%{?dist}
+Release: 43%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1767,6 +1767,34 @@ Patch861: kvm-scsi-disk-add-UNMAP-limits-to-block-limits-VPD-page.patch
 Patch862: kvm-qdev-Fix-32-bit-compilation-in-print_size.patch
 # For bz#1034876 - export acpi tables to guests
 Patch863: kvm-qdev-Use-clz-in-print_size.patch
+# For bz#1026548 - i386: pc: align gpa<->hpa on 1GB boundary
+Patch864: kvm-piix-gigabyte-alignment-for-ram.patch
+# For bz#1026548 - i386: pc: align gpa<->hpa on 1GB boundary
+Patch865: kvm-pc_piix-document-gigabyte_align.patch
+# For bz#1026548 - i386: pc: align gpa<->hpa on 1GB boundary
+Patch866: kvm-q35-gigabyle-alignment-for-ram.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch867: kvm-virtio-bus-remove-vdev-field.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch868: kvm-virtio-pci-remove-vdev-field.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch869: kvm-virtio-bus-cleanup-plug-unplug-interface.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch870: kvm-virtio-blk-switch-exit-callback-to-VirtioDeviceClass.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch871: kvm-virtio-serial-switch-exit-callback-to-VirtioDeviceCl.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch872: kvm-virtio-net-switch-exit-callback-to-VirtioDeviceClass.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch873: kvm-virtio-scsi-switch-exit-callback-to-VirtioDeviceClas.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch874: kvm-virtio-balloon-switch-exit-callback-to-VirtioDeviceC.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch875: kvm-virtio-rng-switch-exit-callback-to-VirtioDeviceClass.patch
+# For bz#983344 - QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch
+Patch876: kvm-virtio-pci-add-device_unplugged-callback.patch
+# For bz#1051438 - Error message contains garbled characters when unable to open image due to bad permissions (permission denied).
+Patch877: kvm-block-use-correct-filename-for-error-report.patch
 
 
 BuildRequires: zlib-devel
@@ -2832,6 +2860,20 @@ cp %{SOURCE18} pc-bios # keep "make check" happy
 %patch861 -p1
 %patch862 -p1
 %patch863 -p1
+%patch864 -p1
+%patch865 -p1
+%patch866 -p1
+%patch867 -p1
+%patch868 -p1
+%patch869 -p1
+%patch870 -p1
+%patch871 -p1
+%patch872 -p1
+%patch873 -p1
+%patch874 -p1
+%patch875 -p1
+%patch876 -p1
+%patch877 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -3244,6 +3286,28 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %{_libdir}/pkgconfig/libcacard.pc
 
 %changelog
+* Mon Jan 27 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-43.el7
+- kvm-piix-gigabyte-alignment-for-ram.patch [bz#1026548]
+- kvm-pc_piix-document-gigabyte_align.patch [bz#1026548]
+- kvm-q35-gigabyle-alignment-for-ram.patch [bz#1026548]
+- kvm-virtio-bus-remove-vdev-field.patch [bz#983344]
+- kvm-virtio-pci-remove-vdev-field.patch [bz#983344]
+- kvm-virtio-bus-cleanup-plug-unplug-interface.patch [bz#983344]
+- kvm-virtio-blk-switch-exit-callback-to-VirtioDeviceClass.patch [bz#983344]
+- kvm-virtio-serial-switch-exit-callback-to-VirtioDeviceCl.patch [bz#983344]
+- kvm-virtio-net-switch-exit-callback-to-VirtioDeviceClass.patch [bz#983344]
+- kvm-virtio-scsi-switch-exit-callback-to-VirtioDeviceClas.patch [bz#983344]
+- kvm-virtio-balloon-switch-exit-callback-to-VirtioDeviceC.patch [bz#983344]
+- kvm-virtio-rng-switch-exit-callback-to-VirtioDeviceClass.patch [bz#983344]
+- kvm-virtio-pci-add-device_unplugged-callback.patch [bz#983344]
+- kvm-block-use-correct-filename-for-error-report.patch [bz#1051438]
+- Resolves: bz#1026548
+  (i386: pc: align gpa<->hpa on 1GB boundary)
+- Resolves: bz#1051438
+  (Error message contains garbled characters when unable to open image due to bad permissions (permission denied).)
+- Resolves: bz#983344
+  (QEMU core dump and host will reboot when do hot-unplug a virtio-blk disk which use  the switch behind switch)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 10:1.5.3-42
 - Mass rebuild 2014-01-24
 
