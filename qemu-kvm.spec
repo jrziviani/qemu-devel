@@ -74,7 +74,7 @@ Obsoletes: %1 < %{obsoletes_version}                                      \
 Summary: QEMU is a FAST! processor emulator
 Name: %{pkgname}%{?pkgsuffix}
 Version: 1.5.3
-Release: 43%{?dist}
+Release: 44%{?dist}
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
 Epoch: 10
 License: GPLv2+ and LGPLv2+ and BSD
@@ -1795,6 +1795,51 @@ Patch875: kvm-virtio-rng-switch-exit-callback-to-VirtioDeviceClass.patch
 Patch876: kvm-virtio-pci-add-device_unplugged-callback.patch
 # For bz#1051438 - Error message contains garbled characters when unable to open image due to bad permissions (permission denied).
 Patch877: kvm-block-use-correct-filename-for-error-report.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch878: kvm-Partially-revert-rhel-Drop-cfi.pflash01-and-isa-ide-.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch879: kvm-Revert-pc-Disable-the-use-flash-device-for-BIOS-unle.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch880: kvm-memory-Replace-open-coded-memory_region_is_romd.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch881: kvm-memory-Rename-readable-flag-to-romd_mode.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch882: kvm-isapc-Fix-non-KVM-qemu-boot-read-write-memory-for-is.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch883: kvm-add-kvm_readonly_mem_enabled.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch884: kvm-support-using-KVM_MEM_READONLY-flag-for-regions.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch885: kvm-pc_sysfw-allow-flash-pflash-memory-to-be-used-with-K.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch886: kvm-fix-double-free-the-memslot-in-kvm_set_phys_mem.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch887: kvm-sysfw-remove-read-only-pc_sysfw_flash_vs_rom_bug_com.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch888: kvm-pc_sysfw-remove-the-rom_only-property.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch889: kvm-pc_sysfw-do-not-make-it-a-device-anymore.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch890: kvm-hw-i386-pc_sysfw-support-two-flash-drives.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch891: kvm-i440fx-test-qtest_start-should-be-paired-with-qtest_.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch892: kvm-i440fx-test-give-each-GTest-case-its-own-qtest.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch893: kvm-i440fx-test-generate-temporary-firmware-blob.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch894: kvm-i440fx-test-verify-firmware-under-4G-and-1M-both-bio.patch
+# For bz#1032346 - basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables)
+Patch895: kvm-piix-fix-32bit-pci-hole.patch
+# For bz#1041564 - [NFR] qemu: Returning the watermark for all the images opened for writing
+Patch896: kvm-qapi-Add-backing-to-BlockStats.patch
+# For bz#918907 - provide backwards-compatible RHEL specific machine types in QEMU - CPU features
+Patch897: kvm-pc-Disable-RDTSCP-unconditionally-on-rhel6.-machine-.patch
+# For bz#1056428 - "rdtscp" flag defined on Opteron_G5 model and cann't be exposed to guest
+# For bz#874400 - "rdtscp" flag defined on Opteron_G5 model and cann't be exposed to guest
+Patch898: kvm-pc-Disable-RDTSCP-on-AMD-CPU-models.patch
+# For bz#1030301 - qemu-img can not merge live snapshot to backing file(r/w backing file via libiscsi)
+Patch899: kvm-block-add-.bdrv_reopen_prepare-stub-for-iscsi.patch
 
 
 BuildRequires: zlib-devel
@@ -2874,6 +2919,28 @@ cp %{SOURCE18} pc-bios # keep "make check" happy
 %patch875 -p1
 %patch876 -p1
 %patch877 -p1
+%patch878 -p1
+%patch879 -p1
+%patch880 -p1
+%patch881 -p1
+%patch882 -p1
+%patch883 -p1
+%patch884 -p1
+%patch885 -p1
+%patch886 -p1
+%patch887 -p1
+%patch888 -p1
+%patch889 -p1
+%patch890 -p1
+%patch891 -p1
+%patch892 -p1
+%patch893 -p1
+%patch894 -p1
+%patch895 -p1
+%patch896 -p1
+%patch897 -p1
+%patch898 -p1
+%patch899 -p1
 
 %build
 buildarch="%{kvm_target}-softmmu"
@@ -3286,6 +3353,42 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
 %{_libdir}/pkgconfig/libcacard.pc
 
 %changelog
+* Wed Jan 29 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-44.el7
+- kvm-Partially-revert-rhel-Drop-cfi.pflash01-and-isa-ide-.patch [bz#1032346]
+- kvm-Revert-pc-Disable-the-use-flash-device-for-BIOS-unle.patch [bz#1032346]
+- kvm-memory-Replace-open-coded-memory_region_is_romd.patch [bz#1032346]
+- kvm-memory-Rename-readable-flag-to-romd_mode.patch [bz#1032346]
+- kvm-isapc-Fix-non-KVM-qemu-boot-read-write-memory-for-is.patch [bz#1032346]
+- kvm-add-kvm_readonly_mem_enabled.patch [bz#1032346]
+- kvm-support-using-KVM_MEM_READONLY-flag-for-regions.patch [bz#1032346]
+- kvm-pc_sysfw-allow-flash-pflash-memory-to-be-used-with-K.patch [bz#1032346]
+- kvm-fix-double-free-the-memslot-in-kvm_set_phys_mem.patch [bz#1032346]
+- kvm-sysfw-remove-read-only-pc_sysfw_flash_vs_rom_bug_com.patch [bz#1032346]
+- kvm-pc_sysfw-remove-the-rom_only-property.patch [bz#1032346]
+- kvm-pc_sysfw-do-not-make-it-a-device-anymore.patch [bz#1032346]
+- kvm-hw-i386-pc_sysfw-support-two-flash-drives.patch [bz#1032346]
+- kvm-i440fx-test-qtest_start-should-be-paired-with-qtest_.patch [bz#1032346]
+- kvm-i440fx-test-give-each-GTest-case-its-own-qtest.patch [bz#1032346]
+- kvm-i440fx-test-generate-temporary-firmware-blob.patch [bz#1032346]
+- kvm-i440fx-test-verify-firmware-under-4G-and-1M-both-bio.patch [bz#1032346]
+- kvm-piix-fix-32bit-pci-hole.patch [bz#1032346]
+- kvm-qapi-Add-backing-to-BlockStats.patch [bz#1041564]
+- kvm-pc-Disable-RDTSCP-unconditionally-on-rhel6.-machine-.patch [bz#918907]
+- kvm-pc-Disable-RDTSCP-on-AMD-CPU-models.patch [bz#1056428 bz#874400]
+- kvm-block-add-.bdrv_reopen_prepare-stub-for-iscsi.patch [bz#1030301]
+- Resolves: bz#1030301
+  (qemu-img can not merge live snapshot to backing file(r/w backing file via libiscsi))
+- Resolves: bz#1032346
+  (basic OVMF support (non-volatile UEFI variables in flash, and fixup for ACPI tables))
+- Resolves: bz#1041564
+  ([NFR] qemu: Returning the watermark for all the images opened for writing)
+- Resolves: bz#1056428
+  ("rdtscp" flag defined on Opteron_G5 model and cann't be exposed to guest)
+- Resolves: bz#874400
+  ("rdtscp" flag defined on Opteron_G5 model and cann't be exposed to guest)
+- Resolves: bz#918907
+  (provide backwards-compatible RHEL specific machine types in QEMU - CPU features)
+
 * Mon Jan 27 2014 Miroslav Rezanina <mrezanin@redhat.com> - 1.5.3-43.el7
 - kvm-piix-gigabyte-alignment-for-ram.patch [bz#1026548]
 - kvm-pc_piix-document-gigabyte_align.patch [bz#1026548]
