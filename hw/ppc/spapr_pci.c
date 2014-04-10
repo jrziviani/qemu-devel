@@ -511,6 +511,7 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
     SysBusDevice *s = SYS_BUS_DEVICE(dev);
     sPAPRPHBState *sphb = SPAPR_PCI_HOST_BRIDGE(s);
     PCIHostState *phb = PCI_HOST_BRIDGE(s);
+    const char *busname;
     char *namebuf;
     int i;
     PCIBus *bus;
@@ -594,8 +595,26 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
                              get_system_io(), 0, SPAPR_PCI_IO_WIN_SIZE);
     memory_region_add_subregion(get_system_memory(), sphb->io_win_addr,
                                 &sphb->iowindow);
-
-    bus = pci_register_bus(dev, NULL,
+    /*
+     * Selecting a busname is more complex than you'd think, due to
+     * interacting constraints.  If the user has specified an id
+     * explicitly for the phb , then we want to use the qdev default
+     * of naming the bus based on the bridge device (so the user can
+     * then assign devices to it in the way they expect).  For the
+     * first / default PCI bus (index=0) we want to use just "pci"
+     * because libvirt expects there to be a bus called, simply,
+     * "pci".  Otherwise, we use the same name as in the device tree,
+     * since it's unique by construction, and makes the guest visible
+     * BUID clear.
+     */
+    if (dev->id) {
+        busname = NULL;
+    } else if (sphb->index == 0) {
+        busname = "pci";
+    } else {
+        busname = sphb->dtbusname;
+    }
+    bus = pci_register_bus(dev, busname,
                            pci_spapr_set_irq, pci_spapr_map_irq, sphb,
                            &sphb->memspace, &sphb->iospace,
                            PCI_DEVFN(0, 0), PCI_NUM_PINS, TYPE_PCI_BUS);
