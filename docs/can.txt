@@ -50,9 +50,9 @@ CAN boards can be selected
 The ''kvaser_pci'' board/device model is compatible with and has been tested with
 ''kvaser_pci'' driver included in mainline Linux kernel.
 The tested setup was Linux 4.9 kernel on the host and guest side.
-Example for qemu-system-x86_64:
+Example for qemu-kvm (intel architecture):
 
-    qemu-system-x86_64 -enable-kvm -kernel /boot/vmlinuz-4.9.0-4-amd64 \
+    qemu-kvm -enable-kvm -kernel /boot/vmlinuz-4.9.0-4-amd64 \
       -initrd ramdisk.cpio \
       -virtfs local,path=shareddir,security_model=none,mount_tag=shareddir \
       -object can-bus,id=canbus0 \
@@ -60,9 +60,9 @@ Example for qemu-system-x86_64:
       -device kvaser_pci,canbus=canbus0 \
       -nographic -append "console=ttyS0"
 
-Example for qemu-system-arm:
+Example for qemu-kvm (arm architecture):
 
-    qemu-system-arm -cpu arm1176 -m 256 -M versatilepb \
+    qemu-kvm -cpu arm1176 -m 256 -M versatilepb \
       -kernel kernel-qemu-arm1176-versatilepb \
       -hda rpi-wheezy-overlay \
       -append "console=ttyAMA0 root=/dev/sda2 ro init=/sbin/init-overlay" \
