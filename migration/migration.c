@@ -99,6 +99,8 @@ enum mig_rp_message_type {
     MIG_RP_MSG_MAX
 };
 
+bool migrate_pre_2_2;
+
 /* When we add fault tolerance, we could have several
    migrations at once.  For now we don't need to add
    dynamic creation of migration */

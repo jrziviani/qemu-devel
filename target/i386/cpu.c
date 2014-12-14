@@ -819,11 +819,17 @@ struct X86CPUDefinition {
 
 static X86CPUDefinition builtin_x86_defs[] = {
     {
+        /* qemu64 is the default CPU model for all *-rhel7.* machine-types.
+         * The default on RHEL-6 was cpu64-rhel6.
+         * libvirt assumes that qemu64 is the default for _all_ machine-types,
+         * so we should try to keep qemu64 and cpu64-rhel6 as similar as
+         * possible.
+         */
         .name = "qemu64",
         .level = 0xd,
         .vendor = CPUID_VENDOR_AMD,
         .family = 6,
-        .model = 6,
+        .model = 13,
         .stepping = 3,
         .features[FEAT_1_EDX] = CPUID_SSE2 | CPUID_SSE | CPUID_FXSR |
             CPUID_MMX | CPUID_CLFLUSH | CPUID_PSE36 | CPUID_PAT | CPUID_CMOV |
@@ -2097,6 +2103,7 @@ static PropValue kvm_default_props[] = {
     { "acpi", "off" },
     { "monitor", "off" },
     { "svm", "off" },
+    { "kvm-pv-unhalt", "on" },
     { NULL, NULL },
 };
 

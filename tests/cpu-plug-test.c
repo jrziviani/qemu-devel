@@ -192,7 +192,8 @@ static void add_pseries_test_case(const char *mname)
     PlugTestData *data;
 
     if (!g_str_has_prefix(mname, "pseries-") ||
-        (g_str_has_prefix(mname, "pseries-2.") && atoi(&mname[10]) < 7)) {
+        (g_str_has_prefix(mname, "pseries-2.") && atoi(&mname[10]) < 7) ||
+        strcmp(mname,"pseries-rhel7.2.0") == 0) {
         return;
     }
     data = g_new(PlugTestData, 1);

@@ -34,6 +34,7 @@
 #include "qapi/qapi-commands-misc.h"
 #include "qapi/qapi-events-misc.h"
 #include "qapi/visitor.h"
+#include "migration/migration.h"
 
 #ifdef TARGET_I386
 #include "hw/i386/apic.h"
@@ -839,6 +840,11 @@ static int rtc_post_load(void *opaque, int version_id)
 static bool rtc_irq_reinject_on_ack_count_needed(void *opaque)
 {
     RTCState *s = (RTCState *)opaque;
+
+    if (migrate_pre_2_2) {
+        return false;
+    }
+
     return s->irq_reinject_on_ack_count != 0;
 }
 

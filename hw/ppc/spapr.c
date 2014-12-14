@@ -3935,6 +3935,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
     smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_BROKEN;
     smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_BROKEN;
     spapr_caps_add_properties(smc, &error_abort);
+    smc->has_power9_support = true;
 }
 
 static const TypeInfo spapr_machine_info = {
@@ -3985,6 +3986,7 @@ static const TypeInfo spapr_machine_info = {
     }                                                                \
     type_init(spapr_machine_register_##suffix)
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 /*
  * pseries-2.12
  */
@@ -4136,6 +4138,7 @@ DEFINE_SPAPR_MACHINE(2_8, "2.8", false);
         .property = "pre-2.8-migration",            \
         .value    = "on",                           \
     },
+#endif
 
 static void phb_placement_2_7(sPAPRMachineState *spapr, uint32_t index,
                               uint64_t *buid, hwaddr *pio,
@@ -4186,6 +4189,7 @@ static void phb_placement_2_7(sPAPRMachineState *spapr, uint32_t index,
      */
 }
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 static void spapr_machine_2_7_instance_options(MachineState *machine)
 {
     sPAPRMachineState *spapr = SPAPR_MACHINE(machine);
@@ -4345,6 +4349,210 @@ static void spapr_machine_2_1_class_options(MachineClass *mc)
     SET_MACHINE_COMPAT(mc, SPAPR_COMPAT_2_1);
 }
 DEFINE_SPAPR_MACHINE(2_1, "2.1", false);
+#endif
+
+/*
+ * pseries-rhel7.5.0
+ */
+
+static void spapr_machine_rhel750_instance_options(MachineState *machine)
+{
+}
+
+static void spapr_machine_rhel750_class_options(MachineClass *mc)
+{
+    /* Defaults for the latest behaviour inherited from the base class */
+}
+
+DEFINE_SPAPR_MACHINE(rhel750, "rhel7.5.0", true);
+
+/*
+ * pseries-rhel7.5.0-sxxm
+ *
+ * pseries-rhel7.5.0 with speculative execution exploit mitigations enabled by default
+ */
+static void spapr_machine_rhel750sxxm_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel750_instance_options(machine);
+}
+
+static void spapr_machine_rhel750sxxm_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel750_class_options(mc);
+    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_FIXED_CCD;
+}
+
+DEFINE_SPAPR_MACHINE(rhel750sxxm, "rhel7.5.0-sxxm", false);
+
+/*
+ * pseries-rhel7.4.0
+ * like SPAPR_COMPAT_2_9
+ */
+
+#define SPAPR_COMPAT_RHEL7_4                                           \
+    HW_COMPAT_RHEL7_4                                                  \
+    {                                                                  \
+        .driver = TYPE_POWERPC_CPU,                                    \
+        .property = "pre-2.10-migration",                              \
+        .value    = "on",                                              \
+    },                                                                 \
+
+static void spapr_machine_rhel740_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel750_instance_options(machine);
+}
+
+static void spapr_machine_rhel740_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel750_class_options(mc);
+    SET_MACHINE_COMPAT(mc, SPAPR_COMPAT_RHEL7_4);
+    mc->numa_auto_assign_ram = numa_legacy_auto_assign_ram;
+    smc->has_power9_support = false;
+    smc->pre_2_10_has_unused_icps = true;
+    smc->resize_hpt_default = SPAPR_RESIZE_HPT_DISABLED;
+    smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
+}
+
+DEFINE_SPAPR_MACHINE(rhel740, "rhel7.4.0", false);
+
+/*
+ * pseries-rhel7.4.0-sxxm
+ *
+ * pseries-rhel7.4.0 with speculative execution exploit mitigations enabled by default
+ */
+static void spapr_machine_rhel740sxxm_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel740_instance_options(machine);
+}
+
+static void spapr_machine_rhel740sxxm_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel740_class_options(mc);
+    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_FIXED_CCD;
+}
+
+DEFINE_SPAPR_MACHINE(rhel740sxxm, "rhel7.4.0-sxxm", false);
+
+/*
+ * pseries-rhel7.3.0
+ * like SPAPR_COMPAT_2_6/_2_7/_2_8 but "ddw" has been backported to RHEL7_3
+ */
+#define SPAPR_COMPAT_RHEL7_3 \
+    HW_COMPAT_RHEL7_3                               \
+    {                                               \
+        .driver   = TYPE_SPAPR_PCI_HOST_BRIDGE,     \
+        .property = "mem_win_size",                 \
+        .value    = stringify(SPAPR_PCI_2_7_MMIO_WIN_SIZE),\
+    },                                              \
+    {                                               \
+        .driver   = TYPE_SPAPR_PCI_HOST_BRIDGE,     \
+        .property = "mem64_win_size",               \
+        .value    = "0",                            \
+    },                                              \
+    {                                               \
+        .driver = TYPE_POWERPC_CPU,                 \
+        .property = "pre-2.8-migration",            \
+        .value    = "on",                           \
+    },                                              \
+    {                                               \
+        .driver = TYPE_SPAPR_PCI_HOST_BRIDGE,       \
+        .property = "pre-2.8-migration",            \
+        .value    = "on",                           \
+    },                                              \
+    {                                               \
+        .driver   = TYPE_SPAPR_PCI_HOST_BRIDGE,     \
+        .property = "pcie-extended-configuration-space",\
+        .value    = "off",                          \
+    },
+
+static void spapr_machine_rhel730_instance_options(MachineState *machine)
+{
+    sPAPRMachineState *spapr = SPAPR_MACHINE(machine);
+
+    spapr_machine_rhel740_instance_options(machine);
+    spapr->use_hotplug_event_source = false;
+}
+
+static void spapr_machine_rhel730_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel740_class_options(mc);
+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power7_v2.3");
+    SET_MACHINE_COMPAT(mc, SPAPR_COMPAT_RHEL7_3);
+    smc->phb_placement = phb_placement_2_7;
+}
+
+DEFINE_SPAPR_MACHINE(rhel730, "rhel7.3.0", false);
+
+/*
+ * pseries-rhel7.3.0-sxxm
+ *
+ * pseries-rhel7.3.0 with speculative execution exploit mitigations enabled by default
+ */
+static void spapr_machine_rhel730sxxm_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel730_instance_options(machine);
+}
+
+static void spapr_machine_rhel730sxxm_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel730_class_options(mc);
+    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_FIXED_CCD;
+}
+
+DEFINE_SPAPR_MACHINE(rhel730sxxm, "rhel7.3.0-sxxm", false);
+
+/*
+ * pseries-rhel7.2.0
+ */
+/* Should be like SPAPR_COMPAT_2_5 + 2_4 + 2_3, but "dynamic-reconfiguration"
+ * has been backported to RHEL7_2 so we don't need it here.
+ */
+
+#define SPAPR_COMPAT_RHEL7_2 \
+    HW_COMPAT_RHEL7_2 \
+    { \
+        .driver   = "spapr-vlan", \
+        .property = "use-rx-buffer-pools", \
+        .value    = "off", \
+    },{ \
+        .driver   = TYPE_SPAPR_PCI_HOST_BRIDGE,\
+        .property = "ddw",\
+        .value    = stringify(off),\
+    },
+
+
+static void spapr_machine_rhel720_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel730_instance_options(machine);
+}
+
+static void spapr_machine_rhel720_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel730_class_options(mc);
+    smc->use_ohci_by_default = true;
+    mc->has_hotpluggable_cpus = NULL;
+    SET_MACHINE_COMPAT(mc, SPAPR_COMPAT_RHEL7_2);
+}
+
+DEFINE_SPAPR_MACHINE(rhel720, "rhel7.2.0", false);
 
 static void spapr_machine_register_types(void)
 {

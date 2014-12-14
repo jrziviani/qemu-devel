@@ -183,6 +183,9 @@ static void acpi_get_pm_info(AcpiPmInfo *pm)
         pm->fadt.reset_reg = r;
         pm->fadt.reset_val = 0xf;
         pm->fadt.flags |= 1 << ACPI_FADT_F_RESET_REG_SUP;
+        if (object_property_get_bool(lpc,
+                                     "__com.redhat_force-rev1-fadt", NULL))
+            pm->fadt.rev = 1;
         pm->cpu_hp_io_base = ICH9_CPU_HOTPLUG_IO_BASE;
     }
     assert(obj);

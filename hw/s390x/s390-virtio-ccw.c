@@ -647,7 +647,7 @@ bool css_migration_enabled(void)
     {                                                                         \
         MachineClass *mc = MACHINE_CLASS(oc);                                 \
         ccw_machine_##suffix##_class_options(mc);                             \
-        mc->desc = "VirtIO-ccw based S390 machine v" verstr;                  \
+        mc->desc = "VirtIO-ccw based S390 machine " verstr;                   \
         if (latest) {                                                         \
             mc->alias = "s390-ccw-virtio";                                    \
             mc->is_default = 1;                                               \
@@ -681,6 +681,8 @@ bool css_migration_enabled(void)
 
 #define CCW_COMPAT_2_10 \
         HW_COMPAT_2_10
+
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 
 #define CCW_COMPAT_2_9 \
         HW_COMPAT_2_9 \
@@ -878,6 +880,19 @@ static void ccw_machine_2_4_class_options(MachineClass *mc)
     SET_MACHINE_COMPAT(mc, CCW_COMPAT_2_4);
 }
 DEFINE_CCW_MACHINE(2_4, "2.4", false);
+
+#else
+
+static void ccw_machine_rhel750_instance_options(MachineState *machine)
+{
+}
+
+static void ccw_machine_rhel750_class_options(MachineClass *mc)
+{
+}
+DEFINE_CCW_MACHINE(rhel750, "rhel7.5.0", true);
+
+#endif
 
 static void ccw_machine_register_types(void)
 {

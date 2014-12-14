@@ -241,5 +241,10 @@ int migrate_send_rp_req_pages(MigrationIncomingState *mis, const char* rbname,
 
 void dirty_bitmap_mig_before_vm_start(void);
 void init_dirty_bitmap_incoming_migration(void);
+/*
+ * Disables a load of subsections that were added in 2.2/rh7.2 for backwards
+ * migration compatibility.
+ */
+extern bool migrate_pre_2_2;
 
 #endif

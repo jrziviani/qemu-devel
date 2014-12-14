@@ -153,6 +153,8 @@ typedef struct XHCIEvent {
     uint32_t flags;
     uint8_t slotid;
     uint8_t epid;
+    uint8_t cve_2014_5263_a;
+    uint8_t cve_2014_5263_b;
 } XHCIEvent;
 
 typedef struct XHCIInterrupter {
