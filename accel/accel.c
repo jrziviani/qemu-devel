@@ -79,8 +79,8 @@ void configure_accelerator(MachineState *ms)
 
     accel = qemu_opt_get(qemu_get_machine_opts(), "accel");
     if (accel == NULL) {
-        /* Use the default "accelerator", tcg */
-        accel = "tcg";
+        /* RHEL uses kvm as the default accelerator, fallback to tcg */
+        accel = "kvm:tcg";
     }
 
     p = accel;
