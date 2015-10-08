@@ -147,6 +147,8 @@
 *.vr
 *.d
 !/scripts/qemu-guest-agent/fsfreeze-hook.d
+!/scripts/systemtap/script.d
+!/scripts/systemtap/conf.d
 *.o
 .sdk
 *.gcda

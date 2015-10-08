@@ -435,6 +435,11 @@ make V=1 %{?_smp_mflags} $buildldflags
   --target-type system --probe-prefix \
   qemu.kvm trace-events-all > qemu-kvm.stp
 
+./scripts/tracetool.py --backend dtrace --format simpletrace-stap \
+  --group=all --binary %{_libexecdir}/qemu-kvm --target-name %{kvm_target} \
+  --target-type system --probe-prefix \
+  qemu.kvm trace-events-all > qemu-kvm-simpletrace.stp
+
 cp -a %{kvm_target}-softmmu/qemu-system-%{kvm_target} qemu-kvm
 
 gcc %{SOURCE6} $RPM_OPT_FLAGS $RPM_LD_FLAGS -o ksmctl
@@ -505,13 +510,23 @@ install -m 0644  qemu-ga.8 ${RPM_BUILD_ROOT}%{_mandir}/man8/
 
 install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_libexecdir}/
 install -m 0644 qemu-kvm.stp $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/
+install -m 0644 qemu-kvm-simpletrace.stp $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/
 
 rm $RPM_BUILD_ROOT%{_bindir}/qemu-system-%{kvm_target}
 rm $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/qemu-system-%{kvm_target}.stp
 rm $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/qemu-system-%{kvm_target}-simpletrace.stp
 
+# Install simpletrace
+install -m 0755 scripts/simpletrace.py $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/simpletrace.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool scripts/tracetool/*.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/backend
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/backend scripts/tracetool/backend/*.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/format
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/format scripts/tracetool/format/*.py
+
 mkdir -p $RPM_BUILD_ROOT%{qemudocdir}
-install -p -m 0644 -t ${RPM_BUILD_ROOT}%{qemudocdir} Changelog README COPYING COPYING.LIB LICENSE docs/interop/qmp-spec.txt
+install -p -m 0644 -t ${RPM_BUILD_ROOT}%{qemudocdir} Changelog README README.systemtap COPYING COPYING.LIB LICENSE docs/interop/qmp-spec.txt
 chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man1/*
 chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man8/*
 
@@ -673,7 +688,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %global qemu_kvm_files \
 %{_libexecdir}/qemu-kvm \
 %{_datadir}/systemtap/tapset/qemu-kvm.stp \
-%{_datadir}/%{pkgname}/trace-events-all
+%{_datadir}/%{pkgname}/trace-events-all \
+%{_datadir}/systemtap/tapset/qemu-kvm-simpletrace.stp \
+%{_datadir}/%{pkgname}/systemtap/script.d/qemu_kvm.stp \
+%{_datadir}/%{pkgname}/systemtap/conf.d/qemu_kvm.conf
 
 %files -n qemu-kvm-common
 %defattr(-,root,root)
@@ -684,6 +702,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %doc %{qemudocdir}/COPYING
 %doc %{qemudocdir}/COPYING.LIB
 %doc %{qemudocdir}/LICENSE
+%doc %{qemudocdir}/README.systemtap
 %doc %{qemudocdir}/qmp-spec.txt
 %doc %{qemudocdir}/qemu-doc.txt
 %doc %{qemudocdir}/qemu-ga-ref.html
@@ -712,6 +731,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %config(noreplace) %{_sysconfdir}/%{pkgname}/bridge.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/vhost.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
+%{_datadir}/%{pkgname}/simpletrace.py*
+%{_datadir}/%{pkgname}/tracetool/*.py*
+%{_datadir}/%{pkgname}/tracetool/backend/*.py*
+%{_datadir}/%{pkgname}/tracetool/format/*.py*
 
 %files
 %defattr(-,root,root)
