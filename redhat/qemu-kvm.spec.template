@@ -575,6 +575,10 @@ make V=1 %{?_smp_mflags} $buildldflags
   --group=all --binary %{_libexecdir}/qemu-kvm --probe-prefix qemu.kvm \
   trace-events-all > qemu-kvm-log.stp
 
+%{__python3} scripts/tracetool.py --backend dtrace --format simpletrace-stap \
+  --group=all --binary %{_libexecdir}/qemu-kvm --probe-prefix qemu.kvm \
+  trace-events-all > qemu-kvm-simpletrace.stp
+
 cp -a %{kvm_target}-softmmu/qemu-system-%{kvm_target} qemu-kvm
 
 gcc %{SOURCE6} $RPM_OPT_FLAGS $RPM_LD_FLAGS -o ksmctl
@@ -675,6 +679,7 @@ install -m 0644  qemu-ga.8 ${RPM_BUILD_ROOT}%{_mandir}/man8/
 install -m 0755 qemu-kvm $RPM_BUILD_ROOT%{_libexecdir}/
 install -m 0644 qemu-kvm.stp $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/
 install -m 0644 qemu-kvm-log.stp $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/
+install -m 0644 qemu-kvm-simpletrace.stp $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/
 
 rm $RPM_BUILD_ROOT/%{_datadir}/applications/qemu.desktop
 rm $RPM_BUILD_ROOT%{_bindir}/qemu-system-%{kvm_target}
@@ -686,8 +691,19 @@ rm $RPM_BUILD_ROOT%{_bindir}/elf2dmp
 # Mangle qemu-kvm-stap
 sed -i -e '1 s/python/python3/' $RPM_BUILD_ROOT%{_bindir}/qemu-trace-stap
 
+# Install simpletrace
+install -m 0755 scripts/simpletrace.py $RPM_BUILD_ROOT%{_datadir}/%{name}/simpletrace.py
+# Avoid ambiguous 'python' interpreter name
+sed -i -e '1 s/python/python3/' $RPM_BUILD_ROOT%{_datadir}/%{name}/simpletrace.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool scripts/tracetool/*.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/backend
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/backend scripts/tracetool/backend/*.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/format
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/format scripts/tracetool/format/*.py
+
 mkdir -p $RPM_BUILD_ROOT%{qemudocdir}
-install -p -m 0644 -t ${RPM_BUILD_ROOT}%{qemudocdir} Changelog README COPYING COPYING.LIB LICENSE docs/interop/qmp-spec.txt
+install -p -m 0644 -t ${RPM_BUILD_ROOT}%{qemudocdir} Changelog README README.systemtap COPYING COPYING.LIB LICENSE docs/interop/qmp-spec.txt
 chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man1/*
 chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man8/*
 
@@ -872,6 +888,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %doc %{qemudocdir}/COPYING
 %doc %{qemudocdir}/COPYING.LIB
 %doc %{qemudocdir}/LICENSE
+%doc %{qemudocdir}/README.systemtap
 %doc %{qemudocdir}/qmp-spec.txt
 %doc %{qemudocdir}/qemu-doc.txt
 %doc %{qemudocdir}/qemu-ga-ref.html
@@ -909,6 +926,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %config(noreplace) %{_sysconfdir}/%{name}/bridge.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/vhost.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
+%{_datadir}/%{name}/simpletrace.py*
+%{_datadir}/%{name}/tracetool/*.py*
+%{_datadir}/%{name}/tracetool/backend/*.py*
+%{_datadir}/%{name}/tracetool/format/*.py*
 
 %files -n qemu-kvm-core
 %defattr(-,root,root)
@@ -949,6 +970,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/systemtap/tapset/qemu-kvm.stp
 %{_datadir}/systemtap/tapset/qemu-kvm-log.stp
 %{_datadir}/%{name}/trace-events-all
+%{_datadir}/systemtap/tapset/qemu-kvm-simpletrace.stp
+%{_datadir}/%{name}/systemtap/script.d/qemu_kvm.stp
+%{_datadir}/%{name}/systemtap/conf.d/qemu_kvm.conf
 %if 0%{have_kvm_setup}
     %{_prefix}/lib/systemd/kvm-setup
     %{_unitdir}/kvm-setup.service
