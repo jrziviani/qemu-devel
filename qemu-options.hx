@@ -2024,11 +2024,6 @@ ETEXI
 
 DEF("no-hpet", 0, QEMU_OPTION_no_hpet,
     "-no-hpet        disable HPET\n", QEMU_ARCH_I386)
-STEXI
-@item -no-hpet
-@findex -no-hpet
-Disable HPET support.
-ETEXI
 
 DEF("acpitable", HAS_ARG, QEMU_OPTION_acpitable,
     "-acpitable [sig=str][,rev=n][,oem_id=str][,oem_table_id=str][,oem_rev=n][,asl_compiler_id=str][,asl_compiler_rev=n][,{data|file}=file1[:file2]...]\n"
@@ -3038,6 +3033,7 @@ STEXI
 ETEXI
 DEFHEADING()
 
+#if 0
 DEFHEADING(Bluetooth(R) options:)
 STEXI
 @table @option
@@ -3116,6 +3112,7 @@ STEXI
 @end table
 ETEXI
 DEFHEADING()
+#endif
 
 #ifdef CONFIG_TPM
 DEFHEADING(TPM device options:)
