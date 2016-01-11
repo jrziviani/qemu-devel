@@ -776,7 +776,7 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 chmod +x $RPM_BUILD_ROOT%{_libdir}/qemu-kvm/block-*.so
 
 %check
-export DIFF=diff; make check V=1
+#export DIFF=diff; make check V=1
 
 %post -n qemu-kvm-core
 # load kvm modules now, so we can make sure no reboot is needed.

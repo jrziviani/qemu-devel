@@ -2003,7 +2003,7 @@ static const TypeInfo virtio_blk_pci_info = {
     .class_init    = virtio_blk_pci_class_init,
 };
 
-#if defined(CONFIG_VHOST_USER) && defined(CONFIG_LINUX)
+#if defined(CONFIG_VHOST_USER_BLK)
 /* vhost-user-blk */
 
 static Property vhost_user_blk_pci_properties[] = {
@@ -2183,7 +2183,7 @@ static const TypeInfo vhost_scsi_pci_info = {
 };
 #endif
 
-#if defined(CONFIG_VHOST_USER) && defined(CONFIG_LINUX)
+#if defined(CONFIG_VHOST_USER_BLK)
 /* vhost-user-scsi-pci */
 static Property vhost_user_scsi_pci_properties[] = {
     DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
@@ -2707,7 +2707,7 @@ static void virtio_pci_register_types(void)
     type_register_static(&virtio_9p_pci_info);
 #endif
     type_register_static(&virtio_blk_pci_info);
-#if defined(CONFIG_VHOST_USER) && defined(CONFIG_LINUX)
+#if defined(CONFIG_VHOST_USER_BLK)
     type_register_static(&vhost_user_blk_pci_info);
 #endif
     type_register_static(&virtio_scsi_pci_info);
@@ -2717,7 +2717,7 @@ static void virtio_pci_register_types(void)
 #ifdef CONFIG_VHOST_SCSI
     type_register_static(&vhost_scsi_pci_info);
 #endif
-#if defined(CONFIG_VHOST_USER) && defined(CONFIG_LINUX)
+#if defined(CONFIG_VHOST_USER_SCSI)
     type_register_static(&vhost_user_scsi_pci_info);
 #endif
 #ifdef CONFIG_VHOST_VSOCK

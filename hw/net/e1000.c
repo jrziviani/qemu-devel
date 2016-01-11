@@ -1768,6 +1768,7 @@ static const E1000Info e1000_devices[] = {
         .revision  = 0x03,
         .phy_id2   = E1000_PHY_ID2_8254xx_DEFAULT,
     },
+#if 0 /* Disabled for Red Hat Enterprise Linux 7 */
     {
         .name      = "e1000-82544gc",
         .device_id = E1000_DEV_ID_82544GC_COPPER,
@@ -1780,6 +1781,7 @@ static const E1000Info e1000_devices[] = {
         .revision  = 0x03,
         .phy_id2   = E1000_PHY_ID2_8254xx_DEFAULT,
     },
+#endif
 };
 
 static void e1000_register_types(void)
