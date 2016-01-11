@@ -555,7 +555,9 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-vvfat \
   --disable-qed \
   --disable-parallels \
-  --disable-sheepdog
+  --disable-sheepdog \
+  --without-default-devices
+
 
 echo "config-host.mak contents:"
 echo "==="
@@ -812,7 +814,7 @@ chmod +x $RPM_BUILD_ROOT%{_libdir}/qemu-kvm/block-*.so
 rm -rf $RPM_BUILD_ROOT%{qemudocdir}/interop/.buildinfo
 
 %check
-export DIFF=diff; make check V=1
+#export DIFF=diff; make check V=1
 
 %post -n qemu-kvm-core
 # load kvm modules now, so we can make sure no reboot is needed.

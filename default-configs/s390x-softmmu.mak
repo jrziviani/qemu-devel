@@ -10,4 +10,6 @@
 
 # Boards:
 #
-CONFIG_S390_CCW_VIRTIO=y
+#CONFIG_S390_CCW_VIRTIO=y
+
+include s390x-rh-devices.mak
