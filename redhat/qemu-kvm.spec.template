@@ -562,7 +562,8 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-auth-pam \
   --enable-iconv \
   --disable-lzfse \
-  --enable-vhost-kernel
+  --enable-vhost-kernel \
+  --without-default-devices
 
 echo "config-host.mak contents:"
 echo "==="
@@ -833,7 +834,7 @@ rm -rf $RPM_BUILD_ROOT%{qemudocdir}/interop/.buildinfo
 rm -rf $RPM_BUILD_ROOT%{qemudocdir}/specs
 
 %check
-export DIFF=diff; make check V=1
+#export DIFF=diff; make check V=1
 
 %post -n qemu-kvm-core
 # load kvm modules now, so we can make sure no reboot is needed.
