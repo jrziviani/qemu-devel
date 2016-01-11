@@ -165,7 +165,7 @@ unsigned int max_cpus;
 int smp_cores = 1;
 int smp_threads = 1;
 int acpi_enabled = 1;
-int no_hpet = 0;
+int no_hpet = 1; /* Always disabled for Red Hat Enterprise Linux */
 int fd_bootchk = 1;
 static int no_reboot;
 int no_shutdown = 0;

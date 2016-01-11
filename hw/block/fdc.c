@@ -605,6 +605,7 @@ static void floppy_drive_class_init(ObjectClass *klass, void *data)
     k->bus_type = TYPE_FLOPPY_BUS;
     k->props = floppy_drive_properties;
     k->desc = "virtual floppy drive";
+    k->user_creatable = false; /* RH state preserve */
 }
 
 static const TypeInfo floppy_drive_info = {

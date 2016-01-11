@@ -306,6 +306,7 @@ int main(int argc, char **argv)
                    "-cpu 486,xlevel2=0xC0000002,+xstore",
                    "xlevel2", 0xC0000002);
 
+#if 0 /* Disabled in Red Hat Enterprise Linux */
     /* Check compatibility of old machine-types that didn't
      * auto-increase level/xlevel/xlevel2: */
 
@@ -356,6 +357,7 @@ int main(int argc, char **argv)
     add_cpuid_test("x86/cpuid/xlevel-compat/pc-i440fx-2.4/npt-on",
                    "-machine pc-i440fx-2.4 -cpu SandyBridge,+npt",
                    "xlevel", 0x80000008);
+#endif
 
     /* Test feature parsing */
     add_feature_test("x86/cpuid/features/plus",

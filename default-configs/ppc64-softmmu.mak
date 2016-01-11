@@ -1,14 +1,28 @@
 # Default configuration for ppc64-softmmu
 
-# Include all 32-bit boards
-include ppc-softmmu.mak
+include sound.mak
+include usb.mak
+
+## PCI configuration - cut down from the defaults in pci.mak
+CONFIG_PCI=y
+CONFIG_VIRTIO_PCI=y
+CONFIG_VIRTIO=y
+CONFIG_USB_XHCI=y
+CONFIG_USB_XHCI_NEC=y
+CONFIG_WDT_IB6300ESB=y
+CONFIG_PCI_TESTDEV=y
+CONFIG_USB_OHCI=y
+CONFIG_VGA=y
+CONFIG_VGA_PCI=y
+CONFIG_SERIAL=y
+CONFIG_I2C=y
 
 # For PowerNV
-CONFIG_POWERNV=y
+#CONFIG_POWERNV=y
 CONFIG_IPMI=y
-CONFIG_IPMI_LOCAL=y
-CONFIG_IPMI_EXTERN=y
-CONFIG_ISA_IPMI_BT=y
+#CONFIG_IPMI_LOCAL=y
+#CONFIG_IPMI_EXTERN=y
+#CONFIG_ISA_IPMI_BT=y
 
 # For pSeries
 CONFIG_PSERIES=y

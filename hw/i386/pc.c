@@ -1525,7 +1525,9 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl, bool no_vmport)
     ISADevice *i8042, *port92, *vmmouse;
 
     serial_hds_isa_init(isa_bus, 0, MAX_SERIAL_PORTS);
+#if 0 /* Disabled for Red Hat Enterprise Linux */
     parallel_hds_isa_init(isa_bus, MAX_PARALLEL_PORTS);
+#endif
 
     for (i = 0; i < MAX_FD; i++) {
         fd[i] = drive_get(IF_FLOPPY, 0, i);

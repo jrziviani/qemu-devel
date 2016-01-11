@@ -1953,7 +1953,9 @@ static void arm_cpu_register_types(void)
     type_register_static(&idau_interface_type_info);
 
     while (info->name) {
-        cpu_register(info);
+        /* RHEL specific: Filter out unsupported cpu models */
+        if (!strcmp(info->name, "cortex-a15"))
+            cpu_register(info);
         info++;
     }
 

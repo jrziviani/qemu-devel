@@ -825,14 +825,14 @@ static X86CPUDefinition builtin_x86_defs[] = {
         .family = 6,
         .model = 6,
         .stepping = 3,
-        .features[FEAT_1_EDX] =
-            PPRO_FEATURES |
-            CPUID_MTRR | CPUID_CLFLUSH | CPUID_MCA |
-            CPUID_PSE36,
-        .features[FEAT_1_ECX] =
-            CPUID_EXT_SSE3 | CPUID_EXT_CX16,
-        .features[FEAT_8000_0001_EDX] =
-            CPUID_EXT2_LM | CPUID_EXT2_SYSCALL | CPUID_EXT2_NX,
+        .features[FEAT_1_EDX] = CPUID_SSE2 | CPUID_SSE | CPUID_FXSR |
+            CPUID_MMX | CPUID_CLFLUSH | CPUID_PSE36 | CPUID_PAT | CPUID_CMOV |
+            CPUID_MCA | CPUID_PGE | CPUID_MTRR | CPUID_SEP | CPUID_APIC |
+            CPUID_CX8 | CPUID_MCE | CPUID_PAE | CPUID_MSR | CPUID_TSC |
+            CPUID_PSE | CPUID_DE | CPUID_FP87,
+        .features[FEAT_1_ECX] = CPUID_EXT_CX16 | CPUID_EXT_SSE3,
+        .features[FEAT_8000_0001_EDX] = CPUID_EXT2_LM | CPUID_EXT2_NX |
+            CPUID_EXT2_SYSCALL,
         .features[FEAT_8000_0001_ECX] =
             CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM,
         .xlevel = 0x8000000A,
@@ -1060,6 +1060,25 @@ static X86CPUDefinition builtin_x86_defs[] = {
             CPUID_EXT3_LAHF_LM,
         .xlevel = 0x80000008,
         .model_id = "Intel(R) Atom(TM) CPU N270   @ 1.60GHz",
+    },
+    {
+        .name = "cpu64-rhel6",
+        .level = 4,
+        .vendor = CPUID_VENDOR_AMD,
+        .family = 6,
+        .model = 13,
+        .stepping = 3,
+        .features[FEAT_1_EDX] = CPUID_SSE2 | CPUID_SSE | CPUID_FXSR |
+             CPUID_MMX | CPUID_CLFLUSH | CPUID_PSE36 | CPUID_PAT | CPUID_CMOV |
+             CPUID_MCA | CPUID_PGE | CPUID_MTRR | CPUID_SEP | CPUID_APIC |
+             CPUID_CX8 | CPUID_MCE | CPUID_PAE | CPUID_MSR | CPUID_TSC |
+             CPUID_PSE | CPUID_DE | CPUID_FP87,
+        .features[FEAT_1_ECX] = CPUID_EXT_CX16 | CPUID_EXT_SSE3,
+        .features[FEAT_8000_0001_EDX] = CPUID_EXT2_LM | CPUID_EXT2_NX | CPUID_EXT2_SYSCALL,
+        .features[FEAT_8000_0001_ECX] = CPUID_EXT3_SSE4A | CPUID_EXT3_ABM |
+             CPUID_EXT3_SVM | CPUID_EXT3_LAHF_LM,
+        .xlevel = 0x8000000A,
+        .model_id = "QEMU Virtual CPU version (cpu64-rhel6)",
     },
     {
         .name = "Conroe",
@@ -4764,11 +4783,13 @@ static Property x86_cpu_properties[] = {
     DEFINE_PROP_BOOL("hv-vapic", X86CPU, hyperv_vapic, false),
     DEFINE_PROP_BOOL("hv-time", X86CPU, hyperv_time, false),
     DEFINE_PROP_BOOL("hv-crash", X86CPU, hyperv_crash, false),
+#if 0 /* Disabled for Red Hat Enterprise Linux */
     DEFINE_PROP_BOOL("hv-reset", X86CPU, hyperv_reset, false),
     DEFINE_PROP_BOOL("hv-vpindex", X86CPU, hyperv_vpindex, false),
     DEFINE_PROP_BOOL("hv-runtime", X86CPU, hyperv_runtime, false),
     DEFINE_PROP_BOOL("hv-synic", X86CPU, hyperv_synic, false),
     DEFINE_PROP_BOOL("hv-stimer", X86CPU, hyperv_stimer, false),
+#endif
     DEFINE_PROP_BOOL("hv-frequencies", X86CPU, hyperv_frequencies, false),
     DEFINE_PROP_BOOL("check", X86CPU, check_cpuid, true),
     DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, false),

@@ -73,7 +73,7 @@ typedef struct testdef {
 } testdef_t;
 
 static testdef_t tests[] = {
-    { "alpha", "clipper", "", "PCI:" },
+/*    { "alpha", "clipper", "", "PCI:" },
     { "ppc", "ppce500", "", "U-Boot" },
     { "ppc", "prep", "-m 96", "Memory size: 96 MB" },
     { "ppc", "40p", "-boot d", "Booting from device d" },
@@ -83,14 +83,14 @@ static testdef_t tests[] = {
     { "ppc64", "ppce500", "", "U-Boot" },
     { "ppc64", "prep", "-boot e", "Booting from device e" },
     { "ppc64", "40p", "-m 192", "Memory size: 192 MB" },
-    { "ppc64", "mac99", "", "PowerPC,970FX" },
+    { "ppc64", "mac99", "", "PowerPC,970FX" },*/
     { "ppc64", "pseries", "", "Open Firmware" },
-    { "ppc64", "powernv", "-cpu POWER8", "OPAL" },
-    { "ppc64", "sam460ex", "-device e1000", "8086  100e" },
+/*    { "ppc64", "powernv", "-cpu POWER8", "OPAL" },
+    { "ppc64", "sam460ex", "-device e1000", "8086  100e" },*/
     { "i386", "isapc", "-cpu qemu32 -device sga", "SGABIOS" },
     { "i386", "pc", "-device sga", "SGABIOS" },
     { "i386", "q35", "-device sga", "SGABIOS" },
-    { "x86_64", "isapc", "-cpu qemu32 -device sga", "SGABIOS" },
+    { "x86_64", "pc", "-cpu qemu32 -device sga", "SGABIOS" },
     { "x86_64", "q35", "-device sga", "SGABIOS" },
     { "sparc", "LX", "", "TMS390S10" },
     { "sparc", "SS-4", "", "MB86904" },

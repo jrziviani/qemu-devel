@@ -3074,6 +3074,8 @@ static void isa_cirrus_vga_class_init(ObjectClass *klass, void *data)
     dc->realize = isa_cirrus_vga_realizefn;
     dc->props = isa_cirrus_vga_properties;
     set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
+    /* Disabled for Red Hat Enterprise Linux: */
+    dc->user_creatable = false;
 }
 
 static const TypeInfo isa_cirrus_vga_info = {
