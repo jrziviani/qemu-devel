@@ -2417,6 +2417,8 @@ void helper_vsubecuq(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b, ppc_avr_t *c)
 #define BCD_NEG_PREF    0xD
 #define BCD_NEG_ALT     0xB
 #define BCD_PLUS_ALT_2  0xE
+#define NATIONAL_PLUS   0x2B
+#define NATIONAL_NEG    0x2D
 
 #if defined(HOST_WORDS_BIGENDIAN)
 #define BCD_DIG_BYTE(n) (15 - (n/2))
@@ -2481,6 +2483,26 @@ static void bcd_put_digit(ppc_avr_t *bcd, uint8_t digit, int n)
         bcd->u8[BCD_DIG_BYTE(n)] &= 0xF0;
         bcd->u8[BCD_DIG_BYTE(n)] |= digit;
     }
+}
+
+static uint8_t get_national_digit(ppc_avr_t *reg, int n)
+{
+#if defined(HOST_WORDS_BIGENDIAN)
+    return reg->u16[8 - n] & 0xFF;
+#else
+    return reg->u16[n] & 0xFF;
+#endif
+}
+
+static void set_national_digit(ppc_avr_t *reg, uint8_t val, int n)
+{
+#if defined(HOST_WORDS_BIGENDIAN)
+    reg->u16[8 - n] &= 0;
+    reg->u16[8 - n] |= val;
+#else
+    reg->u16[n] &= 0;
+    reg->u16[n] |= val;
+#endif
 }
 
 static int bcd_cmp_mag(ppc_avr_t *a, ppc_avr_t *b)
@@ -2611,6 +2633,89 @@ uint32_t helper_bcdsub(ppc_avr_t *r,  ppc_avr_t *a, ppc_avr_t *b, uint32_t ps)
     /* else invalid ... defer to bcdadd code for proper handling */
 
     return helper_bcdadd(r, a, &bcopy, ps);
+}
+
+uint32_t helper_bcdcfn(ppc_avr_t *r, ppc_avr_t *b, uint32_t ps)
+{
+    int i;
+    int is_zero = 0;
+    int cr = 0;
+    int national = 0;
+    ppc_avr_t ret = { .u64 = { 0, 0 } };
+    uint16_t sgnb = get_national_digit(b, 0);
+    int invalid = (sgnb != NATIONAL_PLUS && sgnb != NATIONAL_NEG);
+
+    for (i = 1; i < 8; i++) {
+        national = get_national_digit(b, i);
+
+        is_zero += (national == 0x30);
+        if (unlikely(national < 0x30 || national > 0x39)) {
+            invalid = 1;
+        }
+
+        bcd_put_digit(&ret, national & 0xf, i);
+    }
+
+    if (sgnb == NATIONAL_PLUS ||
+            (b->u64[0] == 0 && b->u64[1] == 0)) {
+        bcd_put_digit(&ret, (ps == 0) ? BCD_PLUS_PREF_1 : BCD_PLUS_PREF_2, 0);
+    } else {
+        bcd_put_digit(&ret, BCD_NEG_PREF, 0);
+    }
+
+    if (!is_zero) {
+        cr = (sgnb == NATIONAL_PLUS) ? 1 << CRF_GT : 1 << CRF_LT;
+    } else {
+        cr = 1 << CRF_EQ;
+    }
+
+    if (unlikely(invalid)) {
+        cr = 1 << CRF_SO;
+    }
+
+    *r = ret;
+
+    return cr;
+}
+
+uint32_t helper_bcdctn(ppc_avr_t *r, ppc_avr_t *b)
+{
+    int i;
+    int cr = 0;
+    int invalid = 0;
+    int sgnb = bcd_get_sgn(b);
+    ppc_avr_t ret = { .u64 = { 0, 0 } };
+
+#if defined(HOST_WORDS_BIGENDIAN)
+    int eq_flag = (b->u64[0] == 0) && ((b->u64[1] >> 4) == 0);
+    int ox_flag = (b->u64[0] != 0) || ((b->u64[1] >> 8) != 0);
+#else
+    int eq_flag = (b->u64[1] == 0) && ((b->u64[0] >> 4) == 0);
+    int ox_flag = (b->u64[1] != 0) || (b->u32[1] != 0);
+#endif
+
+    for (i = 1; i < 8; i++) {
+        set_national_digit(&ret, 0x30 + bcd_get_digit(b, i, &invalid), i);
+    }
+    set_national_digit(&ret, (sgnb == -1) ? NATIONAL_NEG : NATIONAL_PLUS, 0);
+
+    if (!eq_flag) {
+        cr = (sgnb == -1) ? 1 << CRF_LT : 1 << CRF_GT;
+    } else {
+        cr = 1 << CRF_EQ;
+    }
+
+    if (ox_flag) {
+        cr |= 1 << CRF_SO;
+    }
+
+    if (unlikely(invalid)) {
+        cr = 1 << CRF_SO;
+    }
+
+    *r = ret;
+
+    return cr;
 }
 
 void helper_vsbox(ppc_avr_t *r, ppc_avr_t *a)
