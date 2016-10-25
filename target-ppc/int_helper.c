@@ -2459,6 +2459,17 @@ static int bcd_preferred_sgn(int sgn, int ps)
     }
 }
 
+static uint8_t get_nibble(ppc_avr_t *bcd, int n)
+{
+    uint8_t result;
+    if (!(n & 1)) {
+        result = bcd->u8[BCD_DIG_BYTE(n)] & 0xF;
+    } else {
+       result = bcd->u8[BCD_DIG_BYTE(n)] >> 4;
+    }
+    return result;
+}
+
 static uint8_t bcd_get_digit(ppc_avr_t *bcd, int n, int *invalid)
 {
     uint8_t result;
@@ -2713,6 +2724,50 @@ uint32_t helper_bcdctn(ppc_avr_t *r, ppc_avr_t *b)
     return cr;
 }
 
+uint32_t helper_bcdcfz(ppc_avr_t *r, ppc_avr_t *b, uint32_t ps)
+{
+    int i;
+    int j = 0;
+    int cr = 0;
+    int invalid = 0;
+    int eq_flag = 0;
+    int zone_digit = 0;
+    ppc_avr_t ret = { .u64 = { 0, 0 } };
+    int sgnb = get_nibble(b, 1);
+
+    if (unlikely(((sgnb < 0xA) && ps) ||
+                ((get_nibble(b, 0) > 0x9) && !ps))) {
+        invalid = 1;
+    }
+
+    for (i = 31, j = 16; i > 1; i -= 2, j--) {
+        zone_digit = get_nibble(b, i);
+        if (unlikely((ps && zone_digit != 0xF) ||
+                    (!ps && zone_digit != 0x3))) {
+            invalid = 1;
+        }
+
+        eq_flag += zone_digit;
+        bcd_put_digit(&ret, get_nibble(b, i - 1), j);
+    }
+    bcd_put_digit(&ret, get_nibble(b, 0), 1);
+
+    if ((ps && (sgnb == 0xB || sgnb == 0xD)) ||
+            (!ps && (sgnb & 0x4))) {
+        bcd_put_digit(&ret, BCD_NEG_PREF, 0);
+        cr = (!eq_flag) ? 1 << CRF_LT : 1 << CRF_EQ;
+    } else {
+        bcd_put_digit(&ret, BCD_PLUS_PREF_1, 0);
+        cr = (!eq_flag) ? 1 << CRF_GT : 1 << CRF_EQ;
+    }
+
+    if (unlikely(invalid)) {
+        cr = 1 << CRF_SO;
+    }
+
+    *r = ret;
+    return cr;
+}
 void helper_vsbox(ppc_avr_t *r, ppc_avr_t *a)
 {
     int i;
