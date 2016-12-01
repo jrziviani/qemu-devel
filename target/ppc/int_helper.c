@@ -3223,6 +3223,43 @@ uint32_t helper_bcdsr(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b, uint32_t ps)
     return cr;
 }
 
+uint32_t helper_bcdtrunc(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b, uint32_t ps)
+{
+    uint64_t mask;
+    uint32_t ox_flag = 0;
+#if defined(HOST_WORDS_BIGENDIAN)
+    int i = a->s16[3] + 1;
+#else
+    int i = a->s16[4] + 1;
+#endif
+    ppc_avr_t ret = *b;
+
+    if (bcd_is_valid(b) == false) {
+        return CRF_SO;
+    }
+
+    if (i > 16 && i < 32) {
+        if (ret.u64[HI_IDX] >> (i * 4 - 64)) {
+            ox_flag = CRF_SO;
+        }
+
+        mask = (uint64_t)-1 >> (128 - i * 4);
+        ret.u64[HI_IDX] &= mask;
+    } else if (i >= 0 && i <= 16) {
+        if (ret.u64[HI_IDX] || (i < 16 && ret.u64[LO_IDX] >> (i * 4))) {
+            ox_flag = CRF_SO;
+        }
+
+        mask = (uint64_t)-1 >> (64 - i * 4);
+        ret.u64[LO_IDX] &= mask;
+        ret.u64[HI_IDX] = 0;
+    }
+    bcd_put_digit(&ret, bcd_preferred_sgn(bcd_get_sgn(b), ps), 0);
+    *r = ret;
+
+    return bcd_cmp_zero(&ret) | ox_flag;
+}
+
 void helper_vsbox(ppc_avr_t *r, ppc_avr_t *a)
 {
     int i;
