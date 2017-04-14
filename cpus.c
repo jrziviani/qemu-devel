@@ -51,6 +51,8 @@
 #include "hw/nmi.h"
 #include "sysemu/replay.h"
 
+#include "trace-root.h"
+
 #ifdef CONFIG_LINUX
 
 #include <sys/prctl.h>
@@ -1564,7 +1566,7 @@ void qemu_mutex_lock_iothread(void)
     g_assert(!qemu_mutex_iothread_locked());
     qemu_mutex_lock(&qemu_global_mutex);
     iothread_locked = true;
-    trace_qemu_unlock_iothread(qemu_global_mutex);
+    trace_qemu_unlock_iothread((void*)&qemu_global_mutex.lock);
 }
 
 void qemu_mutex_unlock_iothread(void)
@@ -1572,7 +1574,7 @@ void qemu_mutex_unlock_iothread(void)
     g_assert(qemu_mutex_iothread_locked());
     iothread_locked = false;
     qemu_mutex_unlock(&qemu_global_mutex);
-    trace_qemu_unlock_iothread(qemu_global_mutex);
+    trace_qemu_unlock_iothread((void*)&qemu_global_mutex.lock);
 }
 
 static bool all_vcpus_paused(void)

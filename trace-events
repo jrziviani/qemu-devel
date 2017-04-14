@@ -167,3 +167,8 @@ disable vcpu guest_user_syscall(uint64_t num, uint64_t arg1, uint64_t arg2, uint
 # Mode: user
 # Targets: TCG(all)
 disable vcpu guest_user_syscall_ret(uint64_t num, uint64_t ret) "num=0x%016"PRIx64" ret=0x%016"PRIx64
+
+
+
+qemu_lock_iothread(void *qemu_global_mutex) "[ziv] locked iothread %p"
+qemu_unlock_iothread(void *qemu_global_mutex) "[ziv] unlocked iothread %p"
