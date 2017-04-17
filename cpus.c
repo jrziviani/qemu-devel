@@ -1566,7 +1566,7 @@ void qemu_mutex_lock_iothread(void)
     g_assert(!qemu_mutex_iothread_locked());
     qemu_mutex_lock(&qemu_global_mutex);
     iothread_locked = true;
-    trace_qemu_unlock_iothread((void*)&qemu_global_mutex.lock);
+    trace_qemu_lock_iothread((void*)&qemu_global_mutex.lock);
 }
 
 void qemu_mutex_unlock_iothread(void)
