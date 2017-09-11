@@ -1,0 +1,48 @@
+UNAME:=qemu
+NAME:=qemu-kvm
+VERSION:=2.12.0
+DATE:=
+COMMIT:=
+RELEASE:=7
+ZRELEASE:=
+RELEASE_SEPARATOR:=-
+
+TARFILE:=qemu-$(VERSION).tar.xz
+#TARURL:=http://download.qemu-project.org/$(TARFILE)
+TARURL:=http://batcave.lab.eng.brq.redhat.com/www/qemu-2.12.0/rc4/$(TARFILE)
+TARSHA256:=e3fd76b9e1e5ec9b798ca5a7f88de54e136b382cd49b48eeb7cda1ee17d55fb6
+MARKER:=27e757e29cc79f3f104d2a84d17cdb3b4c11c8ff
+
+
+SPECFILE:=$(NAME).spec
+DIST:=.el8
+
+ifneq ($(VERSION),)
+  BUILD_DIR=$(UNAME)-$(VERSION)
+else
+  BUILD_DIR=$(UNAME)-$(GITCOMMIT)
+endif
+
+SOURCES_FILELIST:=                     \
+       ksmtuned.conf                   \
+       ksmtuned                        \
+       ksm.sysconfig                   \
+       kvm.modules                     \
+       99-qemu-guest-agent.rules       \
+       qemu-guest-agent.service        \
+       ksmtuned.service                \
+       ksmctl.c                        \
+       ksm.service                     \
+       qemu-ga.sysconfig               \
+       kvm-setup                       \
+       kvm-setup.service               \
+       85-kvm.preset                   \
+       build_configure.sh              \
+       vhost.conf                      \
+       bridge.conf                     \
+       kvm.conf                        \
+       kvm-x86.conf                    \
+       kvm-s390x.conf                  \
+       95-kvm-memlock.conf             \
+       qemu-pr-helper.service          \
+       qemu-pr-helper.socket
