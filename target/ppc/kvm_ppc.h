@@ -59,6 +59,7 @@ bool kvmppc_has_cap_fixup_hcalls(void);
 bool kvmppc_has_cap_htm(void);
 bool kvmppc_has_cap_mmu_radix(void);
 bool kvmppc_has_cap_mmu_hash_v3(void);
+int kvmppc_cap_smt_possible(void);
 int kvmppc_enable_hwrng(void);
 int kvmppc_put_books_sregs(PowerPCCPU *cpu);
 PowerPCCPUClass *kvm_ppc_get_host_cpu_class(void);
@@ -288,6 +289,11 @@ static inline bool kvmppc_has_cap_mmu_radix(void)
 static inline bool kvmppc_has_cap_mmu_hash_v3(void)
 {
     return false;
+}
+
+static inline int kvmppc_cap_smt_possible(void)
+{
+    return -1;
 }
 
 static inline int kvmppc_enable_hwrng(void)
