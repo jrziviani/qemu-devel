@@ -346,19 +346,6 @@ static int spapr_fixup_cpu_dt(void *fdt, sPAPRMachineState *spapr)
         DeviceClass *dc = DEVICE_GET_CLASS(cs);
         int index = spapr_vcpu_id(cpu);
 
-        /* set smt to maximum for this current pvr if the number
-         * passed is higher than defined by PVR compat mode AND
-         * if KVM cannot emulate it.*/
-        int compat_smt = smp_threads;
-        if ((kvmppc_cap_smt_possible() & smp_threads) != smp_threads &&
-                smp_threads > ppc_compat_max_threads(cpu)) {
-            compat_smt = ppc_compat_max_threads(cpu);
-
-            trace_spapr_fixup_cpu_smt(index, smp_threads,
-                    kvmppc_cap_smt_possible(),
-                    ppc_compat_max_threads(cpu));
-        }
-
         if ((index % smt) != 0) {
             continue;
         }
@@ -393,7 +380,7 @@ static int spapr_fixup_cpu_dt(void *fdt, sPAPRMachineState *spapr)
             }
         }
 
-        ret = spapr_fixup_cpu_smt_dt(fdt, offset, cpu, compat_smt);
+        ret = spapr_fixup_cpu_smt_dt(fdt, offset, cpu, smt);
         if (ret < 0) {
             return ret;
         }
@@ -2265,14 +2252,23 @@ static void spapr_set_vsmt_mode(sPAPRMachineState *spapr, Error **errp)
 {
     Error *local_err = NULL;
     bool vsmt_user = !!spapr->vsmt;
-    int kvm_smt = kvmppc_smt_threads();
+    int kvm_smt_mask = kvmppc_smt_threads_possible();
+    int kvm_smt;
     int ret;
+
+    if (kvm_smt_mask == 0) {
+        kvm_smt = kvmppc_smt_threads();
+    }
+    else {
+        kvm_smt = kvm_smt_mask & smp_threads;
+    }
 
     if (!kvm_enabled() && (smp_threads > 1)) {
         error_setg(&local_err, "TCG cannot support more than 1 thread/core "
                      "on a pseries machine");
         goto out;
     }
+
     if (!is_power_of_2(smp_threads)) {
         error_setg(&local_err, "Cannot support %d threads/core on a pseries "
                      "machine because it must be a power of 2", smp_threads);
@@ -2291,7 +2287,7 @@ static void spapr_set_vsmt_mode(sPAPRMachineState *spapr, Error **errp)
     } else {
         /* Choose a VSMT mode that may be higher than necessary but is
          * likely to be compatible with hosts that don't have VSMT. */
-        spapr->vsmt = MAX(kvm_smt, smp_threads);
+        spapr->vsmt = kvm_smt;
     }
 
     /* KVM: If necessary, set the SMT mode: */

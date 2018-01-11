@@ -293,7 +293,7 @@ static inline bool kvmppc_has_cap_mmu_hash_v3(void)
 
 static inline int kvmppc_cap_smt_possible(void)
 {
-    return -1;
+    return 0;
 }
 
 static inline int kvmppc_enable_hwrng(void)
