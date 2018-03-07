@@ -1918,6 +1918,13 @@ int kvm_cpu_exec(CPUState *cpu)
                         "VCPU can only run on primary threads with all "
                         "secondary threads offline.\n");
             }
+
+            if (run_ret == -EINVAL) {
+                fprintf(stderr,
+                        "It's necessary to load KVM module using the argument "
+                        "indep_threads_mode=N to run HPT guests in compatible "
+                        "mode.\n");
+            }
 #endif
             ret = -1;
             break;
