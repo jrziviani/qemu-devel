@@ -8,6 +8,7 @@
 %global have_kvm_setup 0
 %global have_seccomp 1
 %global have_memlock_limits 0
+%global have_vxhs     0
 %global have_vhost_user 0
 %global have_tcmalloc 0
 
@@ -26,6 +27,7 @@
 %endif
 %ifarch x86_64
     %global kvm_target    x86_64
+    %global have_vxhs    1
 %else
     %global have_spice   0
     %global have_gluster 0
@@ -404,6 +406,11 @@ cp %{SOURCE24} build_configure.sh
   disable \
 %endif
 %if 0%{have_tcmalloc}
+  enable \
+%else
+  disable \
+%endif
+%if 0%{have_vxhs}
   enable \
 %else
   disable \

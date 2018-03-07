@@ -40,6 +40,8 @@ have_usbredir=$1
 shift
 have_tcmalloc=$1
 shift
+have_vxhs=$1
+shift
 have_vhost_user=$1
 shift
 
@@ -49,6 +51,10 @@ fi
 
 if [ "$have_gluster" == "enable" ]; then
   gluster_driver=gluster,
+fi
+
+if [ "$have_vxhs" == "enable" ]; then
+  vxhs_driver=vxhs,
 fi
 
 ./configure \
@@ -138,8 +144,9 @@ fi
     --${have_spice}-smartcard \
     --${have_usbredir}-usb-redir \
     --${have_tcmalloc}-tcmalloc \
+    --${have_vxhs}-vxhs \
     --${have_vhost_user}-vhost-user \
     --audio-drv-list= \
-    --block-drv-rw-whitelist=qcow2,raw,file,host_device,nbd,iscsi,${gluster_driver}${rbd_driver}blkdebug,luks,null-co \
+    --block-drv-rw-whitelist=qcow2,raw,file,host_device,nbd,iscsi,${gluster_driver}${rbd_driver}${vxhs_driver}blkdebug,luks,null-co \
     --block-drv-ro-whitelist=vmdk,vhdx,vpc,https,ssh \
     "$@"
