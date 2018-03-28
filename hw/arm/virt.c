@@ -1820,7 +1820,7 @@ static void rhel_machine_init(void)
 }
 type_init(rhel_machine_init);
 
-static void rhel750_virt_instance_init(Object *obj)
+static void rhel760_virt_instance_init(Object *obj)
 {
     VirtMachineState *vms = VIRT_MACHINE(obj);
     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
@@ -1862,8 +1862,8 @@ static void rhel750_virt_instance_init(Object *obj)
     vms->irqmap=a15irqmap;
 }
 
-static void rhel750_virt_options(MachineClass *mc)
+static void rhel760_virt_options(MachineClass *mc)
 {
     SET_MACHINE_COMPAT(mc, ARM_RHEL_COMPAT);
 }
-DEFINE_RHEL_MACHINE_AS_LATEST(7, 5, 0)
+DEFINE_RHEL_MACHINE_AS_LATEST(7, 6, 0)
