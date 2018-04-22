@@ -446,4 +446,32 @@
         .value    = "off",\
     },
 
+/* The same as HW_COMPAT_2_11 + HW_COMPAT_2_10 */
+#define HW_COMPAT_RHEL7_5 \
+    { /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_11 */ \
+        .driver   = "hpet",\
+        .property = "hpet-offset-saved",\
+        .value    = "false",\
+    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_11 */ \
+        .driver   = "virtio-blk-pci",\
+        .property = "vectors",\
+        .value    = "2",\
+    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_11 */ \
+        .driver   = "vhost-user-blk-pci",\
+        .property = "vectors",\
+        .value    = "2",\
+    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_11 */ \
+        .driver   = "e1000",\
+        .property = "migrate_tso_props",\
+        .value    = "off",\
+    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_10 */ \
+        .driver   = "virtio-mouse-device",\
+        .property = "wheel-axis",\
+        .value    = "false",\
+    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_10 */ \
+        .driver   = "virtio-tablet-device",\
+        .property = "wheel-axis",\
+        .value    = "false",\
+    },
+
 #endif /* HW_COMPAT_H */

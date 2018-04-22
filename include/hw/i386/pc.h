@@ -969,6 +969,19 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
             .value = "on",\
         },
 
+/* Similar to PC_COMPAT_2_11 + PC_COMPAT_2_10, but:
+ * - x-hv-max-vps was backported to 7.5
+ * - x-pci-hole64-fix was backported to 7.5
+ */
+#define PC_RHEL7_5_COMPAT \
+        HW_COMPAT_RHEL7_5 \
+        { /* PC_RHEL7_5_COMPAT from PC_COMPAT_2_11 */ \
+            .driver   = "Skylake-Server" "-" TYPE_X86_CPU,\
+            .property = "clflushopt",\
+            .value    = "off",\
+        },
+
+
 #define PC_RHEL7_4_COMPAT \
         HW_COMPAT_RHEL7_4 \
         { /* PC_RHEL7_4_COMPAT from PC_COMPAT_2_9 */ \

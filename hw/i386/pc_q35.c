@@ -431,8 +431,12 @@ static void pc_q35_init_rhel750(MachineState *machine)
 
 static void pc_q35_machine_rhel750_options(MachineClass *m)
 {
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
     pc_q35_machine_rhel7_options(m);
     m->desc = "RHEL-7.5.0 PC (Q35 + ICH9, 2009)";
+    m->auto_enable_numa_with_memhp = false;
+    pcmc->default_nic_model = "e1000";
+    SET_MACHINE_COMPAT(m, PC_RHEL7_5_COMPAT);
 }
 
 DEFINE_PC_MACHINE(q35_rhel750, "pc-q35-rhel7.5.0", pc_q35_init_rhel750,

@@ -1166,6 +1166,8 @@ static void pc_machine_rhel750_options(MachineClass *m)
 {
     pc_machine_rhel7_options(m);
     m->desc = "RHEL 7.5.0 PC (i440FX + PIIX, 1996)";
+    m->auto_enable_numa_with_memhp = false;
+    SET_MACHINE_COMPAT(m, PC_RHEL7_5_COMPAT);
 }
 
 DEFINE_PC_MACHINE(rhel750, "pc-i440fx-rhel7.5.0", pc_init_rhel750,
