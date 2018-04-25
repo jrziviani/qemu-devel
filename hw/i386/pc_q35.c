@@ -424,6 +424,20 @@ static void pc_q35_machine_rhel7_options(MachineClass *m)
     SET_MACHINE_COMPAT(m, PC_RHEL_COMPAT);
 }
 
+static void pc_q35_init_rhel760(MachineState *machine)
+{
+    pc_q35_init(machine);
+}
+
+static void pc_q35_machine_rhel760_options(MachineClass *m)
+{
+    pc_q35_machine_rhel7_options(m);
+    m->desc = "RHEL-7.6.0 PC (Q35 + ICH9, 2009)";
+}
+
+DEFINE_PC_MACHINE(q35_rhel760, "pc-q35-rhel7.6.0", pc_q35_init_rhel760,
+                  pc_q35_machine_rhel760_options);
+
 static void pc_q35_init_rhel750(MachineState *machine)
 {
     pc_q35_init(machine);
@@ -432,7 +446,8 @@ static void pc_q35_init_rhel750(MachineState *machine)
 static void pc_q35_machine_rhel750_options(MachineClass *m)
 {
     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-    pc_q35_machine_rhel7_options(m);
+    pc_q35_machine_rhel760_options(m);
+    m->alias = NULL;
     m->desc = "RHEL-7.5.0 PC (Q35 + ICH9, 2009)";
     m->auto_enable_numa_with_memhp = false;
     pcmc->default_nic_model = "e1000";
@@ -451,7 +466,6 @@ static void pc_q35_machine_rhel740_options(MachineClass *m)
 {
     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
     pc_q35_machine_rhel750_options(m);
-    m->alias = NULL;
     m->desc = "RHEL-7.4.0 PC (Q35 + ICH9, 2009)";
     m->numa_auto_assign_ram = numa_legacy_auto_assign_ram;
     pcmc->pc_rom_ro = false;
