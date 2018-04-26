@@ -1394,8 +1394,6 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
  * The PC_RHEL_*_COMPAT serve the same purpose for RHEL-7 machine
  * types as the PC_COMPAT_* do for upstream types.
  * PC_RHEL_7_*_COMPAT apply both to i440fx and q35 types.
- * PC_RHEL6_*_COMPAT apply to i440fx types only, and therefore live
- * in pc_piix.c.
  */
 
 /*
