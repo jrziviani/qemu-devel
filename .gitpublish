@@ -1,7 +1,12 @@
 # The default profile, rhev
 [gitpublishprofile "rhel"]
 base = rhel8/master-2.12.0
-prefix = RHEL-8.0 qemu-kvm PATCH
+prefix = qemu-kvm RHEL8/virt212 PATCH
 to = rhvirt-patches@redhat.com
 suppresscc = all
 message = True
+blurb-template = BZ: <XYZ>
+blurb-template = BRANCH:rhel8/master-2.12.0
+blurb-template = UPSTREAM: <upstream status>
+blurb-template = BREW: <brew id>
+blurb-template = *** YOUR MESSAGE HERE ***
