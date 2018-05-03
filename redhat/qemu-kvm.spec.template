@@ -74,7 +74,7 @@ ExclusiveArch: x86_64 %{power64} aarch64 s390x
 Requires: seabios-bin >= 1.10.2-1
 Requires: sgabios-bin
 %endif
-%ifnarch aarch64 s390x %{power64}
+%ifnarch aarch64 s390x
 Requires: seavgabios-bin >= 1.10.2-1
 Requires: ipxe-roms-qemu >= 20170123-1
 %endif
@@ -598,7 +598,7 @@ pxe_link() {
     ln -s ../ipxe.efi/$2.rom %{buildroot}%{_datadir}/%{pkgname}/efi-$1.rom
 }
 
-%ifnarch aarch64 s390x %{power64}
+%ifnarch aarch64 s390x 
 pxe_link e1000 8086100e
 pxe_link ne2k_pci 10ec8029
 pxe_link pcnet 10222000
@@ -757,14 +757,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
     %{_datadir}/%{pkgname}/vgabios-stdvga.bin
     %{_datadir}/%{pkgname}/vgabios-vmware.bin
     %{_datadir}/%{pkgname}/vgabios-virtio.bin
-%ifnarch %{power64}
     %{_datadir}/%{pkgname}/efi-e1000.rom
     %{_datadir}/%{pkgname}/efi-e1000e.rom
     %{_datadir}/%{pkgname}/efi-virtio.rom
     %{_datadir}/%{pkgname}/efi-pcnet.rom
     %{_datadir}/%{pkgname}/efi-rtl8139.rom
     %{_datadir}/%{pkgname}/efi-ne2k_pci.rom
-%endif
 %endif
 %{_datadir}/%{pkgname}/qemu-icon.bmp
 %{_datadir}/%{pkgname}/qemu_logo_no_text.svg
