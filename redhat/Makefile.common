@@ -8,10 +8,9 @@ ZRELEASE:=
 RELEASE_SEPARATOR:=-
 
 TARFILE:=qemu-$(VERSION).tar.xz
-#TARURL:=http://download.qemu-project.org/$(TARFILE)
-TARURL:=http://batcave.lab.eng.brq.redhat.com/www/qemu-2.12.0/rc4/$(TARFILE)
-TARSHA256:=e3fd76b9e1e5ec9b798ca5a7f88de54e136b382cd49b48eeb7cda1ee17d55fb6
-MARKER:=27e757e29cc79f3f104d2a84d17cdb3b4c11c8ff
+TARURL:=http://download.qemu-project.org/$(TARFILE)
+TARSHA256:=e69301f361ff65bf5dabd8a19196aeaa5613c1b5ae1678f0823bdf50e7d5c6fc
+MARKER:=4743c23509a51bd4ee85cc272287a41917d1be35
 
 
 SPECFILE:=$(NAME).spec
