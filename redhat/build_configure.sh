@@ -67,6 +67,7 @@ fi
     --libexecdir=${_libexecdir} \
     --extra-ldflags="$extraldflags -Wl,-z,relro -Wl,-z,now" \
     --extra-cflags="${optflags} " \
+    --python=python3 \
     --with-pkgversion=${nvr} \
     --with-confsuffix=/${pkgname} \
     --with-coroutine=ucontext \
