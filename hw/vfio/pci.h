@@ -192,5 +192,7 @@ int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
 int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
                                struct vfio_region_info *info,
                                Error **errp);
+int vfio_pci_nvidia_v100_ram_init(VFIOPCIDevice *vdev, Error **errp);
+int vfio_pci_nvlink2_init(VFIOPCIDevice *vdev, Error **errp);
 
 #endif /* HW_VFIO_VFIO_PCI_H */
