@@ -9,7 +9,7 @@
 %global have_seccomp 1
 %global have_memlock_limits 0
 %global have_vxhs     0
-%global have_vhost_user 0
+%global have_vhost_user 1
 %global have_tcmalloc 0
 
 %ifnarch %{ix86} x86_64
@@ -818,5 +818,29 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Tue May 15 2018 Danilo C. L. de Paula <ddepaula@redhat.com> - 2.12.0-11.el8.1
+- Resolves: bz#1576468
+  (Enable vhost_user in qemu-kvm 2.12)
+
+* Wed May 09 2018 Danilo de Paula <ddepaula@redhat.com> - 2.12.0-11.el8
+- Resolves: bz#1574406
+  ([RHEL 8][qemu-kvm] Failed to find romfile "efi-virtio.rom")
+- Resolves: bz#1569675
+  (Backwards compatibility of pc-*-rhel7.5.0 and older machine-types)
+- Resolves: bz#1576045
+  (Fix build issue by using python3)
+- Resolves: bz#1571145
+  (qemu-kvm segfaults on RHEL 8 when run guestfsd under TCG)
+
+* Fri Apr 20 2018 Danilo de Paula <ddepaula@redhat.com> - 2.12.0-10.el
+- Fixing some issues with packaging.
+- Rebasing to 2.12.0-rc4
+
+* Fri Apr 13 2018 Danilo de Paula <ddepaula@redhat.com> - 2.11.0-7.el8
+- Bumping epoch for RHEL8 and dropping self-obsoleting
+
+* Thu Apr 12 2018 Danilo de Paula <ddepaula@redhat.com> - 2.11.0-6.el8
+- Rebuilding
+
 * Mon Mar 05 2018 Danilo de Paula <ddepaula@redhat.com> - 2.11.0-5.el8
 - Prepare building on RHEL-8.0
