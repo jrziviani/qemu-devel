@@ -2098,8 +2098,7 @@ static int mlx5e_route_lookup_ipv4(struct mlx5e_priv *priv,
 	int ret;
 
 	if (mlx5_lag_is_multipath_ready(esw->dev)) {
-		uplink_rpriv = mlx5_eswitch_get_uplink_priv(esw, REP_ETH);
-		*out_dev = uplink_rpriv->netdev;
+		*out_dev = mlx5_eswitch_get_uplink_netdev(esw);
 		fl4->flowi4_oif = (*out_dev)->ifindex;
 	}
 
@@ -2700,7 +2699,7 @@ static struct rhashtable *get_tc_ht(struct mlx5e_priv *priv)
 	struct mlx5e_rep_priv *uplink_rpriv;
 
 	if (MLX5_VPORT_MANAGER(priv->mdev) && esw->mode == SRIOV_OFFLOADS) {
-		uplink_rpriv = mlx5_eswitch_get_uplink_priv(esw, REP_ETH);
+		uplink_rpriv = mlx5_eswitch_get_uplink_netdev_priv(esw, REP_ETH);
 		return &uplink_rpriv->tc_ht;
 	} else
 		return &priv->fs.tc.ht;
