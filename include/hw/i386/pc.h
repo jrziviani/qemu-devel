@@ -1019,8 +1019,12 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
             .driver   = "q35-pcihost",\
             .property = "x-pci-hole64-fix",\
             .value    = "off",\
+        },\
+        { /* PC_RHEL7_4_COMPAT from PC_COMPAT_2_10 */ \
+             .driver   = TYPE_X86_CPU,\
+             .property = "x-hv-max-vps",\
+             .value    = "0x40",\
         },
-
 
 #define PC_RHEL7_3_COMPAT \
         HW_COMPAT_RHEL7_3 \
@@ -1083,11 +1087,6 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
             .driver = TYPE_X86_CPU,\
             .property = "kvm-no-smi-migration",\
             .value    = "on",\
-        },\
-        { /* PC_RHEL7_4_COMPAT from PC_COMPAT_2_10 */ \
-             .driver   = TYPE_X86_CPU,\
-             .property = "x-hv-max-vps",\
-             .value    = "0x40",\
         },
 
 #define PC_RHEL7_2_COMPAT \
