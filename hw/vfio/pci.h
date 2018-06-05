@@ -34,6 +34,7 @@ typedef struct VFIOIOEventFD {
     VFIORegion *region;
     hwaddr region_addr;
     bool dynamic; /* Added runtime, removed on device reset */
+    bool vfio;
 } VFIOIOEventFD;
 
 typedef struct VFIOQuirk {
@@ -162,6 +163,7 @@ typedef struct VFIOPCIDevice {
     bool no_kvm_msix;
     bool no_geforce_quirks;
     bool no_kvm_ioeventfd;
+    bool no_vfio_ioeventfd;
 } VFIOPCIDevice;
 
 uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len);
