@@ -4352,19 +4352,41 @@ DEFINE_SPAPR_MACHINE(2_1, "2.1", false);
 #endif
 
 /*
- * pseries-rhel7.5.0
+ * pseries-rhel7.6.0
  */
 
-static void spapr_machine_rhel750_instance_options(MachineState *machine)
+static void spapr_machine_rhel760_instance_options(MachineState *machine)
 {
 }
 
-static void spapr_machine_rhel750_class_options(MachineClass *mc)
+static void spapr_machine_rhel760_class_options(MachineClass *mc)
 {
     /* Defaults for the latest behaviour inherited from the base class */
 }
 
-DEFINE_SPAPR_MACHINE(rhel750, "rhel7.5.0", true);
+DEFINE_SPAPR_MACHINE(rhel760, "rhel7.6.0", true);
+
+/*
+ * pseries-rhel7.5.0
+ * like SPAPR_COMPAT_2_11 and SPAPR_COMPAT_2_10
+ * SPAPR_CAP_HTM already enabled in 7.4
+ *
+ */
+#define SPAPR_COMPAT_RHEL7_5                                           \
+    HW_COMPAT_RHEL7_5                                                  \
+
+static void spapr_machine_rhel750_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel760_instance_options(machine);
+}
+
+static void spapr_machine_rhel750_class_options(MachineClass *mc)
+{
+    spapr_machine_rhel760_class_options(mc);
+    SET_MACHINE_COMPAT(mc, SPAPR_COMPAT_RHEL7_5);
+}
+
+DEFINE_SPAPR_MACHINE(rhel750, "rhel7.5.0", false);
 
 /*
  * pseries-rhel7.5.0-sxxm
