@@ -167,10 +167,8 @@ BuildRequires: libseccomp-devel >= 2.3.0
 # For network block driver
 BuildRequires: libcurl-devel
 BuildRequires: libssh2-devel
-%ifarch x86_64
 BuildRequires: librados-devel
 BuildRequires: librbd-devel
-%endif
 %if %{have_gluster}
 # For gluster block driver
 BuildRequires: glusterfs-api-devel >= 3.6.0
@@ -380,11 +378,7 @@ cp %{SOURCE24} build_configure.sh
 %else
   disable \
 %endif
-%ifarch x86_64
   enable \
-%else
-  disable \
-%endif
 %if 0%{have_librdma}
   enable \
 %else
