@@ -472,6 +472,10 @@
         .driver   = "virtio-tablet-device",\
         .property = "wheel-axis",\
         .value    = "false",\
+    },{ /* HW_COMPAT_RHEL7_5 */ \
+        .driver   = "cirrus-vga",\
+        .property = "vgamem_mb",\
+        .value    = "16",\
     },
 
 #endif /* HW_COMPAT_H */
