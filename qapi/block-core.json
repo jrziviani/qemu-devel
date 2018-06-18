@@ -3170,6 +3170,14 @@
 
 
 ##
+# @RbdAuthMode:
+#
+# Since: 3.0
+##
+{ 'enum': 'RbdAuthMode',
+  'data': [ 'cephx', 'none' ] }
+
+##
 # @BlockdevOptionsRbd:
 #
 # @pool:               Ceph pool name.
@@ -3184,6 +3192,10 @@
 #
 # @user:               Ceph id name.
 #
+# @auth-client-required: Acceptable authentication modes.
+#                      This maps to Ceph configuration option
+#                      "auth_client_required".  (Since 3.0)
+#
 # @server:             Monitor host address and port.  This maps
 #                      to the "mon_host" Ceph option.
 #
@@ -3195,6 +3207,7 @@
             '*conf': 'str',
             '*snapshot': 'str',
             '*user': 'str',
+            '*auth-client-required': ['RbdAuthMode'],
             '*server': ['InetSocketAddressBase'] } }
 
 ##
