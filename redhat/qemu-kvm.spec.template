@@ -592,7 +592,7 @@ pxe_link() {
     ln -s ../ipxe.efi/$2.rom %{buildroot}%{_datadir}/%{pkgname}/efi-$1.rom
 }
 
-%ifnarch aarch64 s390x 
+%ifnarch aarch64 s390x
 pxe_link e1000 8086100e
 pxe_link ne2k_pci 10ec8029
 pxe_link pcnet 10222000
@@ -812,6 +812,22 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Thu Jun 21 2018 Danilo C. L. de Paula <ddepaula@redhat.com> - 2.12.0-13.el8
+- Resolves: bz#1508137
+  ([IBM 8.0 FEAT] KVM: Interactive Bootloader (qemu))
+- Resolves: bz#1513558
+  (Remove RHEL6 machine types)
+- Resolves: bz#1568600
+  (pc-i440fx-rhel7.6.0 and pc-q35-rhel7.6.0 machine types (x86))
+- Resolves: bz#1570029
+  ([IBM 8.0 FEAT] KVM: 3270 Connectivity - qemu part)
+- Resolves: bz#1578855
+  (Enable Native Ceph support on non x86_64 CPUs)
+- Resolves: bz#1585651
+  (RHEL 7.6 new pseries machine type (ppc64le))
+- Resolves: bz#1592337
+  ([IBM 8.0 FEAT] KVM: CPU Model z14 ZR1 (qemu-kvm))
+
 * Tue May 15 2018 Danilo C. L. de Paula <ddepaula@redhat.com> - 2.12.0-11.el8.1
 - Resolves: bz#1576468
   (Enable vhost_user in qemu-kvm 2.12)
