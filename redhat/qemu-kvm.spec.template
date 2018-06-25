@@ -512,6 +512,8 @@ rm $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/qemu-system-%{kvm_target}-simplet
 
 # Install simpletrace
 install -m 0755 scripts/simpletrace.py $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/simpletrace.py
+# Avoid ambiguous 'python' interpreter name
+sed -i -e '1 s/python/python3/' $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/simpletrace.py
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool
 install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool scripts/tracetool/*.py
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/backend
