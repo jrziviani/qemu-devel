@@ -568,6 +568,7 @@ static BlockdevOptionsNfs *nfs_options_qdict_to_qapi(QDict *options,
     visit_free(v);
 
     if (local_err) {
+        error_propagate(errp, local_err);
         return NULL;
     }
 
