@@ -3416,6 +3416,7 @@ qcow2_co_copy_range_to(BlockDriverState *bs,
         }
 
         bytes -= cur_bytes;
+        src_offset += cur_bytes;
         dst_offset += cur_bytes;
     }
     ret = 0;
