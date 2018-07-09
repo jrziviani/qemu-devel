@@ -90,10 +90,7 @@ rh-env-prep: rh-prep
 		      $(USBREDIR_OPTION) \
 		      $(TMALLOC_OPTION) \
 		      $(VXHS_OPTION) \
-		      $(VTD_OPTION) \
-		      $(LIVE_BLOCK_OPS_OPTION) \
 		      $(VHOST_USER_OPTION) \
-		      ${RHV_OPTION} \
 		      --target-list=$(TARGET_NAME)-softmmu
 
 rh-local: rh-env-prep
