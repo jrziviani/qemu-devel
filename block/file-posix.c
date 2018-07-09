@@ -2052,7 +2052,7 @@ static int raw_co_create(BlockdevCreateOptions *options, Error **errp)
 {
     BlockdevCreateOptionsFile *file_opts;
     int fd;
-    int perm, shared;
+    uint64_t perm, shared;
     int result = 0;
 
     /* Validate options and set default values */
@@ -2088,7 +2088,7 @@ static int raw_co_create(BlockdevCreateOptions *options, Error **errp)
     shared = BLK_PERM_ALL & ~BLK_PERM_RESIZE;
 
     /* Step one: Take locks */
-    result = raw_apply_lock_bytes(fd, perm, shared, false, errp);
+    result = raw_apply_lock_bytes(fd, perm, ~shared, false, errp);
     if (result < 0) {
         goto out_close;
     }
