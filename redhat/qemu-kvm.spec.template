@@ -809,6 +809,29 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Mon Jul 09 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-14.el8
+- kvm-vfio-pci-Default-display-option-to-off.patch [bz#1590511]
+- kvm-python-futurize-f-libfuturize.fixes.fix_print_with_i.patch [bz#1571533]
+- kvm-python-futurize-f-lib2to3.fixes.fix_except.patch [bz#1571533]
+- kvm-Revert-Defining-a-shebang-for-python-scripts.patch [bz#1571533]
+- kvm-spec-Fix-ambiguous-python-interpreter-name.patch [bz#1571533]
+- kvm-qemu-ga-blacklisting-guest-exec-and-guest-exec-statu.patch [bz#1518132]
+- kvm-redhat-rewrap-build_configure.sh-cmdline-for-the-rh-.patch []
+- kvm-redhat-remove-the-VTD-LIVE_BLOCK_OPS-and-RHV-options.patch []
+- kvm-redhat-fix-the-rh-env-prep-target-s-dependency-on-th.patch []
+- kvm-redhat-remove-dead-code-related-to-s390-not-s390x.patch []
+- kvm-redhat-sync-compiler-flags-from-the-spec-file-to-rh-.patch []
+- kvm-redhat-sync-guest-agent-enablement-and-tcmalloc-usag.patch []
+- kvm-redhat-fix-up-Python-3-dependency-for-building-QEMU.patch []
+- kvm-redhat-fix-up-Python-dependency-for-SRPM-generation.patch []
+- kvm-redhat-disable-glusterfs-dependency-support-temporar.patch []
+- Resolves: bz#1518132
+  (Ensure file access RPCs are disabled by default)
+- Resolves: bz#1571533
+  (Convert qemu-kvm python scripts to python3)
+- Resolves: bz#1590511
+  (Fails to start guest with Intel vGPU device)
+
 * Thu Jun 21 2018 Danilo C. L. de Paula <ddepaula@redhat.com> - 2.12.0-13.el8
 - Resolves: bz#1508137
   ([IBM 8.0 FEAT] KVM: Interactive Bootloader (qemu))
