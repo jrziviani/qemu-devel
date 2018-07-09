@@ -29,6 +29,12 @@ SRPMDIR=rpmbuild/SRPM
 BUILDDIR=${SOURCES}/${BUILDDIR_NAME}
 SPEC=rpmbuild/SPECS/${SPECNAME}
 
+if test "$(rpm --eval '%{?rhel}')" = 7; then
+  LOCAL_PYTHON=/usr/bin/python
+else
+  LOCAL_PYTHON=$(rpm --eval '%{__python3}')
+fi
+
 # Pre-cleaning
 rm -rf .tmp asection psection patchlist
 
@@ -45,7 +51,7 @@ fi
 # Handle patches
 git format-patch --first-parent --no-renames -k --no-binary ${MARKER}.. > patchlist
 for patchfile in `cat patchlist`; do
-  ${SCRIPTS}/frh.py ${patchfile} > .tmp
+  ${LOCAL_PYTHON} ${SCRIPTS}/frh.py ${patchfile} > .tmp
   if grep -q '^diff --git ' .tmp; then
     num=$(echo $patchfile | sed 's/\([0-9]*\).*/\1/')
     echo "Patch${num}: ${patchfile}" >> psection
