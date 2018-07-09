@@ -7,14 +7,7 @@ TARGET_NAME-i386:=
 TARGET_NAME-s390x:=
 TARGET_NAME=$(TARGET_NAME-$(ARCH))
 
-COMPILE_OPTIONS-COMMON:=-O2 -g -pipe -Wall  -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches
-COMPILE_OPTIONS-aarch64:=
-COMPILE_OPTIONS-pcc64:=-m64 -mcpu=power7 -mtune=power7
-COMPILE_OPTIONS-ppc64le:=-m64 -mcpu=power8 -mtune=power8
-COMPILE_OPTIONS-x86_64:=-m64 -mtune=generic
-COMPILE_OPTIONS-i386:=
-COMPILE_OPTIONS-s390x:=
-COMPILE_OPTIONS=$(COMPILE_OPTIONS-COMMON) $(COMPILE_OPTIONS-$(ARCH))
+COMPILE_OPTIONS=$(shell rpm --eval '%{optflags}')
 
 GUEST_AGENT_OPTION:=disable
 NUMA_OPTION:=enable
