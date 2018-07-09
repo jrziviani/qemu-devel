@@ -9,11 +9,11 @@ TARGET_NAME=$(TARGET_NAME-$(ARCH))
 
 COMPILE_OPTIONS=$(shell rpm --eval '%{optflags}')
 
-GUEST_AGENT_OPTION:=disable
+GUEST_AGENT_OPTION:=enable
 NUMA_OPTION:=enable
 RDMA_OPTION:=enable
 SECCOMP_OPTION:=enable
-TMALLOC_OPTION:=enable
+TMALLOC_OPTION:=disable
 
 FDT_OPTION-aarch64:=enable
 FDT_OPTION-ppc64:=enable
