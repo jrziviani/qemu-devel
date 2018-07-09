@@ -68,7 +68,33 @@ rh-brew: rh-srpm
 	$(DS)brew build $(BREW_OPTIONS) $(BUILD_TARGET) $(RPMBUILD)/SRPMS/$(SRPM_NAME)$(LOCALVERSION).src.rpm
 rh-env-prep: rh-prep
 	$(DS)yum-builddep $(RPMBUILD)/SPECS/$(SPECFILE)
-	$(DS)cd ..; redhat/build_configure.sh /usr /usr/lib64 /etc /var /usr/libexec /usr/share/doc/qemu-kvm $(NAME) $(TARGET_NAME) $(SRPM_NAME) "$(COMPILE_OPTIONS)" $(FDT_OPTION) $(GLUSTER_OPTION) $(GUEST_AGENT_OPTION) $(NUMA_OPTION) $(RBD_OPTION) $(RDMA_OPTION) $(SECCOMP_OPTION) $(SPICE_OPTION) $(USBREDIR_OPTION) $(TMALLOC_OPTION) $(VXHS_OPTION) $(VTD_OPTION) $(LIVE_BLOCK_OPS_OPTION) $(VHOST_USER_OPTION) ${RHV_OPTION} --target-list=$(TARGET_NAME)-softmmu
+	$(DS)cd ..; redhat/build_configure.sh \
+		      /usr \
+		      /usr/lib64 \
+		      /etc \
+		      /var \
+		      /usr/libexec \
+		      /usr/share/doc/qemu-kvm \
+		      $(NAME) \
+		      $(TARGET_NAME) \
+		      $(SRPM_NAME) \
+		      "$(COMPILE_OPTIONS)" \
+		      $(FDT_OPTION) \
+		      $(GLUSTER_OPTION) \
+		      $(GUEST_AGENT_OPTION) \
+		      $(NUMA_OPTION) \
+		      $(RBD_OPTION) \
+		      $(RDMA_OPTION) \
+		      $(SECCOMP_OPTION) \
+		      $(SPICE_OPTION) \
+		      $(USBREDIR_OPTION) \
+		      $(TMALLOC_OPTION) \
+		      $(VXHS_OPTION) \
+		      $(VTD_OPTION) \
+		      $(LIVE_BLOCK_OPS_OPTION) \
+		      $(VHOST_USER_OPTION) \
+		      ${RHV_OPTION} \
+		      --target-list=$(TARGET_NAME)-softmmu
 
 rh-local: rh-env-prep
 	make V=1 -j8 -C $(REDHAT)/..  VL_LDFLAGS=-Wl,--build-id
