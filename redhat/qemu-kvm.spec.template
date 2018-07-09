@@ -144,7 +144,7 @@ BuildRequires: cyrus-sasl-devel
 BuildRequires: libtool
 BuildRequires: libaio-devel
 BuildRequires: rsync
-BuildRequires: python
+BuildRequires: python3-devel
 BuildRequires: pciutils-devel
 BuildRequires: libiscsi-devel
 BuildRequires: ncurses-devel
@@ -408,6 +408,7 @@ cp %{SOURCE24} build_configure.sh
 %else
   disable \
 %endif
+  %{__python3} \
   --target-list="$buildarch"
 
 echo "config-host.mak contents:"
@@ -418,12 +419,12 @@ echo "==="
 make V=1 %{?_smp_mflags} $buildldflags
 
 # Setup back compat qemu-kvm binary
-./scripts/tracetool.py --backend dtrace --format stap --group=all \
+%{__python3} scripts/tracetool.py --backend dtrace --format stap --group=all \
   --binary %{_libexecdir}/qemu-kvm --target-name %{kvm_target} \
   --target-type system --probe-prefix \
   qemu.kvm trace-events-all > qemu-kvm.stp
 
-./scripts/tracetool.py --backend dtrace --format simpletrace-stap \
+%{__python3} scripts/tracetool.py --backend dtrace --format simpletrace-stap \
   --group=all --binary %{_libexecdir}/qemu-kvm --target-name %{kvm_target} \
   --target-type system --probe-prefix \
   qemu.kvm trace-events-all > qemu-kvm-simpletrace.stp

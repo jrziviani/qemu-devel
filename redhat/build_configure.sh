@@ -44,6 +44,8 @@ have_vxhs=$1
 shift
 have_vhost_user=$1
 shift
+python_interpreter=$1
+shift
 
 if [ "$have_rbd" == "enable" ]; then
   rbd_driver=rbd,
@@ -67,7 +69,7 @@ fi
     --libexecdir=${_libexecdir} \
     --extra-ldflags="$extraldflags -Wl,-z,relro -Wl,-z,now" \
     --extra-cflags="${optflags} " \
-    --python=python3 \
+    --python=${python_interpreter} \
     --with-pkgversion=${nvr} \
     --with-confsuffix=/${pkgname} \
     --with-coroutine=ucontext \

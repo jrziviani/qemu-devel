@@ -91,6 +91,7 @@ rh-env-prep: rh-prep
 		      $(TMALLOC_OPTION) \
 		      $(VXHS_OPTION) \
 		      $(VHOST_USER_OPTION) \
+		      $(PYTHON_OPTION) \
 		      --target-list=$(TARGET_NAME)-softmmu
 
 rh-local: rh-env-prep

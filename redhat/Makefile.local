@@ -64,3 +64,5 @@ VXHS_OPTION-s390x:=
 VXHS_OPTION=$(VXHS_OPTION-$(ARCH))
 
 VHOST_USER_OPTION=enable
+
+PYTHON_OPTION=$(shell rpm --eval '%{__python3}')
