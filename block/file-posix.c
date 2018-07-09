@@ -2051,6 +2051,7 @@ static int64_t raw_get_allocated_file_size(BlockDriverState *bs)
 static int raw_co_create(BlockdevCreateOptions *options, Error **errp)
 {
     BlockdevCreateOptionsFile *file_opts;
+    Error *local_err = NULL;
     int fd;
     uint64_t perm, shared;
     int result = 0;
@@ -2096,13 +2097,13 @@ static int raw_co_create(BlockdevCreateOptions *options, Error **errp)
     /* Step two: Check that nobody else has taken conflicting locks */
     result = raw_check_lock_bytes(fd, perm, shared, errp);
     if (result < 0) {
-        goto out_close;
+        goto out_unlock;
     }
 
     /* Clear the file by truncating it to 0 */
     result = raw_regular_truncate(fd, 0, PREALLOC_MODE_OFF, errp);
     if (result < 0) {
-        goto out_close;
+        goto out_unlock;
     }
 
     if (file_opts->nocow) {
@@ -2125,7 +2126,17 @@ static int raw_co_create(BlockdevCreateOptions *options, Error **errp)
     result = raw_regular_truncate(fd, file_opts->size, file_opts->preallocation,
                                   errp);
     if (result < 0) {
-        goto out_close;
+        goto out_unlock;
+    }
+
+out_unlock:
+    raw_apply_lock_bytes(fd, 0, 0, true, &local_err);
+    if (local_err) {
+        /* The above call should not fail, and if it does, that does
+         * not mean the whole creation operation has failed.  So
+         * report it the user for their convenience, but do not report
+         * it to the caller. */
+        error_report_err(local_err);
     }
 
 out_close:
