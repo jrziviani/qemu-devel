@@ -16,7 +16,7 @@
     %global have_usbredir 0
 %endif
 
-%ifnarch s390 s390x
+%ifnarch s390x
     %global have_librdma 1
 %else
     %global have_librdma 0
@@ -38,7 +38,7 @@
     %global have_kvm_setup 1
     %global have_memlock_limits 1
 %endif
-%ifarch s390x s390
+%ifarch s390x
     %global kvm_target    s390x
 %endif
 %ifarch ppc
@@ -102,8 +102,8 @@ Requires: usbredir >= 0.7.1
 %endif
 
 
-# OOM killer breaks builds with parallel make on s390(x)
-%ifarch s390 s390x
+# OOM killer breaks builds with parallel make on s390x
+%ifarch s390x
     %define _smp_mflags %{nil}
 %endif
 
@@ -278,8 +278,8 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
 
-# OOM killer breaks builds with parallel make on s390(x)
-%ifarch s390 s390x
+# OOM killer breaks builds with parallel make on s390x
+%ifarch s390x
     %define _smp_mflags %{nil}
 %endif
 
@@ -342,12 +342,6 @@ buildarch="%{kvm_target}-softmmu"
 # --build-id option is used for giving info to the debug packages.
 extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
-
-%ifarch s390
-    # drop -g flag to prevent memory exhaustion by linker
-    %global optflags %(echo %{optflags} | sed 's/-g//')
-    sed -i.debug 's/"-g $CFLAGS"/"$CFLAGS"/g' configure
-%endif
 
 cp %{SOURCE24} build_configure.sh
 
@@ -449,7 +443,7 @@ install -D -p -m 0644 %{SOURCE7} $RPM_BUILD_ROOT%{_unitdir}/ksmtuned.service
 install -D -p -m 0755 %{SOURCE8} $RPM_BUILD_ROOT%{_sbindir}/ksmtuned
 install -D -p -m 0644 %{SOURCE9} $RPM_BUILD_ROOT%{_sysconfdir}/ksmtuned.conf
 install -D -p -m 0644 %{SOURCE26} $RPM_BUILD_ROOT%{_sysconfdir}/modprobe.d/vhost.conf
-%ifarch s390x s390
+%ifarch s390x
     install -D -p -m 0644 %{SOURCE30} $RPM_BUILD_ROOT%{_sysconfdir}/modprobe.d/kvm.conf
 %else
 %ifarch %{ix86} x86_64
