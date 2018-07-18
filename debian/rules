@@ -132,7 +132,7 @@ clean: debian/control
 	cp $(DROOT)/scripts/retpoline-extract-one scripts/ubuntu-retpoline-extract-one
 
 	# If we have a reconstruct script use it.
-	[ -f $(DEBIAN)/reconstruct ] && bash $(DEBIAN)/reconstruct
+	[ -f $(DEBIAN)/reconstruct ] && bash $(DEBIAN)/reconstruct || true
 
 	# Remove generated intermediate files
 	rm -f $(DROOT)/control.stub $(DEBIAN)/control.stub
