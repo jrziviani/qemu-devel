@@ -535,6 +535,18 @@ static void mark_request_serialising(BdrvTrackedRequest *req, uint64_t align)
     req->overlap_bytes = MAX(req->overlap_bytes, overlap_bytes);
 }
 
+static bool is_request_serialising_and_aligned(BdrvTrackedRequest *req)
+{
+    /*
+     * If the request is serialising, overlap_offset and overlap_bytes are set,
+     * so we can check if the request is aligned. Otherwise, don't care and
+     * return false.
+     */
+
+    return req->serialising && (req->offset == req->overlap_offset) &&
+           (req->bytes == req->overlap_bytes);
+}
+
 /**
  * Round a region to cluster boundaries
  */
@@ -1206,6 +1218,9 @@ static int coroutine_fn bdrv_aligned_preadv(BdrvChild *child,
         mark_request_serialising(req, bdrv_get_cluster_size(bs));
     }
 
+    /* BDRV_REQ_SERIALISING is only for write operation */
+    assert(!(flags & BDRV_REQ_SERIALISING));
+
     if (!(flags & BDRV_REQ_NO_SERIALISING)) {
         wait_serialising_requests(req);
     }
@@ -1507,8 +1522,14 @@ static int coroutine_fn bdrv_aligned_pwritev(BdrvChild *child,
 
     /* BDRV_REQ_NO_SERIALISING is only for read operation */
     assert(!(flags & BDRV_REQ_NO_SERIALISING));
+
+    if (flags & BDRV_REQ_SERIALISING) {
+        mark_request_serialising(req, bdrv_get_cluster_size(bs));
+    }
+
     waited = wait_serialising_requests(req);
-    assert(!waited || !req->serialising);
+    assert(!waited || !req->serialising ||
+           is_request_serialising_and_aligned(req));
     assert(req->overlap_offset <= offset);
     assert(offset + bytes <= req->overlap_offset + req->overlap_bytes);
     if (flags & BDRV_REQ_WRITE_UNCHANGED) {
@@ -2881,6 +2902,8 @@ static int coroutine_fn bdrv_co_copy_range_internal(
         tracked_request_begin(&req, src->bs, src_offset, bytes,
                               BDRV_TRACKED_READ);
 
+        /* BDRV_REQ_SERIALISING is only for write operation */
+        assert(!(read_flags & BDRV_REQ_SERIALISING));
         if (!(read_flags & BDRV_REQ_NO_SERIALISING)) {
             wait_serialising_requests(&req);
         }
@@ -2900,6 +2923,9 @@ static int coroutine_fn bdrv_co_copy_range_internal(
 
         /* BDRV_REQ_NO_SERIALISING is only for read operation */
         assert(!(write_flags & BDRV_REQ_NO_SERIALISING));
+        if (write_flags & BDRV_REQ_SERIALISING) {
+            mark_request_serialising(&req, bdrv_get_cluster_size(dst->bs));
+        }
         wait_serialising_requests(&req);
 
         ret = dst->bs->drv->bdrv_co_copy_range_to(dst->bs,
