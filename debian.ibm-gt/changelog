@@ -1,0 +1,11 @@
+linux-ibm-gt (4.15.0-1000.1) bionic; urgency=low
+
+  * Initial package for IBM GT kernel variant.  (LP: #xxxxxx)
+
+ -- Andy Whitcroft <apw@canonical.com>  Wed, 18 Jul 2018 14:07:04 +0100
+
+linux-ibm-gt (4.15.0-1000.0) bionic; urgency=low
+
+  * Initial commit.
+
+ -- Andy Whitcroft <apw@canonical.com>  Wed, 18 Jul 2018 14:06:51 +0100
