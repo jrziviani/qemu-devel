@@ -267,5 +267,6 @@
 #define PCI_DEVICE_ID_TEWS_TPCI200       0x30C8
 
 #define PCI_VENDOR_ID_NVIDIA             0x10de
+#define PCI_VENDOR_ID_NVIDIA_V100_SXM2   0x1db1
 
 #endif
