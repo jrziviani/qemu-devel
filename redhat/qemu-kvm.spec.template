@@ -809,6 +809,18 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Tue Jul 24 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-15.el8
+- kvm-spapr-Add-ibm-max-associativity-domains-property.patch [bz#1599593]
+- kvm-Revert-spapr-Don-t-allow-memory-hotplug-to-memory-le.patch [bz#1599593]
+- kvm-simpletrace-Convert-name-from-mapping-record-to-str.patch [bz#1594969]
+- kvm-tests-fix-TLS-handshake-failure-with-TLS-1.3.patch [bz#1602403]
+- Resolves: bz#1594969
+  (simpletrace.py fails when running with Python 3)
+- Resolves: bz#1599593
+  (User can't hotplug memory to less memory numa node on rhel8)
+- Resolves: bz#1602403
+  (test-crypto-tlssession unit test fails with assertions)
+
 * Mon Jul 09 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-14.el8
 - kvm-vfio-pci-Default-display-option-to-off.patch [bz#1590511]
 - kvm-python-futurize-f-libfuturize.fixes.fix_print_with_i.patch [bz#1571533]
