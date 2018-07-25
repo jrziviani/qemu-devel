@@ -4355,6 +4355,28 @@ static void spapr_machine_rhel760_class_options(MachineClass *mc)
 DEFINE_SPAPR_MACHINE(rhel760, "rhel7.6.0", true);
 
 /*
+ * pseries-rhel7.6.0-sxxm
+ *
+ * pseries-rhel7.6.0 with speculative execution exploit mitigations enabled by default
+ */
+static void spapr_machine_rhel760sxxm_instance_options(MachineState *machine)
+{
+    spapr_machine_rhel760_instance_options(machine);
+}
+
+static void spapr_machine_rhel760sxxm_class_options(MachineClass *mc)
+{
+    sPAPRMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel760_class_options(mc);
+    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_WORKAROUND;
+    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_FIXED_CCD;
+}
+
+DEFINE_SPAPR_MACHINE(rhel760sxxm, "rhel7.6.0-sxxm", false);
+
+/*
  * pseries-rhel7.5.0
  * like SPAPR_COMPAT_2_11 and SPAPR_COMPAT_2_10
  * SPAPR_CAP_HTM already enabled in 7.4
