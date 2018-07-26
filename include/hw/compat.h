@@ -460,8 +460,9 @@
         .driver   = "vhost-user-blk-pci",\
         .property = "vectors",\
         .value    = "2",\
-    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_11 */ \
-        .driver   = "e1000",\
+    },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_11 but \
+           bz 1608778 modified for our naming */ \
+        .driver   = "e1000-82540em",\
         .property = "migrate_tso_props",\
         .value    = "off",\
     },{ /* HW_COMPAT_RHEL7_5 from HW_COMPAT_2_10 */ \
