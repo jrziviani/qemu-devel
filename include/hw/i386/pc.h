@@ -983,6 +983,18 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
             .driver   = TYPE_X86_CPU,\
             .property = "legacy-cache",\
             .value    = "on",\
+        },{ /* PC_RHEL7_5_COMPAT from PC_COMPAT_2_12 */ \
+            .driver   = TYPE_X86_CPU,\
+            .property = "topoext",\
+            .value    = "off",\
+        },{ /* PC_RHEL7_5_COMPAT from PC_COMPAT_2_12 */ \
+            .driver   = "EPYC-" TYPE_X86_CPU,\
+            .property = "xlevel",\
+            .value    = stringify(0x8000000a),\
+        },{ /* PC_RHEL7_5_COMPAT from PC_COMPAT_2_12 */ \
+            .driver   = "EPYC-IBPB-" TYPE_X86_CPU,\
+            .property = "xlevel",\
+            .value    = stringify(0x8000000a),\
         },
 
 
