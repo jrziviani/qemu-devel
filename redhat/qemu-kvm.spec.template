@@ -52,6 +52,11 @@
 
 #Versions of various parts:
 
+%global requires_all_modules                                     \
+Requires: %{name}-block-curl = %{epoch}:%{version}-%{release}    \
+Requires: %{name}-block-iscsi = %{epoch}:%{version}-%{release}   \
+Requires: %{name}-block-rbd = %{epoch}:%{version}-%{release}     \
+Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 # Macro to properly setup RHEL/RHEV conflict handling
 %define rhel_rhev_conflicts()                                          \
@@ -233,6 +238,7 @@ Requires: qemu-img = %{epoch}:%{version}-%{release}
 # In addition, RHEV version should obsolete all RHEL version in case both
 # RHEL and RHEV channels are used
 %rhel_rhev_conflicts qemu-kvm
+%{requires_all_modules}
 
 
 %define qemudocdir %{_docdir}/%{name}
@@ -290,6 +296,50 @@ This package provides an agent to run inside guests, which communicates
 with the host over a virtio-serial channel named "org.qemu.guest_agent.0"
 
 This package does not need to be installed on the host OS.
+
+
+%package  block-curl
+Summary: QEMU CURL block driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+
+%description block-curl
+This package provides the additional CURL block driver for QEMU.
+
+Install this package if you want to access remote disks over
+http, https, ftp and other transports provided by the CURL library.
+
+
+%package  block-iscsi
+Summary: QEMU iSCSI block driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+
+%description block-iscsi
+This package provides the additional iSCSI block driver for QEMU.
+
+Install this package if you want to access iSCSI volumes.
+
+
+%package  block-rbd
+Summary: QEMU Ceph/RBD block driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+
+%description block-rbd
+This package provides the additional Ceph/RBD block driver for QEMU.
+
+Install this package if you want to access remote Ceph volumes
+using the rbd protocol.
+
+
+%package  block-ssh
+Summary: QEMU SSH block driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+
+%description block-ssh
+This package provides the additional SSH block driver for QEMU.
+
+Install this package if you want to access remote disks using
+the Secure Shell (SSH) protocol.
+
 
 %prep
 %setup -q -n qemu-%{version}
@@ -751,6 +801,18 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_sysconfdir}/qemu-ga
 %{_datadir}/%{name}/qemu-ga
 %dir %{_localstatedir}/log/qemu-ga
+
+%files block-curl
+%{_libdir}/qemu-kvm/block-curl.so
+
+%files block-iscsi
+%{_libdir}/qemu-kvm/block-iscsi.so
+
+%files block-rbd
+%{_libdir}/qemu-kvm/block-rbd.so
+
+%files block-ssh
+%{_libdir}/qemu-kvm/block-ssh.so
 
 
 %changelog

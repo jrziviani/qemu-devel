@@ -122,7 +122,7 @@ fi
     --disable-hax \
     --disable-jemalloc \
     --disable-linux-user \
-    --disable-modules \
+    --enable-modules \
     --disable-netmap \
     --disable-replication \
     --enable-system \
