@@ -809,6 +809,30 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Tue Jul 31 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-16.el8
+- kvm-spapr-Correct-inverted-test-in-spapr_pc_dimm_node.patch [bz#1601671]
+- kvm-osdep-powerpc64-align-memory-to-allow-2MB-radix-THP-.patch [bz#1601317]
+- kvm-RHEL-8.0-Add-pseries-rhel7.6.0-sxxm-machine-type.patch [bz#1595501]
+- kvm-i386-Helpers-to-encode-cache-information-consistentl.patch [bz#1597739]
+- kvm-i386-Add-cache-information-in-X86CPUDefinition.patch [bz#1597739]
+- kvm-i386-Initialize-cache-information-for-EPYC-family-pr.patch [bz#1597739]
+- kvm-i386-Add-new-property-to-control-cache-info.patch [bz#1597739]
+- kvm-i386-Clean-up-cache-CPUID-code.patch [bz#1597739]
+- kvm-i386-Populate-AMD-Processor-Cache-Information-for-cp.patch [bz#1597739]
+- kvm-i386-Add-support-for-CPUID_8000_001E-for-AMD.patch [bz#1597739]
+- kvm-i386-Fix-up-the-Node-id-for-CPUID_8000_001E.patch [bz#1597739]
+- kvm-i386-Enable-TOPOEXT-feature-on-AMD-EPYC-CPU.patch [bz#1597739]
+- kvm-i386-Remove-generic-SMT-thread-check.patch [bz#1597739]
+- kvm-i386-Allow-TOPOEXT-to-be-enabled-on-older-kernels.patch [bz#1597739]
+- Resolves: bz#1595501
+  (Create pseries-rhel7.6.0-sxxm machine type)
+- Resolves: bz#1597739
+  (AMD EPYC/Zen SMT support for KVM / QEMU guest (qemu-kvm))
+- Resolves: bz#1601317
+  (RHEL8.0 - qemu patch to align memory to allow 2MB THP)
+- Resolves: bz#1601671
+  (After rebooting guest,all the hot plug memory will be assigned to the 1st numa node.)
+
 * Tue Jul 24 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-15.el8
 - kvm-spapr-Add-ibm-max-associativity-domains-property.patch [bz#1599593]
 - kvm-Revert-spapr-Don-t-allow-memory-hotplug-to-memory-le.patch [bz#1599593]
