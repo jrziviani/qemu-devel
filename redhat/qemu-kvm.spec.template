@@ -52,7 +52,6 @@
 
 #Versions of various parts:
 
-%define pkgname qemu-kvm
 
 # Macro to properly setup RHEL/RHEV conflict handling
 %define rhel_rhev_conflicts()                                          \
@@ -61,7 +60,7 @@ Conflicts: %1%-rhev                                                    \
 Provides: %1%-rhel = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a machine emulator and virtualizer
-Name: %{pkgname}
+Name: qemu-kvm
 Version: %%VERSION%%
 Release: %%RELEASE%%%{?dist}%%ZRELEASE%%%%LOCALVERSION%%
 # Epoch because we pushed a qemu-1.0 package. AIUI this can't ever be dropped
@@ -81,7 +80,7 @@ Requires: ipxe-roms-qemu >= 20170123-1
 %ifarch %{power64}
 Requires: SLOF >= %{SLOF_gittagdate}-1.git%{SLOF_gittagcommit}
 %endif
-Requires: %{pkgname}-common = %{epoch}:%{version}-%{release}
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
 %if %{have_seccomp}
 Requires: libseccomp >= 2.3.0
 %endif
@@ -236,7 +235,7 @@ Requires: qemu-img = %{epoch}:%{version}-%{release}
 %rhel_rhev_conflicts qemu-kvm
 
 
-%define qemudocdir %{_docdir}/%{pkgname}
+%define qemudocdir %{_docdir}/%{name}
 
 %description
 qemu-kvm is an open source virtualizer that provides hardware
@@ -352,7 +351,7 @@ cp %{SOURCE24} build_configure.sh
   "%{_localstatedir}" \
   "%{_libexecdir}" \
   "%{qemudocdir}" \
-  "%{pkgname}" \
+  "%{name}" \
   "%{kvm_target}" \
   "%{name}-%{version}-%{release}" \
   "%{optflags}" \
@@ -457,13 +456,13 @@ install -D -p -m 0644 %{SOURCE26} $RPM_BUILD_ROOT%{_sysconfdir}/modprobe.d/vhost
 mkdir -p $RPM_BUILD_ROOT%{_bindir}/
 mkdir -p $RPM_BUILD_ROOT%{_udevdir}
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 install -m 0644 scripts/dump-guest-memory.py \
-                $RPM_BUILD_ROOT%{_datadir}/%{pkgname}
+                $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 make DESTDIR=$RPM_BUILD_ROOT \
-    sharedir="%{_datadir}/%{pkgname}" \
-    datadir="%{_datadir}/%{pkgname}" \
+    sharedir="%{_datadir}/%{name}" \
+    datadir="%{_datadir}/%{name}" \
     install
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset
@@ -482,10 +481,10 @@ install -D --preserve-timestamps \
 mkdir $RPM_BUILD_ROOT%{_sysconfdir}/qemu-ga/fsfreeze-hook.d
 
 # - and the fsfreeze script samples:
-mkdir --parents $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/qemu-ga/fsfreeze-hook.d/
+mkdir --parents $RPM_BUILD_ROOT%{_datadir}/%{name}/qemu-ga/fsfreeze-hook.d/
 install --preserve-timestamps --mode=0644 \
              scripts/qemu-guest-agent/fsfreeze-hook.d/*.sample \
-             $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/qemu-ga/fsfreeze-hook.d/
+             $RPM_BUILD_ROOT%{_datadir}/%{name}/qemu-ga/fsfreeze-hook.d/
 
 # - Install dedicated log directory:
 mkdir -p -v $RPM_BUILD_ROOT%{_localstatedir}/log/qemu-ga/
@@ -506,87 +505,87 @@ rm $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/qemu-system-%{kvm_target}.stp
 rm $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset/qemu-system-%{kvm_target}-simpletrace.stp
 
 # Install simpletrace
-install -m 0755 scripts/simpletrace.py $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/simpletrace.py
+install -m 0755 scripts/simpletrace.py $RPM_BUILD_ROOT%{_datadir}/%{name}/simpletrace.py
 # Avoid ambiguous 'python' interpreter name
-sed -i -e '1 s/python/python3/' $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/simpletrace.py
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool
-install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool scripts/tracetool/*.py
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/backend
-install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/backend scripts/tracetool/backend/*.py
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/format
-install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/tracetool/format scripts/tracetool/format/*.py
+sed -i -e '1 s/python/python3/' $RPM_BUILD_ROOT%{_datadir}/%{name}/simpletrace.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool scripts/tracetool/*.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/backend
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/backend scripts/tracetool/backend/*.py
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/format
+install -m 0644 -t $RPM_BUILD_ROOT%{_datadir}/%{name}/tracetool/format scripts/tracetool/format/*.py
 
 mkdir -p $RPM_BUILD_ROOT%{qemudocdir}
 install -p -m 0644 -t ${RPM_BUILD_ROOT}%{qemudocdir} Changelog README README.systemtap COPYING COPYING.LIB LICENSE docs/interop/qmp-spec.txt
 chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man1/*
 chmod -x ${RPM_BUILD_ROOT}%{_mandir}/man8/*
 
-install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/%{pkgname}.conf
+install -D -p -m 0644 qemu.sasl $RPM_BUILD_ROOT%{_sysconfdir}/sasl2/%{name}.conf
 
 # Provided by package openbios
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/openbios-ppc
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/openbios-sparc32
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/openbios-sparc64
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-ppc
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-sparc32
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/openbios-sparc64
 # Provided by package SLOF
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/slof.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/slof.bin
 
 # Remove unpackaged files.
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/palcode-clipper
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/petalogix*.dtb
-rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/bamboo.dtb
-rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/ppc_rom.bin
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/s390-zipl.rom
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/u-boot.e500
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/qemu_vga.ndrv
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/skiboot.lid
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/palcode-clipper
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/petalogix*.dtb
+rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/bamboo.dtb
+rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/ppc_rom.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-zipl.rom
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/u-boot.e500
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/qemu_vga.ndrv
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/skiboot.lid
 
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/s390-ccw.img
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/hppa-firmware.img
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/canyonlands.dtb
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/u-boot-sam460-20100605.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-ccw.img
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/hppa-firmware.img
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/canyonlands.dtb
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/u-boot-sam460-20100605.bin
 
 %ifarch s390x
     # Use the s390-ccw.img that we've just built, not the pre-built one
-    install -m 0644 pc-bios/s390-ccw/s390-ccw.img $RPM_BUILD_ROOT%{_datadir}/%{pkgname}/
+    install -m 0644 pc-bios/s390-ccw/s390-ccw.img $RPM_BUILD_ROOT%{_datadir}/%{name}/
 %else
-    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/s390-netboot.img
+    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/s390-netboot.img
 %endif
 
 %ifnarch %{power64}
-    rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/spapr-rtas.bin
+    rm -f ${RPM_BUILD_ROOT}%{_datadir}/%{name}/spapr-rtas.bin
 %endif
 
 %ifnarch x86_64
-    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/kvmvapic.bin
-    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/linuxboot.bin
-    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/multiboot.bin
+    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/kvmvapic.bin
+    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/linuxboot.bin
+    rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/multiboot.bin
 %endif
 
 # Remove sparc files
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/QEMU,tcx.bin
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/QEMU,cgthree.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/QEMU,tcx.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/QEMU,cgthree.bin
 
 # Remove ivshmem example programs
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/ivshmem-client
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/ivshmem-server
 
 # Remove efi roms
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/efi*.rom
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/efi*.rom
 
 # Provided by package ipxe
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/pxe*rom
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/pxe*rom
 # Provided by package vgabios
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/vgabios*bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/vgabios*bin
 # Provided by package seabios
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/bios*.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/bios*.bin
 # Provided by package sgabios
-rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{pkgname}/sgabios.bin
+rm -rf ${RPM_BUILD_ROOT}%{_datadir}/%{name}/sgabios.bin
 
 # the pxe gpxe images will be symlinks to the images on
 # /usr/share/ipxe, as QEMU doesn't know how to look
 # for other paths, yet.
 pxe_link() {
-    ln -s ../ipxe.efi/$2.rom %{buildroot}%{_datadir}/%{pkgname}/efi-$1.rom
+    ln -s ../ipxe.efi/$2.rom %{buildroot}%{_datadir}/%{name}/efi-$1.rom
 }
 
 %ifnarch aarch64 s390x
@@ -599,7 +598,7 @@ pxe_link e1000e 808610d3
 %endif
 
 rom_link() {
-    ln -s $1 %{buildroot}%{_datadir}/%{pkgname}/$2
+    ln -s $1 %{buildroot}%{_datadir}/%{name}/$2
 }
 
 %ifnarch aarch64 s390x
@@ -627,7 +626,7 @@ rom_link() {
 %endif
 
 # Install rules to use the bridge helper with libvirt's virbr0
-install -D -m 0644 %{SOURCE12} $RPM_BUILD_ROOT%{_sysconfdir}/%{pkgname}/bridge.conf
+install -D -m 0644 %{SOURCE12} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/bridge.conf
 
 # Install qemu-pr-helper service
 install -m 0644 %{_sourcedir}/qemu-pr-helper.service %{buildroot}%{_unitdir}
@@ -679,10 +678,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %global qemu_kvm_files \
 %{_libexecdir}/qemu-kvm \
 %{_datadir}/systemtap/tapset/qemu-kvm.stp \
-%{_datadir}/%{pkgname}/trace-events-all \
+%{_datadir}/%{name}/trace-events-all \
 %{_datadir}/systemtap/tapset/qemu-kvm-simpletrace.stp \
-%{_datadir}/%{pkgname}/systemtap/script.d/qemu_kvm.stp \
-%{_datadir}/%{pkgname}/systemtap/conf.d/qemu_kvm.conf
+%{_datadir}/%{name}/systemtap/script.d/qemu_kvm.stp \
+%{_datadir}/%{name}/systemtap/conf.d/qemu_kvm.conf
 
 %files -n qemu-kvm-common
 %defattr(-,root,root)
@@ -706,61 +705,61 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_unitdir}/qemu-pr-helper.socket
 %{_mandir}/man7/qemu-ga-ref.7*
 
-%dir %{_datadir}/%{pkgname}/
-%{_datadir}/%{pkgname}/keymaps/
-%{_mandir}/man1/%{pkgname}.1*
+%dir %{_datadir}/%{name}/
+%{_datadir}/%{name}/keymaps/
+%{_mandir}/man1/%{name}.1*
 %{_mandir}/man7/qemu-block-drivers.7*
 %attr(4755, -, -) %{_libexecdir}/qemu-bridge-helper
-%config(noreplace) %{_sysconfdir}/sasl2/%{pkgname}.conf
+%config(noreplace) %{_sysconfdir}/sasl2/%{name}.conf
 %{_unitdir}/ksm.service
 %{_libexecdir}/ksmctl
 %config(noreplace) %{_sysconfdir}/sysconfig/ksm
 %{_unitdir}/ksmtuned.service
 %{_sbindir}/ksmtuned
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
-%dir %{_sysconfdir}/%{pkgname}
-%config(noreplace) %{_sysconfdir}/%{pkgname}/bridge.conf
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %{_sysconfdir}/%{name}/bridge.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/vhost.conf
 %config(noreplace) %{_sysconfdir}/modprobe.d/kvm.conf
-%{_datadir}/%{pkgname}/simpletrace.py*
-%{_datadir}/%{pkgname}/tracetool/*.py*
-%{_datadir}/%{pkgname}/tracetool/backend/*.py*
-%{_datadir}/%{pkgname}/tracetool/format/*.py*
+%{_datadir}/%{name}/simpletrace.py*
+%{_datadir}/%{name}/tracetool/*.py*
+%{_datadir}/%{name}/tracetool/backend/*.py*
+%{_datadir}/%{name}/tracetool/format/*.py*
 
 %files
 %defattr(-,root,root)
 %ifarch x86_64
-    %{_datadir}/%{pkgname}/bios.bin
-    %{_datadir}/%{pkgname}/bios-256k.bin
-    %{_datadir}/%{pkgname}/linuxboot.bin
-    %{_datadir}/%{pkgname}/multiboot.bin
-    %{_datadir}/%{pkgname}/kvmvapic.bin
-    %{_datadir}/%{pkgname}/sgabios.bin
+    %{_datadir}/%{name}/bios.bin
+    %{_datadir}/%{name}/bios-256k.bin
+    %{_datadir}/%{name}/linuxboot.bin
+    %{_datadir}/%{name}/multiboot.bin
+    %{_datadir}/%{name}/kvmvapic.bin
+    %{_datadir}/%{name}/sgabios.bin
 %endif
 %ifarch s390x
-    %{_datadir}/%{pkgname}/s390-ccw.img
-    %{_datadir}/%{pkgname}/s390-netboot.img
+    %{_datadir}/%{name}/s390-ccw.img
+    %{_datadir}/%{name}/s390-netboot.img
 %endif
 %ifnarch aarch64 s390x
-    %{_datadir}/%{pkgname}/vgabios.bin
-    %{_datadir}/%{pkgname}/vgabios-cirrus.bin
-    %{_datadir}/%{pkgname}/vgabios-qxl.bin
-    %{_datadir}/%{pkgname}/vgabios-stdvga.bin
-    %{_datadir}/%{pkgname}/vgabios-vmware.bin
-    %{_datadir}/%{pkgname}/vgabios-virtio.bin
-    %{_datadir}/%{pkgname}/efi-e1000.rom
-    %{_datadir}/%{pkgname}/efi-e1000e.rom
-    %{_datadir}/%{pkgname}/efi-virtio.rom
-    %{_datadir}/%{pkgname}/efi-pcnet.rom
-    %{_datadir}/%{pkgname}/efi-rtl8139.rom
-    %{_datadir}/%{pkgname}/efi-ne2k_pci.rom
+    %{_datadir}/%{name}/vgabios.bin
+    %{_datadir}/%{name}/vgabios-cirrus.bin
+    %{_datadir}/%{name}/vgabios-qxl.bin
+    %{_datadir}/%{name}/vgabios-stdvga.bin
+    %{_datadir}/%{name}/vgabios-vmware.bin
+    %{_datadir}/%{name}/vgabios-virtio.bin
+    %{_datadir}/%{name}/efi-e1000.rom
+    %{_datadir}/%{name}/efi-e1000e.rom
+    %{_datadir}/%{name}/efi-virtio.rom
+    %{_datadir}/%{name}/efi-pcnet.rom
+    %{_datadir}/%{name}/efi-rtl8139.rom
+    %{_datadir}/%{name}/efi-ne2k_pci.rom
 %endif
-%{_datadir}/%{pkgname}/qemu-icon.bmp
-%{_datadir}/%{pkgname}/qemu_logo_no_text.svg
-%{_datadir}/%{pkgname}/linuxboot_dma.bin
-%{_datadir}/%{pkgname}/dump-guest-memory.py*
+%{_datadir}/%{name}/qemu-icon.bmp
+%{_datadir}/%{name}/qemu_logo_no_text.svg
+%{_datadir}/%{name}/linuxboot_dma.bin
+%{_datadir}/%{name}/dump-guest-memory.py*
 %ifarch %{power64}
-    %{_datadir}/%{pkgname}/spapr-rtas.bin
+    %{_datadir}/%{name}/spapr-rtas.bin
 %endif
 %{?qemu_kvm_files:}
 %if 0%{have_kvm_setup}
@@ -789,7 +788,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_udevdir}/99-qemu-guest-agent.rules
 %config(noreplace) %{_sysconfdir}/sysconfig/qemu-ga
 %{_sysconfdir}/qemu-ga
-%{_datadir}/%{pkgname}/qemu-ga
+%{_datadir}/%{name}/qemu-ga
 %dir %{_localstatedir}/log/qemu-ga
 
 %if 0
