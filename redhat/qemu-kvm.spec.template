@@ -752,21 +752,6 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/%{name}/qemu-ga
 %dir %{_localstatedir}/log/qemu-ga
 
-%if 0
-%files -n libcacard
-%defattr(-,root,root,-)
-%{_libdir}/libcacard.so.*
-
-%files -n libcacard-tools
-%defattr(-,root,root,-)
-%{_bindir}/vscclient
-
-%files -n libcacard-devel
-%defattr(-,root,root,-)
-%{_includedir}/cacard
-%{_libdir}/libcacard.so
-%{_libdir}/pkgconfig/libcacard.pc
-%endif
 
 %changelog
 * Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-20.el8
