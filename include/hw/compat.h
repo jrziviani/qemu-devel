@@ -477,6 +477,11 @@
         .driver   = "cirrus-vga",\
         .property = "vgamem_mb",\
         .value    = "16",\
+    },{ /* HW_COMPAT_RHEL7_5 */ \
+        .driver   = "migration",\
+        .property = "decompress-error-check",\
+        .value    = "off",\
     },
+
 
 #endif /* HW_COMPAT_H */
