@@ -809,6 +809,13 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Mon Aug 06 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-17.el8
+- kvm-linux-headers-Update-to-include-KVM_CAP_S390_HPAGE_1.patch [bz#1610906]
+- kvm-s390x-Enable-KVM-huge-page-backing-support.patch [bz#1610906]
+- kvm-redhat-s390x-add-hpage-1-to-kvm.conf.patch [bz#1610906]
+- Resolves: bz#1610906
+  ([IBM 8.0 FEAT] KVM: Huge Pages - libhugetlbfs Enablement - qemu-kvm part)
+
 * Tue Jul 31 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-16.el8
 - kvm-spapr-Correct-inverted-test-in-spapr_pc_dimm_node.patch [bz#1601671]
 - kvm-osdep-powerpc64-align-memory-to-allow-2MB-radix-THP-.patch [bz#1601317]
