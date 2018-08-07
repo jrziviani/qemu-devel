@@ -912,6 +912,10 @@ static void ccw_machine_rhel750_instance_options(MachineState *machine)
     /* before 2.12 we emulated the very first z900, and RHEL 7.5 is
        based on 2.10 */
     s390_set_qemu_cpu_model(0x2064, 7, 1, qemu_cpu_feat);
+
+    /* bpb and ppa15 were only in the full model in RHEL 7.5 */
+    s390_cpudef_featoff_greater(11, 1, S390_FEAT_PPA15);
+    s390_cpudef_featoff_greater(11, 1, S390_FEAT_BPB);
 }
 
 static void ccw_machine_rhel750_class_options(MachineClass *mc)
