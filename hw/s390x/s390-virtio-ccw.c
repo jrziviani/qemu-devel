@@ -671,6 +671,8 @@ bool css_migration_enabled(void)
     }                                                                         \
     type_init(ccw_machine_register_##suffix)
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
+
 #define CCW_COMPAT_2_11 \
         HW_COMPAT_2_11 \
         {\
@@ -681,8 +683,6 @@ bool css_migration_enabled(void)
 
 #define CCW_COMPAT_2_10 \
         HW_COMPAT_2_10
-
-#if 0 /* Disabled for Red Hat Enterprise Linux */
 
 #define CCW_COMPAT_2_9 \
         HW_COMPAT_2_9 \
@@ -883,14 +883,43 @@ DEFINE_CCW_MACHINE(2_4, "2.4", false);
 
 #else
 
+/*
+ * like CCW_COMPAT_2_11, but includes HW_COMPAT_RHEL7_5 (derived from
+ * HW_COMPAT_2_11 and HW_COMPAT_2_10) instead of HW_COMPAT_2_11
+ */
+#define CCW_COMPAT_RHEL7_5 \
+        HW_COMPAT_RHEL7_5 \
+        {\
+            .driver   = TYPE_SCLP_EVENT_FACILITY,\
+            .property = "allow_all_mask_sizes",\
+            .value    = "off",\
+        },
+
+static void ccw_machine_rhel760_instance_options(MachineState *machine)
+{
+}
+
+static void ccw_machine_rhel760_class_options(MachineClass *mc)
+{
+}
+DEFINE_CCW_MACHINE(rhel760, "rhel7.6.0", true);
+
 static void ccw_machine_rhel750_instance_options(MachineState *machine)
 {
+    static const S390FeatInit qemu_cpu_feat = { S390_FEAT_LIST_QEMU_V2_11 };
+    ccw_machine_rhel760_instance_options(machine);
+
+    /* before 2.12 we emulated the very first z900, and RHEL 7.5 is
+       based on 2.10 */
+    s390_set_qemu_cpu_model(0x2064, 7, 1, qemu_cpu_feat);
 }
 
 static void ccw_machine_rhel750_class_options(MachineClass *mc)
 {
+    ccw_machine_rhel760_class_options(mc);
+    SET_MACHINE_COMPAT(mc, CCW_COMPAT_RHEL7_5);
 }
-DEFINE_CCW_MACHINE(rhel750, "rhel7.5.0", true);
+DEFINE_CCW_MACHINE(rhel750, "rhel7.5.0", false);
 
 #endif
 
