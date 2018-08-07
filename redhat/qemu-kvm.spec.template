@@ -74,36 +74,6 @@ License: GPLv2 and GPLv2+ and CC-BY
 Group: Development/Tools
 URL: http://www.qemu.org/
 ExclusiveArch: x86_64 %{power64} aarch64 s390x
-%ifarch %{ix86} x86_64
-Requires: seabios-bin >= 1.10.2-1
-Requires: sgabios-bin
-%endif
-%ifnarch aarch64 s390x
-Requires: seavgabios-bin >= 1.10.2-1
-Requires: ipxe-roms-qemu >= 20170123-1
-%endif
-%ifarch %{power64}
-Requires: SLOF >= %{SLOF_gittagdate}-1.git%{SLOF_gittagcommit}
-%endif
-Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%if %{have_seccomp}
-Requires: libseccomp >= 2.3.0
-%endif
-# For compressed guest memory dumps
-Requires: lzo snappy
-%if %{have_gluster}
-Requires: glusterfs-api >= 3.6.0
-%endif
-%if %{have_kvm_setup}
-Requires(post): systemd-units
-    %ifarch %{power64}
-Requires: powerpc-utils
-    %endif
-%endif
-Requires: libusbx >= 1.0.19
-%if %{have_usbredir}
-Requires: usbredir >= 0.7.1
-%endif
 
 
 # OOM killer breaks builds with parallel make on s390x
@@ -231,15 +201,12 @@ BuildRequires: diffutils
 BuildRequires: binutils >= 2.27-16
 %endif
 
-Requires: qemu-img = %{epoch}:%{version}-%{release}
 
-# RHEV-specific changes:
-# We provide special suffix for qemu-kvm so the conflit is easy
-# In addition, RHEV version should obsolete all RHEL version in case both
-# RHEL and RHEV channels are used
-%rhel_rhev_conflicts qemu-kvm
+Requires: qemu-kvm-core = %{epoch}:%{version}-%{release}
+Conflicts: qemu-kvm-ma
+Conflicts: qemu-kvm-rhev
+
 %{requires_all_modules}
-
 
 %define qemudocdir %{_docdir}/%{name}
 
@@ -248,6 +215,50 @@ qemu-kvm is an open source virtualizer that provides hardware
 emulation for the KVM hypervisor. qemu-kvm acts as a virtual
 machine monitor together with the KVM kernel modules, and emulates the
 hardware for a full system such as a PC and its associated peripherals.
+
+
+%package -n qemu-kvm-core
+Summary: qemu-kvm core components
+Requires: qemu-img = %{epoch}:%{version}-%{release}
+%ifarch %{ix86} x86_64
+Requires: seabios-bin >= 1.10.2-1
+Requires: sgabios-bin
+%endif
+%ifnarch aarch64 s390x
+Requires: seavgabios-bin >= 1.10.2-1
+Requires: ipxe-roms-qemu >= 20170123-1
+%endif
+%ifarch %{power64}
+Requires: SLOF >= %{SLOF_gittagdate}-1.git%{SLOF_gittagcommit}
+%endif
+Requires: %{name}-common = %{epoch}:%{version}-%{release}
+%if %{have_seccomp}
+Requires: libseccomp >= 2.3.0
+%endif
+# For compressed guest memory dumps
+Requires: lzo snappy
+%if %{have_gluster}
+Requires: glusterfs-api >= 3.6.0
+%endif
+%if %{have_kvm_setup}
+Requires(post): systemd-units
+    %ifarch %{power64}
+Requires: powerpc-utils
+    %endif
+%endif
+Requires: libusbx >= 1.0.19
+%if %{have_usbredir}
+Requires: usbredir >= 0.7.1
+%endif
+
+%rhel_rhev_conflicts qemu-kvm
+
+%description -n qemu-kvm-core
+qemu-kvm is an open source virtualizer that provides hardware
+emulation for the KVM hypervisor. qemu-kvm acts as a virtual
+machine monitor together with the KVM kernel modules, and emulates the
+hardware for a full system such as a PC and its associated peripherals.
+
 
 %package -n qemu-img
 Summary: QEMU command line tool for manipulating disk images
@@ -654,7 +665,7 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 %check
 export DIFF=diff; make check V=1
 
-%post
+%post -n qemu-kvm-core
 # load kvm modules now, so we can make sure no reboot is needed.
 # If there's already a kvm module installed, we don't mess with it
 %udev_rules_update
@@ -693,6 +704,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/systemtap/tapset/qemu-kvm-simpletrace.stp \
 %{_datadir}/%{name}/systemtap/script.d/qemu_kvm.stp \
 %{_datadir}/%{name}/systemtap/conf.d/qemu_kvm.conf
+
+%files
+# Deliberately empty
+
 
 %files -n qemu-kvm-common
 %defattr(-,root,root)
@@ -737,7 +752,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_datadir}/%{name}/tracetool/backend/*.py*
 %{_datadir}/%{name}/tracetool/format/*.py*
 
-%files
+%files -n qemu-kvm-core
 %defattr(-,root,root)
 %ifarch x86_64
     %{_datadir}/%{name}/bios.bin
