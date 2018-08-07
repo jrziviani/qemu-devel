@@ -1,5 +1,5 @@
 # The default profile, rhev
-[gitpublishprofile "rhel"]
+[gitpublishprofile "default"]
 base = rhel8/master-2.12.0
 prefix = qemu-kvm RHEL8/virt212 PATCH
 to = rhvirt-patches@redhat.com
