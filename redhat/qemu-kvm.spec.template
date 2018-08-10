@@ -196,6 +196,9 @@ BuildRequires: libcap-ng-devel
 
 BuildRequires: diffutils
 
+# qemu-keymap
+BuildRequires: pkgconfig(xkbcommon)
+
 # For s390-pgste flag
 %ifarch s390x
 BuildRequires: binutils >= 2.27-16
@@ -726,6 +729,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %doc %{qemudocdir}/qemu-qmp-ref.html
 %doc %{qemudocdir}/qemu-qmp-ref.txt
 %{_mandir}/man7/qemu-qmp-ref.7*
+%{_bindir}/qemu-keymap
 %{_bindir}/qemu-pr-helper
 %{_unitdir}/qemu-pr-helper.service
 %{_unitdir}/qemu-pr-helper.socket
