@@ -809,6 +809,35 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 
 %changelog
+* Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-20.el8
+- kvm-migration-stop-compressing-page-in-migration-thread.patch [bz#1594384]
+- kvm-migration-stop-compression-to-allocate-and-free-memo.patch [bz#1594384]
+- kvm-migration-stop-decompression-to-allocate-and-free-me.patch [bz#1594384]
+- kvm-migration-detect-compression-and-decompression-error.patch [bz#1594384]
+- kvm-migration-introduce-control_save_page.patch [bz#1594384]
+- kvm-migration-move-some-code-to-ram_save_host_page.patch [bz#1594384]
+- kvm-migration-move-calling-control_save_page-to-the-comm.patch [bz#1594384]
+- kvm-migration-move-calling-save_zero_page-to-the-common-.patch [bz#1594384]
+- kvm-migration-introduce-save_normal_page.patch [bz#1594384]
+- kvm-migration-remove-ram_save_compressed_page.patch [bz#1594384]
+- kvm-migration-block-dirty-bitmap-fix-memory-leak-in-dirt.patch [bz#1594384]
+- kvm-migration-fix-saving-normal-page-even-if-it-s-been-c.patch [bz#1594384]
+- kvm-migration-update-index-field-when-delete-or-qsort-RD.patch [bz#1594384]
+- kvm-migration-introduce-decompress-error-check.patch [bz#1594384]
+- kvm-migration-Don-t-activate-block-devices-if-using-S.patch [bz#1594384]
+- kvm-migration-not-wait-RDMA_CM_EVENT_DISCONNECTED-event-.patch [bz#1594384]
+- kvm-migration-block-dirty-bitmap-fix-dirty_bitmap_load.patch [bz#1594384]
+- kvm-s390x-add-RHEL-7.6-machine-type-for-ccw.patch [bz#1595718]
+- kvm-s390x-cpumodel-default-enable-bpb-and-ppa15-for-z196.patch [bz#1595718]
+- kvm-linux-headers-asm-s390-kvm.h-header-sync.patch [bz#1612938]
+- kvm-s390x-kvm-add-etoken-facility.patch [bz#1612938]
+- Resolves: bz#1594384
+  (2.12 migration fixes)
+- Resolves: bz#1595718
+  (Add ppa15/bpb to the default cpu model for z196 and higher in the 7.6 s390-ccw-virtio machine)
+- Resolves: bz#1612938
+  (Add etoken support to qemu-kvm for s390x KVM guests)
+
 * Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-18.el8
   Mass import from RHEL 7.6 qemu-kvm-rhev, including fixes to the following BZs:
 
