@@ -831,12 +831,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
-* Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-21.el8
-- kvm-redhat-replacing-pkname-by-name.patch []
-- kvm-redhat-Remove-unused-ApplyPatch-macro.patch []
-- kvm-redhat-removing-disable-code-for-libcacard.patch []
-- kvm-redhat-improve-packaging-layout-with-modularization-.patch []
-- kvm-redhat-Introducing-qemu-kvm-core-package.patch []
+* Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-23.el8
+- Fixing an issue with some old command in the spec file
+
+* Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-22.el8
+- Fix an issue with the build_configure script.
+- Resolves: bz#1425820
+  (Improve QEMU packaging layout with modularization of the block layer)
+
 
 * Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-20.el8
 - kvm-migration-stop-compressing-page-in-migration-thread.patch [bz#1594384]
