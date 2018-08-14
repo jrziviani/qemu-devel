@@ -835,6 +835,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Aug 14 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-24.el8
+- kvm-Add-qemu-keymap-to-qemu-kvm-common.patch [bz#1593117]
+- Resolves: bz#1593117
+  (add qemu-keymap utility)
+
 * Fri Aug 10 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-23.el8
 - Fixing an issue with some old command in the spec file
 
