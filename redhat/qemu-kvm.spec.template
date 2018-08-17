@@ -835,6 +835,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Aug 17 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-26.el8
+- kvm-redhat-remove-extra-in-rhel_rhev_conflicts-macro.patch [bz#1618752]
+- Resolves: bz#1618752
+  (qemu-kvm can't be installed in RHEL-8 as it Conflicts with itself.)
+
 * Thu Aug 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-25.el8
 - kvm-Migration-TLS-Fix-crash-due-to-double-cleanup.patch [bz#1594384]
 - Resolves: bz#1594384
