@@ -60,9 +60,9 @@ Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 # Macro to properly setup RHEL/RHEV conflict handling
 %define rhel_rhev_conflicts()                                          \
-Conflicts: %1%-ma                                                      \
-Conflicts: %1%-rhev                                                    \
-Provides: %1%-rhel = %{epoch}:%{version}-%{release}
+Conflicts: %1-ma                                                       \
+Conflicts: %1-rhev                                                     \
+Provides: %1-rhel = %{epoch}:%{version}-%{release}
 
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
