@@ -1269,6 +1269,8 @@ static void pnv_pci_ioda_setup_PEs(void)
 	struct pci_bus *bus;
 	struct pci_dev *pdev;
 
+	pnv_npu2_devices_init();
+
 	list_for_each_entry_safe(hose, tmp, &hose_list, list_node) {
 		phb = hose->private_data;
 		if (phb->type == PNV_PHB_NPU_NVLINK) {
