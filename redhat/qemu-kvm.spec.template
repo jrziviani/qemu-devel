@@ -835,6 +835,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Aug 29 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-27.el8
+- kvm-Fix-libusb-1.0.22-deprecated-libusb_set_debug-with-l.patch [bz#1622656]
+- Resolves: bz#1622656
+  (qemu-kvm fails to build due to libusb_set_debug being deprecated)
+
 * Fri Aug 17 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-26.el8
 - kvm-redhat-remove-extra-in-rhel_rhev_conflicts-macro.patch [bz#1618752]
 - Resolves: bz#1618752
