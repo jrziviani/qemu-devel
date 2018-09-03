@@ -97,7 +97,6 @@ Source13: qemu-ga.sysconfig
 Source21: kvm-setup
 Source22: kvm-setup.service
 Source23: 85-kvm.preset
-Source24: build_configure.sh
 Source26: vhost.conf
 Source27: kvm.conf
 Source28: 95-kvm-memlock.conf
@@ -361,79 +360,156 @@ the Secure Shell (SSH) protocol.
 %%PATCHAPPLY%%
 
 %build
-buildarch="%{kvm_target}-softmmu"
+%global buildarch %{kvm_target}-softmmu
 
 # --build-id option is used for giving info to the debug packages.
-extraldflags="-Wl,--build-id";
 buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
-cp %{SOURCE24} build_configure.sh
+%global block_drivers_list qcow2,raw,file,host_device,nbd,iscsi,rbd,blkdebug,luks,null-co,nvme,copy-on-read,throttle
 
-./build_configure.sh  \
-  "%{_prefix}" \
-  "%{_libdir}" \
-  "%{_sysconfdir}" \
-  "%{_localstatedir}" \
-  "%{_libexecdir}" \
-  "%{qemudocdir}" \
-  "%{name}" \
-  "%{kvm_target}" \
-  "%{name}-%{version}-%{release}" \
-  "%{optflags}" \
+%if 0%{have_vxhs}
+    %global block_drivers_list %{block_drivers_list},vxhs
+%endif
+%if 0%{have_gluster}
+    %global block_drivers_list %{block_drivers_list},gluster
+%endif
+
+./configure  \
+ --prefix="%{_prefix}" \
+ --libdir="%{_libdir}" \
+ --sysconfdir="%{_sysconfdir}" \
+ --interp-prefix=%{_prefix}/qemu-%M \
+ --localstatedir="%{_localstatedir}" \
+ --docdir="%{qemudocdir}" \
+ --libexecdir="%{_libexecdir}" \
+ --extra-ldflags="-Wl,--build-id -Wl,-z,relro -Wl,-z,now" \
+ --extra-cflags="%{optflags}" \
+ --with-pkgversion="%{name}-%{version}-%{release}" \
+ --with-confsuffix=/"%{name}" \
 %if 0%{have_fdt}
-  enable \
+  --enable-fdt \
 %else
-  disable \
+  --disable-fdt \
  %endif
 %if 0%{have_gluster}
-  enable \
+  --enable-glusterfs \
 %else
-  disable \
+  --disable-glusterfs \
 %endif
-  enable \
+  --enable-guest-agent \
 %ifnarch s390x
-  enable \
+  --enable-numa \
 %else
-  disable \
+  --disable-numa \
 %endif
-  enable \
+  --enable-rbd \
 %if 0%{have_librdma}
-  enable \
+  --enable-rdma \
 %else
-  disable \
+  --disable-rdma \
 %endif
 %if 0%{have_seccomp}
-  enable \
+  --enable-seccomp \
 %else
-  disable \
+  --disable-seccomp \
 %endif
 %if 0%{have_spice}
-  enable \
+  --enable-spice \
+  --enable-smartcard \
 %else
-  disable \
+  --disable-spice \
+  --disable-smartcard \
 %endif
 %if 0%{have_usbredir}
-  enable \
+  --enable-usb-redir \
 %else
-  disable \
+  --disable-usb-redir \
 %endif
 %if 0%{have_tcmalloc}
-  enable \
+  --enable-tcmalloc \
 %else
-  disable \
+  --disable-tcmalloc \
 %endif
 %if 0%{have_vxhs}
-  enable \
+  --enable-vxhs \
 %else
-  disable \
+  --disable-vxhs \
 %endif
 %if 0%{have_vhost_user}
-  enable \
+  --enable-vhost-user \
 %else
-  disable \
+  --disable-vhost-user \
 %endif
-  %{__python3} \
-  --target-list="$buildarch"
+  --python=%{__python3} \
+  --target-list="%{buildarch}" \
+  --block-drv-rw-whitelist=%{block_drivers_list} \
+  --audio-drv-list= \
+  --block-drv-ro-whitelist=vmdk,vhdx,vpc,https,ssh \
+  --with-coroutine=ucontext \
+  --tls-priority=NORMAL \
+  --disable-bluez \
+  --disable-brlapi \
+  --disable-cap-ng \
+  --enable-coroutine-pool \
+  --enable-curl \
+  --disable-curses \
+  --disable-debug-tcg \
+  --enable-docs \
+  --disable-gtk \
+  --enable-kvm \
+  --enable-libiscsi \
+  --disable-libnfs \
+  --enable-libssh2 \
+  --enable-libusb \
+  --disable-bzip2 \
+  --enable-linux-aio \
+  --disable-live-block-migration \
+  --enable-lzo \
+  --disable-opengl \
+  --enable-pie \
+  --disable-qom-cast-debug \
+  --disable-sdl \
+  --enable-snappy \
+  --disable-sparse \
+  --disable-strip \
+  --disable-tpm \
+  --enable-trace-backend=dtrace \
+  --disable-vde \
+  --disable-vhost-scsi \
+  --disable-virtfs \
+  --disable-vnc-jpeg \
+  --disable-vte \
+  --enable-vnc-png \
+  --enable-vnc-sasl \
+  --enable-werror \
+  --disable-xen \
+  --disable-xfsctl \
+  --enable-gnutls \
+  --enable-gcrypt \
+  --disable-nettle \
+  --enable-attr \
+  --disable-bsd-user \
+  --disable-cocoa \
+  --enable-debug-info \
+  --disable-guest-agent-msi \
+  --disable-hax \
+  --disable-jemalloc \
+  --disable-linux-user \
+  --enable-modules \
+  --disable-netmap \
+  --disable-replication \
+  --enable-system \
+  --enable-tools \
+  --disable-user \
+  --enable-vhost-net \
+  --enable-vhost-vsock \
+  --enable-vnc \
+  --enable-mpath \
+  --disable-virglrenderer \
+  --disable-xen-pci-passthrough \
+  --enable-tcg \
+  --disable-crypto-afalg
+
 
 echo "config-host.mak contents:"
 echo "==="

@@ -36,7 +36,6 @@ SOURCES_FILELIST:=                     \
        kvm-setup                       \
        kvm-setup.service               \
        85-kvm.preset                   \
-       build_configure.sh              \
        vhost.conf                      \
        bridge.conf                     \
        kvm.conf                        \
