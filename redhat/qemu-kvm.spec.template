@@ -922,6 +922,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Sep 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-30.el8
+- kvm-redhat-Disable-vhost-crypto.patch [bz#1625668]
+- Resolves: bz#1625668
+  (Decide if we should disable 'vhost-crypto' or not)
+
 * Wed Sep 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-29.el8
 - kvm-target-i386-sev-fix-memory-leaks.patch [bz#1615717]
 - kvm-i386-Fix-arch_query_cpu_model_expansion-leak.patch [bz#1615717]
