@@ -515,7 +515,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-whpx \
   --enable-malloc-trim \
   --disable-membarrier \
-  --enable-vhost-crypto \
+  --disable-vhost-crypto \
   --disable-libxml2 \
   --enable-capstone \
   --disable-git-update \
