@@ -922,6 +922,15 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Sep 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-29.el8
+- kvm-target-i386-sev-fix-memory-leaks.patch [bz#1615717]
+- kvm-i386-Fix-arch_query_cpu_model_expansion-leak.patch [bz#1615717]
+- kvm-redhat-Update-build-configuration.patch [bz#1573156]
+- Resolves: bz#1573156
+  (Update build configure for QEMU 2.12.0)
+- Resolves: bz#1615717
+  (Memory leaks)
+
 * Wed Aug 29 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-27.el8
 - kvm-Fix-libusb-1.0.22-deprecated-libusb_set_debug-with-l.patch [bz#1622656]
 - Resolves: bz#1622656
