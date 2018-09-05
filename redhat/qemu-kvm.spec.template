@@ -386,6 +386,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
  --extra-cflags="%{optflags}" \
  --with-pkgversion="%{name}-%{version}-%{release}" \
  --with-confsuffix=/"%{name}" \
+ --firmwarepath=%{_prefix}/share/qemu-firmware \
 %if 0%{have_fdt}
   --enable-fdt \
 %else
@@ -508,6 +509,16 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-virglrenderer \
   --disable-xen-pci-passthrough \
   --enable-tcg \
+  --with-git=git \
+  --disable-sanitizers \
+  --disable-hvf \
+  --disable-whpx \
+  --enable-malloc-trim \
+  --disable-membarrier \
+  --enable-vhost-crypto \
+  --disable-libxml2 \
+  --enable-capstone \
+  --disable-git-update \
   --disable-crypto-afalg
 
 

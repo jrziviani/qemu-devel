@@ -67,7 +67,8 @@ rh-brew: rh-srpm
 	$(DS)brew build $(BREW_OPTIONS) $(BUILD_TARGET) $(RPMBUILD)/SRPMS/$(SRPM_NAME)$(LOCALVERSION).src.rpm
 rh-env-prep: rh-prep
 	$(DS)yum-builddep $(RPMBUILD)/SPECS/$(SPECFILE)
-	$(DS)cd ..; $(shell rpmspec -P $(RPMBUILD)/SPECS/$(SPECFILE) | scripts/extract_build_cmd.py)
+	$(DS)cd ..; $(shell rpmspec -P $(RPMBUILD)/SPECS/$(SPECFILE) | scripts/extract_build_cmd.py | \
+	              sed "s/--disable-git-update/--enable-git-update/g")
 
 rh-local: rh-env-prep
 	make V=1 -j8 -C $(REDHAT)/..  VL_LDFLAGS=-Wl,--build-id
