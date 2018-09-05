@@ -5366,13 +5366,11 @@ static Property x86_cpu_properties[] = {
     DEFINE_PROP_BOOL("hv-vapic", X86CPU, hyperv_vapic, false),
     DEFINE_PROP_BOOL("hv-time", X86CPU, hyperv_time, false),
     DEFINE_PROP_BOOL("hv-crash", X86CPU, hyperv_crash, false),
-#if 0 /* Disabled for Red Hat Enterprise Linux */
     DEFINE_PROP_BOOL("hv-reset", X86CPU, hyperv_reset, false),
     DEFINE_PROP_BOOL("hv-vpindex", X86CPU, hyperv_vpindex, false),
     DEFINE_PROP_BOOL("hv-runtime", X86CPU, hyperv_runtime, false),
     DEFINE_PROP_BOOL("hv-synic", X86CPU, hyperv_synic, false),
     DEFINE_PROP_BOOL("hv-stimer", X86CPU, hyperv_stimer, false),
-#endif
     DEFINE_PROP_BOOL("hv-frequencies", X86CPU, hyperv_frequencies, false),
     DEFINE_PROP_BOOL("check", X86CPU, check_cpuid, true),
     DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, false),
