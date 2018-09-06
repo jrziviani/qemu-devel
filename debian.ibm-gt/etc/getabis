@@ -22,3 +22,5 @@ readarray -t repo_list < <(sed "s,\s*$,/pool/main/l/linux-ibm-gt," \
 package_prefixes linux-image linux-modules linux-modules-extras
 
 getall amd64 ibm-gt
+getall ppc64el ibm-gt
+getall s390x ibm-get
