@@ -19,6 +19,6 @@ fi
 readarray -t repo_list < <(sed "s,\s*$,/pool/main/l/linux-ibm-gt," \
                                "${getabis_ppa}")
 
-package_prefixes linux-image linux-modules
+package_prefixes linux-image linux-modules linux-modules-extras
 
 getall amd64 ibm-gt
