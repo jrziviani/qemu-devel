@@ -1,4 +1,4 @@
-arch="amd64"
+arch="amd64 ppc64el s390x"
 supported="IBM GT"
 target="Geared toward IBM GT host systems."
 desc="=HUMAN= SMP"
