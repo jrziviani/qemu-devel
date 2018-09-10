@@ -1,3 +1,14 @@
+linux-ibm-gt (4.15.0-1002.2) bionic; urgency=medium
+
+  * [Packaging] ibm-gt: Use private PPAs for getabis
+  * [Packaging] ibm-gt: Various cleanups and fixes
+  * [Packaging] ibm-gt: Add ppc64el and s390x architectures
+  * [Packaging] ibm-gt: Temporarily disable retpoline checks
+  * [Packaging] ibm-gt: Add update-from-master helper script
+  * [Packaging] ibm-gt: Update the ABI version
+
+ -- Juerg Haefliger <juergh@canonical.com>  Mon, 10 Sep 2018 15:33:41 +0200
+
 linux-ibm-gt (4.15.0-1001.2) bionic; urgency=low
 
   [ Andy Whitcroft ]
