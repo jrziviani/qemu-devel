@@ -936,6 +936,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Sep 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-31.el8
+- kvm-i386-Disable-TOPOEXT-by-default-on-cpu-host.patch [bz#1619804]
+- kvm-redhat-enable-opengl-add-build-and-runtime-deps.patch [bz#1618412]
+- Resolves: bz#1618412
+  (Enable opengl (for intel vgpu display))
+- Resolves: bz#1619804
+  (kernel panic in init_amd_cacheinfo)
+
 * Wed Sep 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-30.el8
 - kvm-redhat-Disable-vhost-crypto.patch [bz#1625668]
 - Resolves: bz#1625668
