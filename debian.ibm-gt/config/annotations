@@ -8574,11 +8574,11 @@ CONFIG_XEN_SYS_HYPERVISOR                       policy<{'amd64': 'y', 'arm64': '
 CONFIG_XEN_GNTDEV                               policy<{'amd64': 'm', 'arm64': 'm', 'i386': 'm'}>
 CONFIG_XEN_GRANT_DEV_ALLOC                      policy<{'amd64': 'm', 'arm64': 'm', 'i386': 'm'}>
 CONFIG_XEN_PVCALLS_FRONTEND                     policy<{'amd64': 'm', 'arm64': 'm', 'i386': 'm'}>
-CONFIG_XEN_ACPI_PROCESSOR                       policy<{'amd64': 'y', 'i386': 'y'}>
+CONFIG_XEN_ACPI_PROCESSOR                       policy<{'amd64': '-', 'i386': 'y'}>
 CONFIG_XEN_MCE_LOG                              policy<{'amd64': 'y'}>
 CONFIG_XEN_SYMS                                 policy<{'amd64': 'y', 'i386': 'y'}>
 #
-CONFIG_XEN_ACPI_PROCESSOR                       mark<ENFORCED> <boot essential on XEN host>
+CONFIG_XEN_ACPI_PROCESSOR                       mark<ENFORCED> note<disabled for amd64 by IBM>
 
 # Menu: Device Drivers >> Xen driver support >> Backend driver support
 CONFIG_XEN_BACKEND                              policy<{'amd64': 'y', 'arm64': 'y', 'i386': 'y'}>
@@ -10083,9 +10083,9 @@ CONFIG_LTPC                                     policy<{'i386': 'm'}>
 CONFIG_COPS                                     policy<{'i386': 'm'}>
 CONFIG_COPS_DAYNA                               policy<{'i386': 'y'}>
 CONFIG_COPS_TANGENT                             policy<{'i386': 'y'}>
-CONFIG_IPDDP                                    policy<{'amd64': 'n', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'ppc64el': 'n'}>
+CONFIG_IPDDP                                    policy<{'amd64': '-', 'arm64': 'n', 'armhf': 'n', 'i386': 'n', 'ppc64el': 'n'}>
 #
-CONFIG_IPDDP                                    mark<ENFORCED> note<LP:1559772>
+CONFIG_IPDDP                                    mark<ENFORCED> note<disabled for amd64 by IBM>
 
 # Menu: Networking support >> Networking options >> Asynchronous Transfer Mode (ATM)
 CONFIG_ATM                                      policy<{'amd64': 'm', 'arm64': 'm', 'armhf': 'm', 'i386': 'm', 'ppc64el': 'm', 's390x': 'n'}>
