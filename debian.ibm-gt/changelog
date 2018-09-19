@@ -1,9 +1,10 @@
-linux-ibm-gt (4.15.0-1004.4) bionic; urgency=medium
+linux-ibm-gt (4.15.0-1004.5) bionic; urgency=medium
 
   * Miscellaneous Ubuntu changes
     - [Config] Disable various amd64 options as requested by IBM
+    - [Config] Remove previously disabled modules from the ABI
 
- -- Juerg Haefliger <juergh@canonical.com>  Wed, 19 Sep 2018 12:25:21 +0200
+ -- Juerg Haefliger <juergh@canonical.com>  Wed, 19 Sep 2018 16:47:13 +0200
 
 linux-ibm-gt (4.15.0-1003.3) bionic; urgency=medium
 
