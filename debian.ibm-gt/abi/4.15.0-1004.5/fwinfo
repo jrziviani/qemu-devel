@@ -5,7 +5,6 @@ firmware:       6fire/dmx6firecf.bin
 firmware:       6fire/dmx6firel2.ihx
 firmware:       BCM2033-FW.bin
 firmware:       BCM2033-MD.hex
-firmware:       BT3CPCC.bin
 firmware:       RTL8192E/boot.img
 firmware:       RTL8192E/data.img
 firmware:       RTL8192E/main.img
@@ -562,11 +561,6 @@ firmware:       ks7010sd.rom
 firmware:       lattice-ecp3.bit
 firmware:       lbtf_usb.bin
 firmware:       lgs8g75.fw
-firmware:       libertas/cf8305.bin
-firmware:       libertas/cf8381.bin
-firmware:       libertas/cf8381_helper.bin
-firmware:       libertas/cf8385.bin
-firmware:       libertas/cf8385_helper.bin
 firmware:       libertas/gspi8385.bin
 firmware:       libertas/gspi8385_helper.bin
 firmware:       libertas/gspi8385_hlp.bin
@@ -588,8 +582,6 @@ firmware:       libertas/usb8388.bin
 firmware:       libertas/usb8388_v5.bin
 firmware:       libertas/usb8388_v9.bin
 firmware:       libertas/usb8682.bin
-firmware:       libertas_cs.fw
-firmware:       libertas_cs_helper.fw
 firmware:       liquidio/lio_210nv_nic.bin
 firmware:       liquidio/lio_210sv_nic.bin
 firmware:       liquidio/lio_23xx_nic.bin
