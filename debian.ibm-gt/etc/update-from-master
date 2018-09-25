@@ -61,10 +61,12 @@ print_var master_release
 print_var master_repo
 print_var master_branch
 
-# Fetch the upstream tag, i.e. v4.10, which is required by
-# debian/rules insertchanges
-git fetch --no-tags "${master_repo}" "v${kernel_version}" \
-    "refs/tags/v${kernel_version}:refs/tags/v${kernel_version}"
+# Fetch the upstream tag, i.e. v4.10, if it doesn't exist. The tag is required
+# by debian/rules insertchanges.
+if ! git rev-parse "v${kernel_version}" &>/dev/null ; then
+	git fetch --no-tags "${master_repo}" "v${kernel_version}" \
+		"refs/tags/v${kernel_version}:refs/tags/v${kernel_version}"
+fi
 
 # Fetch without tags to not pollute the repo with Ubuntu master tags
 git fetch --no-tags "${master_repo}"
