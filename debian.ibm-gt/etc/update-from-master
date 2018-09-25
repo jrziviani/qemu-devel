@@ -12,6 +12,18 @@ function out()
 	exit 1
 }
 
+function usage()
+{
+	cat <<EOF
+Usage: update-from-master [-b BRANCH] [-h] [-r REPO]
+
+Options:
+  -b BRANCH  Override the default master branch.
+  -h         Show this help text.
+  -r REPO    Override the default master repo.
+EOF
+}
+
 trap out EXIT INT TERM HUP
 
 . debian/debian.env
@@ -23,19 +35,40 @@ kernel_version=${kernel_version%%.0-*}
 master_release=$(dpkg-parsechangelog -ldebian.master/changelog -SDistribution)
 master_repo=https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/${master_release}
 
+master_branch=master-next
+
+while [ ${#} -gt 0 ] ; do
+	case "${1}" in
+		-b)
+			shift
+			master_branch=${1}
+			;;
+		-h)
+			usage
+			exit
+			;;
+		-r)
+			shift
+			master_repo=${1}
+			;;
+	esac
+	shift
+done
+
 print_var debian_dir
 print_var kernel_version
 print_var master_release
 print_var master_repo
+print_var master_branch
 
 # Fetch the upstream tag, i.e. v4.10, which is required by
 # debian/rules insertchanges
 git fetch --no-tags "${master_repo}" "v${kernel_version}" \
     "refs/tags/v${kernel_version}:refs/tags/v${kernel_version}"
 
-# Fetch without tags to no pollute the repo with Ubuntu master tags
+# Fetch without tags to not pollute the repo with Ubuntu master tags
 git fetch --no-tags "${master_repo}"
-git fetch --no-tags "${master_repo}" master-next
+git fetch --no-tags "${master_repo}" "${master_branch}"
 
 # Find the commit of the most recent tag on the Ubuntu master-next branch
 master_commit=$(git log --oneline FETCH_HEAD | \
