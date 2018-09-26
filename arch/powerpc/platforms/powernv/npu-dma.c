@@ -378,6 +378,25 @@ struct pnv_ioda_pe *pnv_pci_npu_setup_iommu(struct pnv_ioda_pe *npe)
 /*
  * NPU2 ATS
  */
+/* Maximum possible number of ATSD MMIO registers per NPU */
+#define NV_NMMU_ATSD_REGS 8
+
+struct npu {
+	int index;
+	__be64 *mmio_atsd_regs[NV_NMMU_ATSD_REGS];
+	unsigned int mmio_atsd_count;
+
+	/* Bitmask for MMIO register usage */
+	unsigned long mmio_atsd_usage;
+
+	/* Do we need to explicitly flush the nest mmu? */
+	bool nmmu_flush;
+
+	struct list_head next;
+
+	struct pci_controller *hose;
+};
+
 static struct {
 	/*
 	 * spinlock to protect initialisation of an npu_context for
@@ -396,22 +415,27 @@ static struct {
 	uint64_t atsd_threshold;
 	struct dentry *atsd_threshold_dentry;
 
+	struct list_head npu_list;
 } npu2_devices;
 
 void pnv_npu2_devices_init(void)
 {
 	memset(&npu2_devices, 0, sizeof(npu2_devices));
+	INIT_LIST_HEAD(&npu2_devices.npu_list);
 	spin_lock_init(&npu2_devices.context_lock);
 	npu2_devices.atsd_threshold = 2 * 1024 * 1024;
 }
 
 static struct npu *npdev_to_npu(struct pci_dev *npdev)
 {
-	struct pnv_phb *nphb;
+	struct pci_controller *hose = pci_bus_to_host(npdev->bus);
+	struct npu *npu;
 
-	nphb = pci_bus_to_host(npdev->bus)->private_data;
+	list_for_each_entry(npu, &npu2_devices.npu_list, next)
+		if (hose == npu->hose)
+			return npu;
 
-	return &nphb->npu;
+	return NULL;
 }
 
 /* Maximum number of nvlinks per npu */
@@ -739,7 +763,6 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 	u32 nvlink_index;
 	struct device_node *nvlink_dn;
 	struct mm_struct *mm = current->mm;
-	struct pnv_phb *nphb;
 	struct npu *npu;
 	struct npu_context *npu_context;
 
@@ -769,20 +792,7 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 		return ERR_PTR(-EINVAL);
 	}
 
-	nphb = pci_bus_to_host(npdev->bus)->private_data;
 	npu = npdev_to_npu(npdev);
-
-	/*
-	 * Setup the NPU context table for a particular GPU. These need to be
-	 * per-GPU as we need the tables to filter ATSDs when there are no
-	 * active contexts on a particular GPU. It is safe for these to be
-	 * called concurrently with destroy as the OPAL call takes appropriate
-	 * locks and refcounts on init/destroy.
-	 */
-	rc = opal_npu_init_context(nphb->opal_id, mm->context.id, flags,
-				PCI_DEVID(gpdev->bus->number, gpdev->devfn));
-	if (rc < 0)
-		return ERR_PTR(-ENOSPC);
 
 	/*
 	 * We store the npu pci device so we can more easily get at the
@@ -794,9 +804,6 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 		if (npu_context->release_cb != cb ||
 			npu_context->priv != priv) {
 			spin_unlock(&npu2_devices.context_lock);
-			opal_npu_destroy_context(nphb->opal_id, mm->context.id,
-						PCI_DEVID(gpdev->bus->number,
-							gpdev->devfn));
 			return ERR_PTR(-EINVAL);
 		}
 
@@ -822,9 +829,6 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 
 		if (rc) {
 			kfree(npu_context);
-			opal_npu_destroy_context(nphb->opal_id, mm->context.id,
-					PCI_DEVID(gpdev->bus->number,
-						gpdev->devfn));
 			return ERR_PTR(rc);
 		}
 
@@ -875,7 +879,6 @@ void pnv_npu2_destroy_context(struct npu_context *npu_context,
 			struct pci_dev *gpdev)
 {
 	int removed;
-	struct pnv_phb *nphb;
 	struct npu *npu;
 	struct pci_dev *npdev = pnv_pci_get_npu_dev(gpdev, 0);
 	struct device_node *nvlink_dn;
@@ -887,15 +890,15 @@ void pnv_npu2_destroy_context(struct npu_context *npu_context,
 	if (!firmware_has_feature(FW_FEATURE_OPAL))
 		return;
 
-	nphb = pci_bus_to_host(npdev->bus)->private_data;
 	npu = npdev_to_npu(npdev);
 	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
 	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
 							&nvlink_index)))
 		return;
 	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], NULL);
-	opal_npu_destroy_context(nphb->opal_id, npu_context->mm->context.id,
-				PCI_DEVID(gpdev->bus->number, gpdev->devfn));
+	/*
+	 * FIXME: add reference counting instead of opal_npu_destroy_context?
+	 */
 	spin_lock(&npu2_devices.context_lock);
 	removed = kref_put(&npu_context->kref, pnv_npu2_release_context);
 	spin_unlock(&npu2_devices.context_lock);
@@ -958,14 +961,17 @@ int pnv_npu2_handle_fault(struct npu_context *context, uintptr_t *ea,
 }
 EXPORT_SYMBOL(pnv_npu2_handle_fault);
 
-int pnv_npu2_init(struct pnv_phb *phb)
+int pnv_npu2_init(struct pci_controller *hose)
 {
 	unsigned int i;
 	u64 mmio_atsd;
-	struct device_node *dn;
-	struct pci_dev *gpdev;
 	static int npu_index;
-	uint64_t rc = 0;
+	struct npu *npu;
+	int ret;
+
+	npu = kzalloc(sizeof(*npu), GFP_KERNEL);
+	if (!npu)
+		return -ENOMEM;
 
 	if (!npu2_devices.atsd_threshold_dentry) {
 		npu2_devices.atsd_threshold_dentry = debugfs_create_x64(
@@ -973,33 +979,77 @@ int pnv_npu2_init(struct pnv_phb *phb)
 				&npu2_devices.atsd_threshold);
 	}
 
-	phb->npu.nmmu_flush =
-		of_property_read_bool(phb->hose->dn, "ibm,nmmu-flush");
-	for_each_child_of_node(phb->hose->dn, dn) {
-		gpdev = pnv_pci_get_gpu_dev(get_pci_dev(dn));
-		if (gpdev) {
-			rc = opal_npu_map_lpar(phb->opal_id,
-				PCI_DEVID(gpdev->bus->number, gpdev->devfn),
-				0, 0);
-			if (rc)
-				dev_err(&gpdev->dev,
-					"Error %lld mapping device to LPAR\n",
-					rc);
-		}
-	}
+	npu->nmmu_flush = of_property_read_bool(hose->dn, "ibm,nmmu-flush");
 
-	for (i = 0; !of_property_read_u64_index(phb->hose->dn, "ibm,mmio-atsd",
+	for (i = 0; !of_property_read_u64_index(hose->dn, "ibm,mmio-atsd",
 							i, &mmio_atsd); i++)
-		phb->npu.mmio_atsd_regs[i] = ioremap(mmio_atsd, 32);
+		npu->mmio_atsd_regs[i] = ioremap(mmio_atsd, 32);
 
-	pr_info("NPU%lld: Found %d MMIO ATSD registers", phb->opal_id, i);
-	phb->npu.mmio_atsd_count = i;
-	phb->npu.mmio_atsd_usage = 0;
+	pr_info("NPU%d: Found %d MMIO ATSD registers", hose->global_number, i);
+	npu->mmio_atsd_count = i;
+	npu->mmio_atsd_usage = 0;
 	npu_index++;
-	if (WARN_ON(npu_index >= NV_MAX_NPUS))
-		return -ENOSPC;
+	if (WARN_ON(npu_index >= NV_MAX_NPUS)) {
+		ret = -ENOSPC;
+		goto fail_exit;
+	}
 	npu2_devices.max_index = npu_index;
-	phb->npu.index = npu_index;
+	npu->index = npu_index;
+	npu->hose = hose;
+
+	list_add(&npu->next, &npu2_devices.npu_list);
 
 	return 0;
+
+fail_exit:
+	for (i = 0; i < npu->mmio_atsd_count; ++i)
+		iounmap(npu->mmio_atsd_regs[i]);
+
+	kfree(npu);
+
+	return ret;
+}
+
+void pnv_npu2_map_lpar_phb(struct pnv_phb *nphb, unsigned long msr)
+{
+	struct pci_dev *gpdev;
+	struct device_node *dn;
+	int ret;
+	struct pci_controller *hose = nphb->hose;
+
+	for_each_child_of_node(hose->dn, dn) {
+		gpdev = pnv_pci_get_gpu_dev(get_pci_dev(dn));
+		if (!gpdev)
+			continue;
+
+		dev_err(&gpdev->dev, "Map LPAR opalid=%llu\n", nphb->opal_id);
+		ret = opal_npu_map_lpar(nphb->opal_id,
+				PCI_DEVID(gpdev->bus->number, gpdev->devfn),
+				0, 0);
+		if (!ret)
+			continue;
+		dev_err(&gpdev->dev, "Error %d mapping device to LPAR\n", ret);
+	}
+
+	for_each_child_of_node(hose->dn, dn) {
+		gpdev = pnv_pci_get_gpu_dev(get_pci_dev(dn));
+		if (!gpdev)
+			continue;
+
+		/*
+		 * Setup the NPU context table for a particular GPU. These need to be
+		 * per-GPU as we need the tables to filter ATSDs when there are no
+		 * active contexts on a particular GPU. It is safe for these to be
+		 * called concurrently with destroy as the OPAL call takes appropriate
+		 * locks and refcounts on init/destroy.
+		 */
+		dev_err(&gpdev->dev, "init context opalid=%llu\n", nphb->opal_id);
+		ret = opal_npu_init_context(nphb->opal_id, 0/*__unused*/, msr,
+				PCI_DEVID(gpdev->bus->number, gpdev->devfn));
+		if (!ret)
+			continue;
+
+		dev_err(&gpdev->dev, "Failed to init context: %d\n", ret);
+		/* break? */
+	}
 }
