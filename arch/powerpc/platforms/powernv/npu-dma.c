@@ -1050,3 +1050,30 @@ void pnv_npu2_map_lpar_phb(struct pnv_phb *nphb, unsigned long msr)
 		/* break? */
 	}
 }
+
+int pnv_npu2_map_lpar_dev(struct pci_controller *hose, struct pci_dev *gpdev,
+		unsigned int lparid, unsigned long lpcr, unsigned long msr)
+{
+	int rc;
+	struct pnv_phb *nphb = hose->private_data;
+
+	dev_err(&gpdev->dev, "Map LPAR opalid=%llu lparid=%u lpcr=%lx\n",
+			nphb->opal_id, lparid, lpcr);
+	rc = opal_npu_map_lpar(nphb->opal_id,
+			PCI_DEVID(gpdev->bus->number, gpdev->devfn), lparid,
+			lpcr);
+	if (rc)
+		return rc;
+
+	dev_err(&gpdev->dev, "init context opalid=%llu msr=%lx\n",
+			nphb->opal_id, msr);
+	rc = opal_npu_destroy_context(nphb->opal_id, 0/*__unused*/,
+			PCI_DEVID(gpdev->bus->number, gpdev->devfn));
+	if (rc)
+		pr_err("___K___ %s %u: rc=%d\n", __func__, __LINE__, rc);
+	rc = opal_npu_init_context(nphb->opal_id, 0/*__unused*/, msr,
+			PCI_DEVID(gpdev->bus->number, gpdev->devfn));
+
+	return rc;
+}
+EXPORT_SYMBOL_GPL(pnv_npu2_map_lpar_dev);
