@@ -8,9 +8,6 @@
 
 struct pci_dn;
 
-/* Maximum possible number of ATSD MMIO registers per NPU */
-#define NV_NMMU_ATSD_REGS 8
-
 enum pnv_phb_type {
 	PNV_PHB_IODA1		= 0,
 	PNV_PHB_IODA2		= 1,
@@ -180,19 +177,6 @@ struct pnv_phb {
 	unsigned int		diag_data_size;
 	u8			*diag_data;
 
-	/* Nvlink2 data */
-	struct npu {
-		int index;
-		__be64 *mmio_atsd_regs[NV_NMMU_ATSD_REGS];
-		unsigned int mmio_atsd_count;
-
-		/* Bitmask for MMIO register usage */
-		unsigned long mmio_atsd_usage;
-
-		/* Do we need to explicitly flush the nest mmu? */
-		bool nmmu_flush;
-	} npu;
-
 	int p2p_target_count;
 };
 
@@ -240,7 +224,7 @@ extern long pnv_npu_set_window(struct pnv_ioda_pe *npe, int num,
 extern long pnv_npu_unset_window(struct pnv_ioda_pe *npe, int num);
 extern void pnv_npu_take_ownership(struct pnv_ioda_pe *npe);
 extern void pnv_npu_release_ownership(struct pnv_ioda_pe *npe);
-extern int pnv_npu2_init(struct pnv_phb *phb);
+extern void pnv_npu2_map_lpar_phb(struct pnv_phb *nphb, unsigned long msr);
 
 /* phb ops (cxl switches these when enabling the kernel api on the phb) */
 extern const struct pci_controller_ops pnv_cxl_cx4_ioda_controller_ops;
