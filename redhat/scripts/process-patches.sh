@@ -29,11 +29,19 @@ SRPMDIR=rpmbuild/SRPM
 BUILDDIR=${SOURCES}/${BUILDDIR_NAME}
 SPEC=rpmbuild/SPECS/${SPECNAME}
 
-if test "$(rpm --eval '%{?rhel}')" = 7; then
-  LOCAL_PYTHON=/usr/bin/python
-else
-  LOCAL_PYTHON=$(rpm --eval '%{__python3}')
+LOCAL_PYTHON=$(
+  if python --version > /dev/null; then
+    echo python
+  elif python3 --version > /dev/null; then
+    echo python3
+  fi 2> /dev/null
+)
+
+if [ -z "$LOCAL_PYTHON" ]; then
+  echo "No python interpreter found"
+  exit 1
 fi
+echo "Using $LOCAL_PYTHON"
 
 # Pre-cleaning
 rm -rf .tmp asection psection patchlist
