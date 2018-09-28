@@ -936,6 +936,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Sep 28 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
+- kvm-Re-enable-disabled-Hyper-V-enlightenments.patch [bz#1625185]
+- kvm-Fix-annocheck-issues.patch [bz#1624164]
+- kvm-exec-check-that-alignment-is-a-power-of-two.patch [bz#1630746]
+- kvm-curl-Make-sslverify-off-disable-host-as-well-as-peer.patch [bz#1575925]
+- Resolves: bz#1575925
+  ("SSL: no alternative certificate subject name matches target host name" error even though sslverify = off)
+- Resolves: bz#1624164
+  (Review annocheck distro flag failures in qemu-kvm)
+- Resolves: bz#1625185
+  (Re-enable disabled Hyper-V enlightenments)
+- Resolves: bz#1630746
+  (qemu_ram_mmap: Assertion `is_power_of_2(align)' failed)
+
 * Tue Sep 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-31.el8
 - kvm-i386-Disable-TOPOEXT-by-default-on-cpu-host.patch [bz#1619804]
 - kvm-redhat-enable-opengl-add-build-and-runtime-deps.patch [bz#1618412]
