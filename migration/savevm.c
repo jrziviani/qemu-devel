@@ -1676,6 +1676,7 @@ static void *postcopy_ram_listen_thread(void *opaque)
     migration_incoming_state_destroy();
     qemu_loadvm_state_cleanup();
 
+    mis->have_listen_thread = false;
     return NULL;
 }
 
