@@ -302,7 +302,6 @@ atl1
 atl1c
 atl1e
 atl2
-atlantic
 atlas-ph-sensor
 atlas_btns
 atm
@@ -405,8 +404,6 @@ bnx2
 bnx2fc
 bnx2i
 bnx2x
-bnxt_en
-bnxt_re
 bonding
 bpck
 bq2415x_charger
@@ -2436,7 +2433,6 @@ nfnetlink_cthelper
 nfnetlink_cttimeout
 nfnetlink_log
 nfnetlink_queue
-nfp
 nfs
 nfs_acl
 nfs_layout_flexfiles
