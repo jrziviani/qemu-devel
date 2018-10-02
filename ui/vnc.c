@@ -3869,9 +3869,6 @@ void vnc_display_open(const char *id, Error **errp)
     bool reverse = false;
     const char *credid;
     bool sasl = false;
-#ifdef CONFIG_VNC_SASL
-    int saslErr;
-#endif
     int acl = 0;
     int lock_key_sync = 1;
     int key_delay_ms;
@@ -4045,10 +4042,14 @@ void vnc_display_open(const char *id, Error **errp)
     trace_vnc_auth_init(vd, 1, vd->ws_auth, vd->ws_subauth);
 
 #ifdef CONFIG_VNC_SASL
-    if ((saslErr = sasl_server_init(NULL, "qemu-kvm")) != SASL_OK) {
-        error_setg(errp, "Failed to initialize SASL auth: %s",
-                   sasl_errstring(saslErr, NULL, NULL));
-        goto fail;
+    if (sasl) {
+        int saslErr = sasl_server_init(NULL, "qemu-kvm");
+
+        if (saslErr != SASL_OK) {
+            error_setg(errp, "Failed to initialize SASL auth: %s",
+                       sasl_errstring(saslErr, NULL, NULL));
+            goto fail;
+        }
     }
 #endif
     vd->lock_key_sync = lock_key_sync;
