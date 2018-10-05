@@ -27,6 +27,8 @@ SOURCES_FILELIST:=                     \
        ksmtuned                        \
        ksm.sysconfig                   \
        kvm.modules                     \
+       81-kvm-rhel.rules               \
+       udev-kvm-check.c                \
        99-qemu-guest-agent.rules       \
        qemu-guest-agent.service        \
        ksmtuned.service                \

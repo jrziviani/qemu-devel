@@ -106,6 +106,8 @@ Source30: kvm-s390x.conf
 Source31: kvm-x86.conf
 Source32: qemu-pr-helper.service
 Source33: qemu-pr-helper.socket
+Source34: 81-kvm-rhel.rules
+Source35: udev-kvm-check.c
 
 
 
@@ -557,9 +559,11 @@ make V=1 %{?_smp_mflags} $buildldflags
 cp -a %{kvm_target}-softmmu/qemu-system-%{kvm_target} qemu-kvm
 
 gcc %{SOURCE6} $RPM_OPT_FLAGS $RPM_LD_FLAGS -o ksmctl
+gcc %{SOURCE35} $RPM_OPT_FLAGS $RPM_LD_FLAGS -o udev-kvm-check
 
 %install
-%define _udevdir %(pkg-config --variable=udevdir udev)/rules.d
+%define _udevdir %(pkg-config --variable=udevdir udev)
+%define _udevrulesdir %{_udevdir}/rules.d
 
 install -D -p -m 0644 %{SOURCE4} $RPM_BUILD_ROOT%{_unitdir}/ksm.service
 install -D -p -m 0644 %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/ksm
@@ -580,9 +584,12 @@ install -D -p -m 0644 %{SOURCE26} $RPM_BUILD_ROOT%{_sysconfdir}/modprobe.d/vhost
 %endif
 
 mkdir -p $RPM_BUILD_ROOT%{_bindir}/
-mkdir -p $RPM_BUILD_ROOT%{_udevdir}
-
+mkdir -p $RPM_BUILD_ROOT%{_udevrulesdir}/
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
+
+install -p -m 0755 udev-kvm-check $RPM_BUILD_ROOT%{_udevdir}
+install -p -m 0644 %{SOURCE34} $RPM_BUILD_ROOT%{_udevrulesdir}
+
 install -m 0644 scripts/dump-guest-memory.py \
                 $RPM_BUILD_ROOT%{_datadir}/%{name}
 
@@ -596,7 +603,7 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/systemtap/tapset
 # Install qemu-guest-agent service and udev rules
 install -m 0644 %{_sourcedir}/qemu-guest-agent.service %{buildroot}%{_unitdir}
 install -m 0644 %{_sourcedir}/qemu-ga.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/qemu-ga
-install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevdir}
+install -m 0644 %{_sourcedir}/99-qemu-guest-agent.rules %{buildroot}%{_udevrulesdir}
 
 # - the fsfreeze hook script:
 install -D --preserve-timestamps \
@@ -851,6 +858,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %config(noreplace) %{_sysconfdir}/sysconfig/ksm
 %{_unitdir}/ksmtuned.service
 %{_sbindir}/ksmtuned
+%{_udevdir}/udev-kvm-check
+%{_udevrulesdir}/81-kvm-rhel.rules
+%ghost %{_sysconfdir}/kvm
 %config(noreplace) %{_sysconfdir}/ksmtuned.conf
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/bridge.conf
@@ -920,7 +930,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_bindir}/qemu-ga
 %{_mandir}/man8/qemu-ga.8*
 %{_unitdir}/qemu-guest-agent.service
-%{_udevdir}/99-qemu-guest-agent.rules
+%{_udevrulesdir}/99-qemu-guest-agent.rules
 %config(noreplace) %{_sysconfdir}/sysconfig/qemu-ga
 %{_sysconfdir}/qemu-ga
 %{_datadir}/%{name}/qemu-ga
