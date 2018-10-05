@@ -1519,12 +1519,18 @@ void memory_region_init_ram_shared_nomigrate(MemoryRegion *mr,
                                              bool share,
                                              Error **errp)
 {
+    Error *err = NULL;
     memory_region_init(mr, owner, name, size);
     mr->ram = true;
     mr->terminates = true;
     mr->destructor = memory_region_destructor_ram;
-    mr->ram_block = qemu_ram_alloc(size, share, mr, errp);
+    mr->ram_block = qemu_ram_alloc(size, share, mr, &err);
     mr->dirty_log_mask = tcg_enabled() ? (1 << DIRTY_MEMORY_CODE) : 0;
+    if (err) {
+        mr->size = int128_zero();
+        object_unparent(OBJECT(mr));
+        error_propagate(errp, err);
+    }
 }
 
 void memory_region_init_resizeable_ram(MemoryRegion *mr,
@@ -1537,13 +1543,19 @@ void memory_region_init_resizeable_ram(MemoryRegion *mr,
                                                        void *host),
                                        Error **errp)
 {
+    Error *err = NULL;
     memory_region_init(mr, owner, name, size);
     mr->ram = true;
     mr->terminates = true;
     mr->destructor = memory_region_destructor_ram;
     mr->ram_block = qemu_ram_alloc_resizeable(size, max_size, resized,
-                                              mr, errp);
+                                              mr, &err);
     mr->dirty_log_mask = tcg_enabled() ? (1 << DIRTY_MEMORY_CODE) : 0;
+    if (err) {
+        mr->size = int128_zero();
+        object_unparent(OBJECT(mr));
+        error_propagate(errp, err);
+    }
 }
 
 #ifdef __linux__
@@ -1556,13 +1568,19 @@ void memory_region_init_ram_from_file(MemoryRegion *mr,
                                       const char *path,
                                       Error **errp)
 {
+    Error *err = NULL;
     memory_region_init(mr, owner, name, size);
     mr->ram = true;
     mr->terminates = true;
     mr->destructor = memory_region_destructor_ram;
     mr->align = align;
-    mr->ram_block = qemu_ram_alloc_from_file(size, mr, share, path, errp);
+    mr->ram_block = qemu_ram_alloc_from_file(size, mr, share, path, &err);
     mr->dirty_log_mask = tcg_enabled() ? (1 << DIRTY_MEMORY_CODE) : 0;
+    if (err) {
+        mr->size = int128_zero();
+        object_unparent(OBJECT(mr));
+        error_propagate(errp, err);
+    }
 }
 
 void memory_region_init_ram_from_fd(MemoryRegion *mr,
@@ -1573,12 +1591,18 @@ void memory_region_init_ram_from_fd(MemoryRegion *mr,
                                     int fd,
                                     Error **errp)
 {
+    Error *err = NULL;
     memory_region_init(mr, owner, name, size);
     mr->ram = true;
     mr->terminates = true;
     mr->destructor = memory_region_destructor_ram;
-    mr->ram_block = qemu_ram_alloc_from_fd(size, mr, share, fd, errp);
+    mr->ram_block = qemu_ram_alloc_from_fd(size, mr, share, fd, &err);
     mr->dirty_log_mask = tcg_enabled() ? (1 << DIRTY_MEMORY_CODE) : 0;
+    if (err) {
+        mr->size = int128_zero();
+        object_unparent(OBJECT(mr));
+        error_propagate(errp, err);
+    }
 }
 #endif
 
@@ -1629,13 +1653,19 @@ void memory_region_init_rom_nomigrate(MemoryRegion *mr,
                                       uint64_t size,
                                       Error **errp)
 {
+    Error *err = NULL;
     memory_region_init(mr, owner, name, size);
     mr->ram = true;
     mr->readonly = true;
     mr->terminates = true;
     mr->destructor = memory_region_destructor_ram;
-    mr->ram_block = qemu_ram_alloc(size, false, mr, errp);
+    mr->ram_block = qemu_ram_alloc(size, false, mr, &err);
     mr->dirty_log_mask = tcg_enabled() ? (1 << DIRTY_MEMORY_CODE) : 0;
+    if (err) {
+        mr->size = int128_zero();
+        object_unparent(OBJECT(mr));
+        error_propagate(errp, err);
+    }
 }
 
 void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
@@ -1646,6 +1676,7 @@ void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
                                              uint64_t size,
                                              Error **errp)
 {
+    Error *err = NULL;
     assert(ops);
     memory_region_init(mr, owner, name, size);
     mr->ops = ops;
@@ -1653,7 +1684,12 @@ void memory_region_init_rom_device_nomigrate(MemoryRegion *mr,
     mr->terminates = true;
     mr->rom_device = true;
     mr->destructor = memory_region_destructor_ram;
-    mr->ram_block = qemu_ram_alloc(size, false,  mr, errp);
+    mr->ram_block = qemu_ram_alloc(size, false,  mr, &err);
+    if (err) {
+        mr->size = int128_zero();
+        object_unparent(OBJECT(mr));
+        error_propagate(errp, err);
+    }
 }
 
 void memory_region_init_iommu(void *_iommu_mr,
