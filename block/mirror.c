@@ -976,6 +976,12 @@ static void mirror_pause(Job *job)
     mirror_wait_for_all_io(s);
 }
 
+static bool mirror_drained_poll(BlockJob *job)
+{
+    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
+    return !!s->in_flight;
+}
+
 static void mirror_attached_aio_context(BlockJob *job, AioContext *new_context)
 {
     MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
@@ -1011,6 +1017,7 @@ static const BlockJobDriver mirror_job_driver = {
         .pause                  = mirror_pause,
         .complete               = mirror_complete,
     },
+    .drained_poll           = mirror_drained_poll,
     .attached_aio_context   = mirror_attached_aio_context,
     .drain                  = mirror_drain,
 };
@@ -1028,6 +1035,7 @@ static const BlockJobDriver commit_active_job_driver = {
         .pause                  = mirror_pause,
         .complete               = mirror_complete,
     },
+    .drained_poll           = mirror_drained_poll,
     .attached_aio_context   = mirror_attached_aio_context,
     .drain                  = mirror_drain,
 };
