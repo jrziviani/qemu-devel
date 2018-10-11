@@ -2370,6 +2370,7 @@ EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_free_bfreg
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fs_add_rx_underlay_qpn
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fs_remove_rx_underlay_qpn
+EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_fdb_sub_ns
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_flow_namespace
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_protocol_dev
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_uars_page
@@ -15826,6 +15827,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_hw_unregister_gate
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_hw_unregister_mux
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_is_match
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_multiplier_ops
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_mux_determine_rate_flags
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_mux_ops
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_mux_ro_ops
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	clk_notifier_register
