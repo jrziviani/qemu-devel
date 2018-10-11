@@ -936,6 +936,18 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Oct 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
+- kvm-seccomp-allow-sched_setscheduler-with-SCHED_IDLE-pol.patch [bz#1618356]
+- kvm-seccomp-use-SIGSYS-signal-instead-of-killing-the-thr.patch [bz#1618356]
+- kvm-seccomp-prefer-SCMP_ACT_KILL_PROCESS-if-available.patch [bz#1618356]
+- kvm-configure-require-libseccomp-2.2.0.patch [bz#1618356]
+- kvm-seccomp-set-the-seccomp-filter-to-all-threads.patch [bz#1618356]
+- kvm-memory-cleanup-side-effects-of-memory_region_init_fo.patch [bz#1600365]
+- Resolves: bz#1600365
+  (QEMU core dumped when hotplug memory exceeding host hugepages and with discard-data=yes)
+- Resolves: bz#1618356
+  (qemu-kvm: Qemu: seccomp: blacklist is not applied to all threads [rhel-8])
+
 * Fri Oct 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
 - kvm-migration-postcopy-Clear-have_listen_thread.patch [bz#1608765]
 - kvm-migration-cleanup-in-error-paths-in-loadvm.patch [bz#1608765]
