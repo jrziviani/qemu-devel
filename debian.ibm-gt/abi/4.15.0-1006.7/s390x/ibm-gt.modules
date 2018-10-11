@@ -400,6 +400,9 @@ mlx5_ib
 mlxfw
 mlxsw_core
 mlxsw_pci
+mlxsw_spectrum
+mlxsw_switchib
+mlxsw_switchx2
 monreader
 monwriter
 mpls_gso
@@ -595,6 +598,7 @@ osst
 overlay
 p8022
 paes_s390
+parman
 pblk
 pcbc
 pci-stub

@@ -439,6 +439,7 @@ EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_free_bfreg
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fs_add_rx_underlay_qpn
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fs_remove_rx_underlay_qpn
+EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_fdb_sub_ns
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_flow_namespace
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_protocol_dev
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_get_uars_page
@@ -1200,6 +1201,12 @@ EXPORT_SYMBOL lib/lz4/lz4hc_compress 0x00000000	LZ4_compress_HC
 EXPORT_SYMBOL lib/lz4/lz4hc_compress 0x00000000	LZ4_compress_HC_continue
 EXPORT_SYMBOL lib/lz4/lz4hc_compress 0x00000000	LZ4_loadDictHC
 EXPORT_SYMBOL lib/lz4/lz4hc_compress 0x00000000	LZ4_saveDictHC
+EXPORT_SYMBOL lib/parman 0x00000000	parman_create
+EXPORT_SYMBOL lib/parman 0x00000000	parman_destroy
+EXPORT_SYMBOL lib/parman 0x00000000	parman_item_add
+EXPORT_SYMBOL lib/parman 0x00000000	parman_item_remove
+EXPORT_SYMBOL lib/parman 0x00000000	parman_prio_fini
+EXPORT_SYMBOL lib/parman 0x00000000	parman_prio_init
 EXPORT_SYMBOL lib/raid6/raid6_pq 0x00000000	raid6_empty_zero_page
 EXPORT_SYMBOL lib/raid6/raid6_pq 0x00000000	raid6_gfexi
 EXPORT_SYMBOL lib/raid6/raid6_pq 0x00000000	raid6_gfexp
@@ -8299,6 +8306,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	call_rcu_bh
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	call_rcu_sched
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	call_rcu_tasks
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	call_srcu
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	call_switchdev_notifiers
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cancel_work_sync
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cap_mmap_addr
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cap_mmap_file
@@ -10019,6 +10027,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_pernet_device
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_pernet_subsys
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_pm_notifier
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_reset_call
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_switchdev_notifier
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_syscore_ops
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_trace_event
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	register_tracepoint_module_notifier
@@ -10376,6 +10385,14 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	subsys_interface_unregister
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	subsys_system_register
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	subsys_virtual_register
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	suspend_device_irqs
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_deferred_process
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_port_attr_get
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_port_attr_set
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_port_obj_add
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_port_obj_del
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_port_same_parent_id
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_trans_item_dequeue
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	switchdev_trans_item_enqueue
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	symbol_put_addr
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	sync_page_io
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	synchronize_rcu_bh
@@ -10607,6 +10624,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_pernet_device
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_pernet_subsys
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_pm_notifier
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_reset_call
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_switchdev_notifier
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_syscore_ops
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_trace_event
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	unregister_tracepoint_module_notifier
