@@ -766,6 +766,10 @@ find $RPM_BUILD_ROOT -name "libcacard.so*" -exec chmod +x \{\} \;
 
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 
+# We need to make the block device modules executable else
+# RPM won't pick up their dependencies.
+chmod +x $RPM_BUILD_ROOT%{_libdir}/qemu-kvm/block-*.so
+
 %check
 export DIFF=diff; make check V=1
 
