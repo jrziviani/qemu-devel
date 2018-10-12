@@ -3982,7 +3982,7 @@ void vnc_display_open(const char *id, Error **errp)
 
 #ifdef CONFIG_VNC_SASL
     if (sasl) {
-        int saslErr = sasl_server_init(NULL, "qemu");
+        int saslErr = sasl_server_init(NULL, "qemu-kvm");
 
         if (saslErr != SASL_OK) {
             error_setg(errp, "Failed to initialize SASL auth: %s",
