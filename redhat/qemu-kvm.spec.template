@@ -940,6 +940,19 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Oct 12 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-36
+- kvm-check-Only-test-ivshm-when-it-is-compiled-in.patch [bz#1621817]
+- kvm-Disable-ivshmem.patch [bz#1621817]
+- kvm-mirror-Fail-gracefully-for-source-target.patch [bz#1637963]
+- kvm-commit-Add-top-node-base-node-options.patch [bz#1637970]
+- kvm-qemu-iotests-Test-commit-with-top-node-base-node.patch [bz#1637970]
+- Resolves: bz#1621817
+  (Disable IVSHMEM in RHEL 8)
+- Resolves: bz#1637963
+  (Segfault on 'blockdev-mirror' with same node as source and target)
+- Resolves: bz#1637970
+  (allow using node-names with block-commit)
+
 * Thu Oct 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-35.el8
 - kvm-redhat-make-the-plugins-executable.patch [bz#1638304]
 - Resolves: bz#1638304
