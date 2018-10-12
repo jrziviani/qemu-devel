@@ -1,0 +1,4 @@
+qemu-*.tar.xz
+debug*
+rpm
+localversion
