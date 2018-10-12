@@ -940,6 +940,13 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Oct 12 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-37.el8
+- kvm-block-for-jobs-do-not-clear-user_paused-until-after-.patch [bz#1635583]
+- kvm-iotests-Add-failure-matching-to-common.qemu.patch [bz#1635583]
+- kvm-block-iotest-to-catch-abort-on-forced-blockjob-cance.patch [bz#1635583]
+- Resolves: bz#1635583
+  (Quitting VM causes qemu core dump once the block mirror job paused for no enough target space)
+
 * Fri Oct 12 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-36
 - kvm-check-Only-test-ivshm-when-it-is-compiled-in.patch [bz#1621817]
 - kvm-Disable-ivshmem.patch [bz#1621817]
