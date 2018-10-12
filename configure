@@ -2424,6 +2424,7 @@ if test "$seccomp" != "no" ; then
         seccomp="no"
     fi
 fi
+
 ##########################################
 # xen probe
 
