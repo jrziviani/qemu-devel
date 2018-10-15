@@ -2986,6 +2986,7 @@ static void mtree_print_flatview(gpointer key, gpointer value,
     int n = view->nr;
     int i;
     AddressSpace *as;
+    bool print_kvm = false;
 
     p(f, "FlatView #%d\n", fvi->counter);
     ++fvi->counter;
@@ -2997,6 +2998,9 @@ static void mtree_print_flatview(gpointer key, gpointer value,
             p(f, ", alias %s", memory_region_name(as->root->alias));
         }
         p(f, "\n");
+        if (as == &address_space_memory) {
+            print_kvm = true;
+        }
     }
 
     p(f, " Root memory region: %s\n",
@@ -3029,6 +3033,12 @@ static void mtree_print_flatview(gpointer key, gpointer value,
         }
         if (fvi->owner) {
             mtree_print_mr_owner(p, f, mr);
+        }
+
+        if (kvm_enabled() && print_kvm &&
+            is_kvm_memory(int128_get64(range->addr.start),
+                          MR_SIZE(range->addr.size) + 1)) {
+            p(f, " KVM");
         }
         p(f, "\n");
         range++;
