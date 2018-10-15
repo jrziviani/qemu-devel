@@ -950,6 +950,37 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Oct 15 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-38.el8
+- kvm-Revert-hw-acpi-build-build-SRAT-memory-affinity-stru.patch [bz#1609235]
+- kvm-add-udev-kvm-check.patch [bz#1552663]
+- kvm-aio-posix-Don-t-count-ctx-notifier-as-progress-when-.patch [bz#1623085]
+- kvm-aio-Do-aio_notify_accept-only-during-blocking-aio_po.patch [bz#1623085]
+- kvm-aio-posix-fix-concurrent-access-to-poll_disable_cnt.patch [bz#1632622]
+- kvm-aio-posix-compute-timeout-before-polling.patch [bz#1632622]
+- kvm-aio-posix-do-skip-system-call-if-ctx-notifier-pollin.patch [bz#1632622]
+- kvm-intel-iommu-send-PSI-always-even-if-across-PDEs.patch [bz#1450712]
+- kvm-intel-iommu-remove-IntelIOMMUNotifierNode.patch [bz#1450712]
+- kvm-intel-iommu-add-iommu-lock.patch [bz#1450712]
+- kvm-intel-iommu-only-do-page-walk-for-MAP-notifiers.patch [bz#1450712]
+- kvm-intel-iommu-introduce-vtd_page_walk_info.patch [bz#1450712]
+- kvm-intel-iommu-pass-in-address-space-when-page-walk.patch [bz#1450712]
+- kvm-intel-iommu-trace-domain-id-during-page-walk.patch [bz#1450712]
+- kvm-util-implement-simple-iova-tree.patch [bz#1450712]
+- kvm-intel-iommu-rework-the-page-walk-logic.patch [bz#1450712]
+- kvm-i386-define-the-ssbd-CPUID-feature-bit-CVE-2018-3639.patch [bz#1633928]
+- Resolves: bz#1450712
+  (Booting nested guest with vIOMMU, the assigned network devices can not receive packets (qemu))
+- Resolves: bz#1552663
+  (81-kvm-rhel.rules is no longer part of initscripts)
+- Resolves: bz#1609235
+  (Win2016 guest can't recognize pc-dimm hotplugged to node 0)
+- Resolves: bz#1623085
+  (VM doesn't boot from HD)
+- Resolves: bz#1632622
+  (~40% virtio_blk disk performance drop for win2012r2 guest when comparing qemu-kvm-rhev-2.12.0-9 with qemu-kvm-rhev-2.12.0-12)
+- Resolves: bz#1633928
+  (CVE-2018-3639 qemu-kvm: hw: cpu: speculative store bypass [rhel-8.0])
+
 * Fri Oct 12 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-37.el8
 - kvm-block-for-jobs-do-not-clear-user_paused-until-after-.patch [bz#1635583]
 - kvm-iotests-Add-failure-matching-to-common.qemu.patch [bz#1635583]
