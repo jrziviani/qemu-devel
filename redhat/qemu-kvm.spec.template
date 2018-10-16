@@ -950,6 +950,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Oct 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-41.el8
+- kvm-block-rbd-pull-out-qemu_rbd_convert_options.patch [bz#1635585]
+- kvm-block-rbd-Attempt-to-parse-legacy-filenames.patch [bz#1635585]
+- kvm-block-rbd-add-deprecation-documentation-for-filename.patch [bz#1635585]
+- kvm-block-rbd-add-iotest-for-rbd-legacy-keyvalue-filenam.patch [bz#1635585]
+- Resolves: bz#1635585
+  (rbd json format of 7.6 is incompatible with 7.5)
+
 * Tue Oct 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-40.el8
 
 - kvm-vnc-call-sasl_server_init-only-when-required.patch [bz#1609327]
