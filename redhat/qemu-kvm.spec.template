@@ -950,6 +950,16 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Oct 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
+- kvm-linux-headers-update.patch [bz#1508142]
+- kvm-s390x-cpumodel-Set-up-CPU-model-for-AP-device-suppor.patch [bz#1508142]
+- kvm-s390x-kvm-enable-AP-instruction-interpretation-for-g.patch [bz#1508142]
+- kvm-s390x-ap-base-Adjunct-Processor-AP-object-model.patch [bz#1508142]
+- kvm-s390x-vfio-ap-Introduce-VFIO-AP-device.patch [bz#1508142]
+- kvm-s390-doc-detailed-specifications-for-AP-virtualizati.patch [bz#1508142]
+- Resolves: bz#1508142
+  ([IBM 8.0 FEAT] KVM: Guest-dedicated Crypto Adapters - qemu part)
+
 * Mon Oct 15 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-38.el8
 - kvm-Revert-hw-acpi-build-build-SRAT-memory-affinity-stru.patch [bz#1609235]
 - kvm-add-udev-kvm-check.patch [bz#1552663]
