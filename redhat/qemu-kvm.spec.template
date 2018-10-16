@@ -950,6 +950,66 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Oct 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-40.el8
+
+- kvm-vnc-call-sasl_server_init-only-when-required.patch [bz#1609327]
+- kvm-nbd-server-fix-NBD_CMD_CACHE.patch [bz#1636142]
+- kvm-nbd-fix-NBD_FLAG_SEND_CACHE-value.patch [bz#1636142]
+- kvm-test-bdrv-drain-bdrv_drain-works-with-cross-AioConte.patch [bz#1637976]
+- kvm-block-Use-bdrv_do_drain_begin-end-in-bdrv_drain_all.patch [bz#1637976]
+- kvm-block-Remove-recursive-parameter-from-bdrv_drain_inv.patch [bz#1637976]
+- kvm-block-Don-t-manually-poll-in-bdrv_drain_all.patch [bz#1637976]
+- kvm-tests-test-bdrv-drain-bdrv_drain_all-works-in-corout.patch [bz#1637976]
+- kvm-block-Avoid-unnecessary-aio_poll-in-AIO_WAIT_WHILE.patch [bz#1637976]
+- kvm-block-Really-pause-block-jobs-on-drain.patch [bz#1637976]
+- kvm-block-Remove-bdrv_drain_recurse.patch [bz#1637976]
+- kvm-test-bdrv-drain-Add-test-for-node-deletion.patch [bz#1637976]
+- kvm-block-Drain-recursively-with-a-single-BDRV_POLL_WHIL.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-node-deletion-in-subtree-recurs.patch [bz#1637976]
+- kvm-block-Don-t-poll-in-parent-drain-callbacks.patch [bz#1637976]
+- kvm-test-bdrv-drain-Graph-change-through-parent-callback.patch [bz#1637976]
+- kvm-block-Defer-.bdrv_drain_begin-callback-to-polling-ph.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-that-bdrv_drain_invoke-doesn-t-.patch [bz#1637976]
+- kvm-block-Allow-AIO_WAIT_WHILE-with-NULL-ctx.patch [bz#1637976]
+- kvm-block-Move-bdrv_drain_all_begin-out-of-coroutine-con.patch [bz#1637976]
+- kvm-block-ignore_bds_parents-parameter-for-drain-functio.patch [bz#1637976]
+- kvm-block-Allow-graph-changes-in-bdrv_drain_all_begin-en.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-graph-changes-in-drain_all-sect.patch [bz#1637976]
+- kvm-block-Poll-after-drain-on-attaching-a-node.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-bdrv_append-to-drained-node.patch [bz#1637976]
+- kvm-block-linux-aio-acquire-AioContext-before-qemu_laio_.patch [bz#1637976]
+- kvm-util-async-use-qemu_aio_coroutine_enter-in-co_schedu.patch [bz#1637976]
+- kvm-job-Fix-nested-aio_poll-hanging-in-job_txn_apply.patch [bz#1637976]
+- kvm-job-Fix-missing-locking-due-to-mismerge.patch [bz#1637976]
+- kvm-blockjob-Wake-up-BDS-when-job-becomes-idle.patch [bz#1637976]
+- kvm-aio-wait-Increase-num_waiters-even-in-home-thread.patch [bz#1637976]
+- kvm-test-bdrv-drain-Drain-with-block-jobs-in-an-I-O-thre.patch [bz#1637976]
+- kvm-test-blockjob-Acquire-AioContext-around-job_cancel_s.patch [bz#1637976]
+- kvm-job-Use-AIO_WAIT_WHILE-in-job_finish_sync.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-AIO_WAIT_WHILE-in-completion-ca.patch [bz#1637976]
+- kvm-block-Add-missing-locking-in-bdrv_co_drain_bh_cb.patch [bz#1637976]
+- kvm-block-backend-Add-.drained_poll-callback.patch [bz#1637976]
+- kvm-block-backend-Fix-potential-double-blk_delete.patch [bz#1637976]
+- kvm-block-backend-Decrease-in_flight-only-after-callback.patch [bz#1637976]
+- kvm-blockjob-Lie-better-in-child_job_drained_poll.patch [bz#1637976]
+- kvm-block-Remove-aio_poll-in-bdrv_drain_poll-variants.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-nested-poll-in-bdrv_drain_poll_.patch [bz#1637976]
+- kvm-job-Avoid-deadlocks-in-job_completed_txn_abort.patch [bz#1637976]
+- kvm-test-bdrv-drain-AIO_WAIT_WHILE-in-job-.commit-.abort.patch [bz#1637976]
+- kvm-test-bdrv-drain-Fix-outdated-comments.patch [bz#1637976]
+- kvm-block-Use-a-single-global-AioWait.patch [bz#1637976]
+- kvm-test-bdrv-drain-Test-draining-job-source-child-and-p.patch [bz#1637976]
+- kvm-qemu-img-Fix-assert-when-mapping-unaligned-raw-file.patch [bz#1639374]
+- kvm-iotests-Add-test-221-to-catch-qemu-img-map-regressio.patch [bz#1639374]
+- Resolves: bz#1609327
+  (qemu-kvm[37046]: Could not find keytab file: /etc/qemu/krb5.tab: Unknown error 49408)
+- Resolves: bz#1636142
+  (qemu NBD_CMD_CACHE flaws impacting non-qemu NBD clients)
+- Resolves: bz#1637976
+  (Crashes and hangs with iothreads vs. block jobs)
+- Resolves: bz#1639374
+  (qemu-img map 'Aborted (core dumped)' when specifying a plain file)
+
 * Tue Oct 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
 - kvm-linux-headers-update.patch [bz#1508142]
 - kvm-s390x-cpumodel-Set-up-CPU-model-for-AP-device-suppor.patch [bz#1508142]
