@@ -190,8 +190,8 @@ static void add_pseries_test_case(const char *mname)
     char *path;
     PlugTestData *data;
 
-    if (!g_str_has_prefix(mname, "pseries-") ||
-        (g_str_has_prefix(mname, "pseries-2.") && atoi(&mname[10]) < 7)) {
+    if (!g_str_has_prefix(mname, "pseries-rhel") ||
+        (g_str_has_prefix(mname, "pseries-rhel7.") && atoi(&mname[14]) < 4)) {
         return;
     }
     data = g_new(PlugTestData, 1);

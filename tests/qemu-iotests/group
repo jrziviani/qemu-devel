@@ -92,7 +92,7 @@
 068 rw quick
 069 rw auto quick
 070 rw quick
-071 rw auto quick
+# 071 rw auto quick -- requires whitelisted blkverify
 072 rw auto quick
 073 rw auto quick
 074 rw auto quick
@@ -120,7 +120,7 @@
 096 rw quick
 097 rw auto backing
 098 rw auto backing quick
-099 rw auto quick
+# 099 rw auto quick  -- requires whitelisted blkverify
 # 100 was removed, do not reuse
 101 rw quick
 102 rw quick

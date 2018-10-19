@@ -88,10 +88,14 @@ int main(int argc, char *argv[])
     if (!strcmp(arch, "ppc")) {
         add_tests(ppc_machines);
     } else if (!strcmp(arch, "ppc64")) {
+#if 0 /* Disabled for Red Hat Enterprise Linux */
         add_tests(ppc_machines);
         if (g_test_slow()) {
+#endif
             qtest_add_data_func("prom-env/pseries", "pseries", test_machine);
+#if 0 /* Disabled for Red Hat Enterprise Linux */
         }
+#endif
     } else if (!strcmp(arch, "sparc")) {
         add_tests(sparc_machines);
     } else if (!strcmp(arch, "sparc64")) {
