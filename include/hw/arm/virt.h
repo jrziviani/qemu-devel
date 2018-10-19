@@ -136,6 +136,7 @@ typedef struct {
 
 #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
 
+#if 0 /* disabled for Red Hat Enterprise Linux */
 #define TYPE_VIRT_MACHINE   MACHINE_TYPE_NAME("virt")
 #define VIRT_MACHINE(obj) \
     OBJECT_CHECK(VirtMachineState, (obj), TYPE_VIRT_MACHINE)
@@ -143,6 +144,16 @@ typedef struct {
     OBJECT_GET_CLASS(VirtMachineClass, obj, TYPE_VIRT_MACHINE)
 #define VIRT_MACHINE_CLASS(klass) \
     OBJECT_CLASS_CHECK(VirtMachineClass, klass, TYPE_VIRT_MACHINE)
+
+#else
+#define TYPE_RHEL_MACHINE MACHINE_TYPE_NAME("virt-rhel")
+#define VIRT_MACHINE(obj) \
+    OBJECT_CHECK(VirtMachineState, (obj), TYPE_RHEL_MACHINE)
+#define VIRT_MACHINE_GET_CLASS(obj) \
+    OBJECT_GET_CLASS(VirtMachineClass, obj, TYPE_RHEL_MACHINE)
+#define VIRT_MACHINE_CLASS(klass) \
+    OBJECT_CLASS_CHECK(VirtMachineClass, klass, TYPE_RHEL_MACHINE)
+#endif
 
 void virt_acpi_setup(VirtMachineState *vms);
 
