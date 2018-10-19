@@ -65,6 +65,7 @@
 #include "hw/acpi/acpi.h"
 #include "target/arm/internals.h"
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 #define DEFINE_VIRT_MACHINE_LATEST(major, minor, latest) \
     static void virt_##major##_##minor##_class_init(ObjectClass *oc, \
                                                     void *data) \
@@ -91,7 +92,49 @@
     DEFINE_VIRT_MACHINE_LATEST(major, minor, true)
 #define DEFINE_VIRT_MACHINE(major, minor) \
     DEFINE_VIRT_MACHINE_LATEST(major, minor, false)
+#endif /* disabled for RHEL */
 
+#define DEFINE_RHEL_MACHINE_LATEST(m, n, s, latest)                     \
+    static void rhel##m##n##s##_virt_class_init(ObjectClass *oc,        \
+                                                void *data)             \
+    {                                                                   \
+        MachineClass *mc = MACHINE_CLASS(oc);                           \
+        rhel##m##n##s##_virt_options(mc);                               \
+        mc->desc = "RHEL " # m "." # n "." # s " ARM Virtual Machine";  \
+        if (latest) {                                                   \
+            mc->alias = "virt";                                         \
+            mc->is_default = 1;                                         \
+        }                                                               \
+    }                                                                   \
+    static const TypeInfo rhel##m##n##s##_machvirt_info = {             \
+        .name = MACHINE_TYPE_NAME("virt-rhel" # m "." # n "." # s),     \
+        .parent = TYPE_RHEL_MACHINE,                                    \
+        .instance_init = rhel##m##n##s##_virt_instance_init,            \
+        .class_init = rhel##m##n##s##_virt_class_init,                  \
+    };                                                                  \
+    static void rhel##m##n##s##_machvirt_init(void)                     \
+    {                                                                   \
+        type_register_static(&rhel##m##n##s##_machvirt_info);           \
+    }                                                                   \
+    type_init(rhel##m##n##s##_machvirt_init);
+
+#define DEFINE_RHEL_MACHINE_AS_LATEST(major, minor, subminor)   \
+    DEFINE_RHEL_MACHINE_LATEST(major, minor, subminor, true)
+#define DEFINE_RHEL_MACHINE(major, minor, subminor)             \
+    DEFINE_RHEL_MACHINE_LATEST(major, minor, subminor, false)
+
+/* This variable is for changes to properties that are RHEL specific,
+ * different to the current upstream and to be applied to the latest
+ * machine type.
+ */
+GlobalProperty arm_rhel_compat[] = {
+    {
+        .driver   = "virtio-net-pci",
+        .property = "romfile",
+        .value    = "",
+    },
+};
+const size_t arm_rhel_compat_len = G_N_ELEMENTS(arm_rhel_compat);
 
 /* Number of external interrupt lines to configure the GIC with */
 #define NUM_IRQS 256
@@ -1722,6 +1765,7 @@ static void machvirt_init(MachineState *machine)
     qemu_add_machine_init_done_notifier(&vms->machine_done);
 }
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 static bool virt_get_secure(Object *obj, Error **errp)
 {
     VirtMachineState *vms = VIRT_MACHINE(obj);
@@ -1750,6 +1794,7 @@ static void virt_set_virt(Object *obj, bool value, Error **errp)
     vms->virt = value;
 }
 
+#endif /* disabled for RHEL */
 static bool virt_get_highmem(Object *obj, Error **errp)
 {
     VirtMachineState *vms = VIRT_MACHINE(obj);
@@ -1871,6 +1916,7 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
     return ms->possible_cpus;
 }
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
                                         DeviceState *dev, Error **errp)
 {
@@ -2146,3 +2192,99 @@ static void virt_machine_2_6_options(MachineClass *mc)
     vmc->no_pmu = true;
 }
 DEFINE_VIRT_MACHINE(2, 6)
+#endif /* disabled for RHEL */
+
+static void rhel_machine_class_init(ObjectClass *oc, void *data)
+{
+    MachineClass *mc = MACHINE_CLASS(oc);
+
+    mc->family = "virt-rhel-Z";
+    mc->init = machvirt_init;
+    /* Start with max_cpus set to 512, which is the maximum supported by KVM.
+     * The value may be reduced later when we have more information about the
+     * configuration of the particular instance.
+     */
+    mc->max_cpus = 512;
+    mc->block_default_type = IF_VIRTIO;
+    mc->no_cdrom = 1;
+    mc->pci_allow_0_address = true;
+    /* We know we will never create a pre-ARMv7 CPU which needs 1K pages */
+    mc->minimum_page_bits = 12;
+    mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
+    mc->cpu_index_to_instance_props = virt_cpu_index_to_props;
+    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a57");
+    mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
+}
+
+static const TypeInfo rhel_machine_info = {
+    .name          = TYPE_RHEL_MACHINE,
+    .parent        = TYPE_MACHINE,
+    .abstract      = true,
+    .instance_size = sizeof(VirtMachineState),
+    .class_size    = sizeof(VirtMachineClass),
+    .class_init    = rhel_machine_class_init,
+};
+
+static void rhel_machine_init(void)
+{
+    type_register_static(&rhel_machine_info);
+}
+type_init(rhel_machine_init);
+
+static void rhel810_virt_instance_init(Object *obj)
+{
+    VirtMachineState *vms = VIRT_MACHINE(obj);
+    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+
+    /* EL3 is disabled by default and non-configurable for RHEL */
+    vms->secure = false;
+    /* EL2 is disabled by default and non-configurable for RHEL */
+    vms->virt = false;
+    /* High memory is enabled by default for RHEL */
+    vms->highmem = true;
+    object_property_add_bool(obj, "highmem", virt_get_highmem,
+                             virt_set_highmem, NULL);
+    object_property_set_description(obj, "highmem",
+                                    "Set on/off to enable/disable using "
+                                    "physical address space above 32 bits",
+                                    NULL);
+    /* Default GIC type is still v2, but became configurable for RHEL */
+    vms->gic_version = 2;
+    object_property_add_str(obj, "gic-version", virt_get_gic_version,
+                        virt_set_gic_version, NULL);
+    object_property_set_description(obj, "gic-version",
+                                    "Set GIC version. "
+                                    "Valid values are 2, 3 and host", NULL);
+
+    vms->highmem_ecam = !vmc->no_highmem_ecam;
+
+    if (vmc->no_its) {
+        vms->its = false;
+    } else {
+        /* Default allows ITS instantiation */
+        vms->its = true;
+        object_property_add_bool(obj, "its", virt_get_its,
+                                 virt_set_its, NULL);
+        object_property_set_description(obj, "its",
+                                        "Set on/off to enable/disable "
+                                        "ITS instantiation",
+                                        NULL);
+    }
+
+    /* Default disallows iommu instantiation */
+    vms->iommu = VIRT_IOMMU_NONE;
+    object_property_add_str(obj, "iommu", virt_get_iommu, virt_set_iommu, NULL);
+    object_property_set_description(obj, "iommu",
+                                    "Set the IOMMU type. "
+                                    "Valid values are none and smmuv3",
+                                    NULL);
+
+    vms->irqmap=a15irqmap;
+    virt_flash_create(vms);
+}
+
+static void rhel810_virt_options(MachineClass *mc)
+{
+    compat_props_add(mc->compat_props, arm_rhel_compat, arm_rhel_compat_len);
+}
+DEFINE_RHEL_MACHINE_AS_LATEST(8, 1, 0)
