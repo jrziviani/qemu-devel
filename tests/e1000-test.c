@@ -22,9 +22,11 @@ struct QE1000 {
 
 static const char *models[] = {
     "e1000",
+#if 0 /* Disabled for Red Hat Enterprise Linux */
     "e1000-82540em",
     "e1000-82544gc",
     "e1000-82545em",
+#endif
 };
 
 static void *e1000_get_driver(void *obj, const char *interface)
