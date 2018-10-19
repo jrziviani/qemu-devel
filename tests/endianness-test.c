@@ -39,8 +39,10 @@ static const TestCase test_cases[] = {
     { "ppc", "bamboo", 0xe8000000, .bswap = true, .superio = "i82378" },
     { "ppc64", "mac99", 0xf2000000, .bswap = true, .superio = "i82378" },
     { "ppc64", "pseries", (1ULL << 45), .bswap = true, .superio = "i82378" },
+#if 0 /* Disabled in Red Hat Enterprise Linux */
     { "ppc64", "pseries-2.7", 0x10080000000ULL,
       .bswap = true, .superio = "i82378" },
+#endif
     { "sh4", "r2d", 0xfe240000, .superio = "i82378" },
     { "sh4eb", "r2d", 0xfe240000, .bswap = true, .superio = "i82378" },
     { "sparc64", "sun4u", 0x1fe02000000LL, .bswap = true },

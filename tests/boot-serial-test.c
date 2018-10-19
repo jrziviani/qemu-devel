@@ -97,18 +97,22 @@ static testdef_t tests[] = {
     { "ppc", "g3beige", "", "PowerPC,750" },
     { "ppc", "mac99", "", "PowerPC,G4" },
     { "ppc", "sam460ex", "-m 256", "DRAM:  256 MiB" },
+#if 0 /* Disabled for Red Hat Enterprise Linux */
     { "ppc64", "ppce500", "", "U-Boot" },
     { "ppc64", "40p", "-m 192", "Memory: 192M" },
     { "ppc64", "mac99", "", "PowerPC,970FX" },
+#endif
     { "ppc64", "pseries",
       "-machine cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken",
       "Open Firmware" },
+#if 0 /* Disabled for Red Hat Enterprise Linux */
     { "ppc64", "powernv", "-cpu POWER8", "OPAL" },
     { "ppc64", "sam460ex", "-device e1000", "8086  100e" },
+#endif
     { "i386", "isapc", "-cpu qemu32 -device sga", "SGABIOS" },
     { "i386", "pc", "-device sga", "SGABIOS" },
     { "i386", "q35", "-device sga", "SGABIOS" },
-    { "x86_64", "isapc", "-cpu qemu32 -device sga", "SGABIOS" },
+    { "x86_64", "pc", "-cpu qemu32 -device sga", "SGABIOS" },
     { "x86_64", "q35", "-device sga", "SGABIOS" },
     { "sparc", "LX", "", "TMS390S10" },
     { "sparc", "SS-4", "", "MB86904" },
