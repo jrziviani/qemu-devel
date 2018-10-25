@@ -709,8 +709,6 @@ deflate
 defxx
 dell-laptop
 dell-smbios
-dell-smbios-smm
-dell-smbios-wmi
 dell-smm-hwmon
 dell-smo8800
 dell-wmi
