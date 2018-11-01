@@ -5,7 +5,7 @@
 %global have_spice    1
 %global have_opengl   1
 %global have_fdt      0
-%global have_gluster  0
+%global have_gluster  1
 %global have_kvm_setup 0
 %global have_seccomp 1
 %global have_memlock_limits 0
@@ -56,6 +56,9 @@
 
 %global requires_all_modules                                     \
 Requires: %{name}-block-curl = %{epoch}:%{version}-%{release}    \
+%if %{have_gluster}                                              \
+Requires: %{name}-block-gluster = %{epoch}:%{version}-%{release} \
+%endif                                                           \
 Requires: %{name}-block-iscsi = %{epoch}:%{version}-%{release}   \
 Requires: %{name}-block-rbd = %{epoch}:%{version}-%{release}     \
 Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
@@ -332,6 +335,17 @@ This package provides the additional CURL block driver for QEMU.
 
 Install this package if you want to access remote disks over
 http, https, ftp and other transports provided by the CURL library.
+
+
+%if %{have_gluster}
+%package  block-gluster
+Summary: QEMU Gluster block driver
+Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
+%description block-gluster
+This package provides the additional Gluster block driver for QEMU.
+
+Install this package if you want to access remote Gluster storage.
+%endif
 
 
 %package  block-iscsi
@@ -938,6 +952,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 %files block-curl
 %{_libdir}/qemu-kvm/block-curl.so
+
+%if %{have_gluster}
+%files block-gluster
+%{_libdir}/qemu-kvm/block-gluster.so
+%endif
 
 %files block-iscsi
 %{_libdir}/qemu-kvm/block-iscsi.so
