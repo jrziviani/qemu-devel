@@ -129,7 +129,7 @@ BuildRequires: pciutils-devel
 BuildRequires: libiscsi-devel
 BuildRequires: ncurses-devel
 BuildRequires: libattr-devel
-BuildRequires: libusbx-devel >= 1.0.19
+BuildRequires: libusbx-devel >= 1.0.22
 %if %{have_usbredir}
 BuildRequires: usbredir-devel >= 0.7.1
 %endif
