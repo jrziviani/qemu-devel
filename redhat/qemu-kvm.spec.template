@@ -969,6 +969,17 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Nov 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-42.el8
+- kvm-luks-Allow-share-rw-on.patch [bz#1629701]
+- kvm-redhat-reenable-gluster-support.patch [bz#1599340]
+- kvm-redhat-bump-libusb-requirement.patch [bz#1627970]
+- Resolves: bz#1599340
+  (Reenable glusterfs in qemu-kvm once BZ#1567292 gets fixed)
+- Resolves: bz#1627970
+  (symbol lookup error: /usr/libexec/qemu-kvm: undefined symbol: libusb_set_option)
+- Resolves: bz#1629701
+  ("share-rw=on" does not work for luks format image - Fast Train)
+
 * Tue Oct 16 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-41.el8
 - kvm-block-rbd-pull-out-qemu_rbd_convert_options.patch [bz#1635585]
 - kvm-block-rbd-Attempt-to-parse-legacy-filenames.patch [bz#1635585]
