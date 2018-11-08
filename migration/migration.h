@@ -288,6 +288,11 @@ void migrate_send_rp_resume_ack(MigrationIncomingState *mis, uint32_t value);
 
 void dirty_bitmap_mig_before_vm_start(void);
 void init_dirty_bitmap_incoming_migration(void);
+/*
+ * Disables a load of subsections that were added in 2.2/rh7.2 for backwards
+ * migration compatibility.
+ */
+extern bool migrate_pre_2_2;
 
 #define qemu_ram_foreach_block \
   #warning "Use qemu_ram_foreach_block_migratable in migration code"

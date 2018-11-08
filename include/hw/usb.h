@@ -606,4 +606,8 @@ int usb_get_quirks(uint16_t vendor_id, uint16_t product_id,
                    uint8_t interface_class, uint8_t interface_subclass,
                    uint8_t interface_protocol);
 
+
+/* hcd-xhci.c -- rhel7.0.0 machine type compatibility */
+extern bool migrate_cve_2014_5263_xhci_fields;
+
 #endif

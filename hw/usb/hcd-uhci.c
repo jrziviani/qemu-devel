@@ -1214,12 +1214,14 @@ static void usb_uhci_common_realize(PCIDevice *dev, Error **errp)
     UHCIState *s = UHCI(dev);
     uint8_t *pci_conf = s->dev.config;
     int i;
+    int irq_pin;
 
     pci_conf[PCI_CLASS_PROG] = 0x00;
     /* TODO: reset value should be 0. */
     pci_conf[USB_SBRN] = USB_RELEASE_1; // release number
 
-    pci_config_set_interrupt_pin(pci_conf, u->info.irq_pin + 1);
+    irq_pin = u->info.irq_pin;
+    pci_config_set_interrupt_pin(pci_conf, irq_pin + 1);
 
     if (s->masterbus) {
         USBPort *ports[NB_PORTS];
