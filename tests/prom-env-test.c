@@ -82,7 +82,9 @@ int main(int argc, char *argv[])
     if (!strcmp(arch, "ppc")) {
         add_tests(ppc_machines);
     } else if (!strcmp(arch, "ppc64")) {
+#if 0 /* Disabled for Red Hat Enterprise Linux */
         add_tests(ppc_machines);
+#endif
         if (g_test_slow()) {
             qtest_add_data_func("prom-env/pseries", "pseries", test_machine);
         }

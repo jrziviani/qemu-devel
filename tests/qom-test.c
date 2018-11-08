@@ -16,7 +16,7 @@
 #include "libqtest.h"
 
 static const char *blacklist_x86[] = {
-    "xenfv", "xenpv", NULL
+    "xenfv", "xenpv", "isapc", NULL
 };
 
 static const struct {
