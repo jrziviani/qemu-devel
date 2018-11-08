@@ -50,6 +50,7 @@
 #include "cpu.h"
 #include "qapi/error.h"
 #include "qemu/error-report.h"
+#include "migration/migration.h"
 #ifdef CONFIG_XEN
 #include <xen/hvm/hvm_info_table.h>
 #include "hw/xen/xen_pt.h"
@@ -170,8 +171,8 @@ static void pc_init1(MachineState *machine,
     if (pcmc->smbios_defaults) {
         MachineClass *mc = MACHINE_GET_CLASS(machine);
         /* These values are guest ABI, do not change */
-        smbios_set_defaults("QEMU", "Standard PC (i440FX + PIIX, 1996)",
-                            mc->name, pcmc->smbios_legacy_mode,
+        smbios_set_defaults("Red Hat", "KVM",
+                            mc->desc, pcmc->smbios_legacy_mode,
                             pcmc->smbios_uuid_encoded,
                             SMBIOS_ENTRY_POINT_21);
     }
@@ -309,6 +310,7 @@ static void pc_init1(MachineState *machine,
  * HW_COMPAT_*, PC_COMPAT_*, or * pc_*_machine_options().
  */
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 static void pc_compat_2_3(MachineState *machine)
 {
     PCMachineState *pcms = PC_MACHINE(machine);
@@ -433,6 +435,7 @@ static void pc_i440fx_3_0_machine_options(MachineClass *m)
     pc_i440fx_machine_options(m);
     m->alias = "pc";
     m->is_default = 1;
+    SET_MACHINE_COMPAT(m, PC_COMPAT_2_12);
 }
 
 DEFINE_I440FX_MACHINE(v3_0, "pc-i440fx-3.0", NULL,
@@ -1148,3 +1151,190 @@ static void xenfv_machine_options(MachineClass *m)
 DEFINE_PC_MACHINE(xenfv, "xenfv", pc_xen_hvm_init,
                   xenfv_machine_options);
 #endif
+machine_init(pc_machine_init);
+
+#endif  /* Disabled for Red Hat Enterprise Linux */
+
+/* Red Hat Enterprise Linux machine types */
+
+/* Options for the latest rhel7 machine type */
+static void pc_machine_rhel7_options(MachineClass *m)
+{
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+    m->family = "pc_piix_Y";
+    m->default_machine_opts = "firmware=bios-256k.bin";
+    pcmc->default_nic_model = "e1000";
+    m->default_display = "std";
+    SET_MACHINE_COMPAT(m, PC_RHEL_COMPAT);
+    m->alias = "pc";
+    m->is_default = 1;
+}
+
+static void pc_init_rhel760(MachineState *machine)
+{
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel760_options(MachineClass *m)
+{
+    pc_machine_rhel7_options(m);
+    m->desc = "RHEL 7.6.0 PC (i440FX + PIIX, 1996)";
+}
+
+DEFINE_PC_MACHINE(rhel760, "pc-i440fx-rhel7.6.0", pc_init_rhel760,
+                  pc_machine_rhel760_options);
+
+static void pc_init_rhel750(MachineState *machine)
+{
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel750_options(MachineClass *m)
+{
+    pc_machine_rhel760_options(m);
+    m->alias = NULL;
+    m->is_default = 0;
+    m->desc = "RHEL 7.5.0 PC (i440FX + PIIX, 1996)";
+    m->auto_enable_numa_with_memhp = false;
+    SET_MACHINE_COMPAT(m, PC_RHEL7_5_COMPAT);
+}
+
+DEFINE_PC_MACHINE(rhel750, "pc-i440fx-rhel7.5.0", pc_init_rhel750,
+                  pc_machine_rhel750_options);
+
+static void pc_init_rhel740(MachineState *machine)
+{
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel740_options(MachineClass *m)
+{
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+    pc_machine_rhel750_options(m);
+    m->desc = "RHEL 7.4.0 PC (i440FX + PIIX, 1996)";
+    m->numa_auto_assign_ram = numa_legacy_auto_assign_ram;
+    pcmc->pc_rom_ro = false;
+    SET_MACHINE_COMPAT(m, PC_RHEL7_4_COMPAT);
+}
+
+DEFINE_PC_MACHINE(rhel740, "pc-i440fx-rhel7.4.0", pc_init_rhel740,
+                  pc_machine_rhel740_options);
+
+static void pc_init_rhel730(MachineState *machine)
+{
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel730_options(MachineClass *m)
+{
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+    pc_machine_rhel740_options(m);
+    m->desc = "RHEL 7.3.0 PC (i440FX + PIIX, 1996)";
+    pcmc->linuxboot_dma_enabled = false;
+    SET_MACHINE_COMPAT(m, PC_RHEL7_3_COMPAT);
+}
+
+DEFINE_PC_MACHINE(rhel730, "pc-i440fx-rhel7.3.0", pc_init_rhel730,
+                  pc_machine_rhel730_options);
+
+
+static void pc_init_rhel720(MachineState *machine)
+{
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel720_options(MachineClass *m)
+{
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+    pc_machine_rhel730_options(m);
+    m->desc = "RHEL 7.2.0 PC (i440FX + PIIX, 1996)";
+    /* From pc_i440fx_2_5_machine_options */
+    pcmc->save_tsc_khz = false;
+    m->legacy_fw_cfg_order = 1;
+    /* Note: broken_reserved_end was already in 7.2 */
+    /* From pc_i440fx_2_6_machine_options */
+    pcmc->legacy_cpu_hotplug = true;
+    SET_MACHINE_COMPAT(m, PC_RHEL7_2_COMPAT);
+}
+
+DEFINE_PC_MACHINE(rhel720, "pc-i440fx-rhel7.2.0", pc_init_rhel720,
+                  pc_machine_rhel720_options);
+
+static void pc_compat_rhel710(MachineState *machine)
+{
+    PCMachineState *pcms = PC_MACHINE(machine);
+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+
+    /* From pc_compat_2_2 */
+    pcmc->rsdp_in_ram = false;
+    machine->suppress_vmdesc = true;
+
+    /* From pc_compat_2_1 */
+    pcmc->smbios_uuid_encoded = false;
+    x86_cpu_change_kvm_default("svm", NULL);
+    pcmc->enforce_aligned_dimm = false;
+
+    /* Disable all the extra subsections that were added in 2.2 */
+    migrate_pre_2_2 = true;
+
+    /* From pc_i440fx_2_4_machine_options */
+    pcmc->broken_reserved_end = true;
+}
+
+static void pc_init_rhel710(MachineState *machine)
+{
+    pc_compat_rhel710(machine);
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel710_options(MachineClass *m)
+{
+    pc_machine_rhel720_options(m);
+    m->family = "pc_piix_Y";
+    m->desc = "RHEL 7.1.0 PC (i440FX + PIIX, 1996)";
+    m->default_display = "cirrus";
+    SET_MACHINE_COMPAT(m, PC_RHEL7_1_COMPAT);
+}
+
+DEFINE_PC_MACHINE(rhel710, "pc-i440fx-rhel7.1.0", pc_init_rhel710,
+                  pc_machine_rhel710_options);
+
+static void pc_compat_rhel700(MachineState *machine)
+{
+    PCMachineState *pcms = PC_MACHINE(machine);
+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+
+    pc_compat_rhel710(machine);
+
+    /* Upstream enables it for everyone, we're a little more selective */
+    x86_cpu_change_kvm_default("x2apic", NULL);
+    x86_cpu_change_kvm_default("svm", NULL);
+    pcmc->legacy_acpi_table_size = 6418; /* see pc_compat_2_0() */
+    pcmc->smbios_legacy_mode = true;
+    pcmc->has_reserved_memory = false;
+    migrate_cve_2014_5263_xhci_fields = true;
+}
+
+static void pc_init_rhel700(MachineState *machine)
+{
+    pc_compat_rhel700(machine);
+    pc_init1(machine, TYPE_I440FX_PCI_HOST_BRIDGE, \
+             TYPE_I440FX_PCI_DEVICE);
+}
+
+static void pc_machine_rhel700_options(MachineClass *m)
+{
+    pc_machine_rhel710_options(m);
+    m->family = "pc_piix_Y";
+    m->desc = "RHEL 7.0.0 PC (i440FX + PIIX, 1996)";
+    SET_MACHINE_COMPAT(m, PC_RHEL7_0_COMPAT);
+}
+
+DEFINE_PC_MACHINE(rhel700, "pc-i440fx-rhel7.0.0", pc_init_rhel700,
+                  pc_machine_rhel700_options);
