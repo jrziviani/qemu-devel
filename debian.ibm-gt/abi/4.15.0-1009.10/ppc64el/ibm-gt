@@ -11701,7 +11701,6 @@ EXPORT_SYMBOL_GPL drivers/misc/cb710/cb710 0x00000000	cb710_sg_dwiter_read_next_
 EXPORT_SYMBOL_GPL drivers/misc/cb710/cb710 0x00000000	cb710_sg_dwiter_write_next_block
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_afu_reset
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_allocate_afu_irqs
-EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_check_and_switch_mode
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_context_events_pending
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_dev_context_init
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_fd_ioctl
@@ -11729,8 +11728,6 @@ EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_set_driver_ops
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_set_master
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_set_max_irqs_per_process
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_set_priv
-EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_set_translation_mode
-EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_slot_is_supported
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_start_context
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_start_work
 EXPORT_SYMBOL_GPL drivers/misc/cxl/cxl 0x00000000	cxl_stop_context
@@ -16308,8 +16305,6 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	cs47l24_spi_regmap
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	current_is_async
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_afu_get
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_afu_put
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_cx4_setup_msi_irqs
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_cx4_teardown_msi_irqs
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_next_msi_hwirq
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_pci_associate_default_context
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	cxl_pci_disable_device
@@ -17323,7 +17318,6 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_tce_direction
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_tce_table_get
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_tce_table_put
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_tce_xchg
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_tce_xchg_rm
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_unmap
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	iommu_unmap_fast
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	ip4_datagram_release_cb
@@ -17555,7 +17549,6 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_do_h_enter
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_do_h_remove
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_entry_trampoline
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_find_table
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_gpa_to_ua
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_h_get_tce
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_hcall_impl_hv_realmode
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_host_rm_ops_hv
@@ -17563,7 +17556,7 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_hv_entry_trampoline
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_hwrng_present
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_invalidate_hpte
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_tce_put
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_tce_validate
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_tce_to_ua
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	kvmppc_update_dirty_map
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	l3mdev_fib_table_by_index
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	l3mdev_fib_table_rcu
@@ -17694,15 +17687,15 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	metadata_dst_alloc
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	metadata_dst_alloc_percpu
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	metadata_dst_free_percpu
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_find
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_get
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_is_hpa
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_lookup
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_lookup_rm
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_mapped_dec
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_mapped_inc
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_new
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_newdev
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_preregistered
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_put
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_ua_to_hpa
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_iommu_ua_to_hpa_rm
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mm_kobj
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mmc_abort_tuning
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	mmc_app_cmd
@@ -18422,10 +18415,8 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	pm_system_wakeup
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pm_wakeup_dev_event
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pm_wakeup_ws_event
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pm_wq
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_cxl_enable_phb_kernel_api
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_cxl_phb_set_peer_afu
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_cxl_phb_to_afu
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_get_supported_cpuidle_states
+EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_npu2_map_lpar_dev
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_ocxl_alloc_xive_irq
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_ocxl_free_xive_irq
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_ocxl_get_actag
@@ -18445,7 +18436,6 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_get_device_tree
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_get_power_state
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_get_presence_state
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_get_slot_id
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_on_cxl_phb
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_set_p2p
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_set_power_state
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	pnv_pci_set_tunnel_bar
@@ -18587,7 +18577,6 @@ EXPORT_SYMBOL_GPL vmlinux 0x00000000	rdev_get_id
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	rdev_set_badblocks
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	rdma_cgrp_subsys_enabled_key
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	rdma_cgrp_subsys_on_dfl_key
-EXPORT_SYMBOL_GPL vmlinux 0x00000000	realmode_pfn_to_page
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	ref_module
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	regcache_cache_bypass
 EXPORT_SYMBOL_GPL vmlinux 0x00000000	regcache_cache_only
