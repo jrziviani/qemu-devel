@@ -63,6 +63,8 @@ bool kvmppc_has_cap_mmu_hash_v3(void);
 int kvmppc_get_cap_safe_cache(void);
 int kvmppc_get_cap_safe_bounds_check(void);
 int kvmppc_get_cap_safe_indirect_branch(void);
+bool kvmppc_has_cap_nested_kvm_hv(void);
+int kvmppc_set_cap_nested_kvm_hv(int enable);
 int kvmppc_enable_hwrng(void);
 int kvmppc_put_books_sregs(PowerPCCPU *cpu);
 PowerPCCPUClass *kvm_ppc_get_host_cpu_class(void);
@@ -312,6 +314,16 @@ static inline int kvmppc_get_cap_safe_bounds_check(void)
 static inline int kvmppc_get_cap_safe_indirect_branch(void)
 {
     return 0;
+}
+
+static inline bool kvmppc_has_cap_nested_kvm_hv(void)
+{
+    return false;
+}
+
+static inline int kvmppc_set_cap_nested_kvm_hv(int enable)
+{
+    return -1;
 }
 
 static inline int kvmppc_enable_hwrng(void)
