@@ -549,7 +549,16 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-libxml2 \
   --enable-capstone \
   --disable-git-update \
-  --disable-crypto-afalg
+  --disable-crypto-afalg \
+  --disable-bochs \
+  --disable-cloop \
+  --disable-dmg \
+  --disable-qcow1 \
+  --disable-vdi \
+  --disable-vvfat \
+  --disable-qed \
+  --disable-parallels \
+  --disable-sheepdog
 
 
 echo "config-host.mak contents:"
