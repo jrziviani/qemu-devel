@@ -969,6 +969,54 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Nov 26 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-43
+
+- kvm-configure-add-test-for-libudev.patch [bz#1636185]
+- kvm-qga-linux-report-disk-serial-number.patch [bz#1636185]
+- kvm-qga-linux-return-disk-device-in-guest-get-fsinfo.patch [bz#1636185]
+- kvm-qemu-error-introduce-error-warn-_report_once.patch [bz#1625173]
+- kvm-intel-iommu-start-to-use-error_report_once.patch [bz#1625173]
+- kvm-intel-iommu-replace-more-vtd_err_-traces.patch [bz#1625173]
+- kvm-intel_iommu-introduce-vtd_reset_caches.patch [bz#1625173]
+- kvm-intel_iommu-better-handling-of-dmar-state-switch.patch [bz#1625173]
+- kvm-intel_iommu-move-ce-fetching-out-when-sync-shadow.patch [bz#1625173 bz#1629616]
+- kvm-intel_iommu-handle-invalid-ce-for-shadow-sync.patch [bz#1625173 bz#1629616]
+- kvm-block-remove-bdrv_dirty_bitmap_make_anon.patch [bz#1518989]
+- kvm-block-simplify-code-around-releasing-bitmaps.patch [bz#1518989]
+- kvm-hbitmap-Add-advance-param-to-hbitmap_iter_next.patch [bz#1518989]
+- kvm-test-hbitmap-Add-non-advancing-iter_next-tests.patch [bz#1518989]
+- kvm-block-dirty-bitmap-Add-bdrv_dirty_iter_next_area.patch [bz#1518989]
+- kvm-blockdev-backup-add-bitmap-argument.patch [bz#1518989]
+- kvm-dirty-bitmap-switch-assert-fails-to-errors-in-bdrv_m.patch [bz#1518989]
+- kvm-dirty-bitmap-rename-bdrv_undo_clear_dirty_bitmap.patch [bz#1518989]
+- kvm-dirty-bitmap-make-it-possible-to-restore-bitmap-afte.patch [bz#1518989]
+- kvm-blockdev-rename-block-dirty-bitmap-clear-transaction.patch [bz#1518989]
+- kvm-qapi-add-transaction-support-for-x-block-dirty-bitma.patch [bz#1518989]
+- kvm-block-dirty-bitmaps-add-user_locked-status-checker.patch [bz#1518989]
+- kvm-block-dirty-bitmaps-fix-merge-permissions.patch [bz#1518989]
+- kvm-block-dirty-bitmaps-allow-clear-on-disabled-bitmaps.patch [bz#1518989]
+- kvm-block-dirty-bitmaps-prohibit-enable-disable-on-locke.patch [bz#1518989]
+- kvm-block-backup-prohibit-backup-from-using-in-use-bitma.patch [bz#1518989]
+- kvm-nbd-forbid-use-of-frozen-bitmaps.patch [bz#1518989]
+- kvm-bitmap-Update-count-after-a-merge.patch [bz#1518989]
+- kvm-iotests-169-drop-deprecated-autoload-parameter.patch [bz#1518989]
+- kvm-block-qcow2-improve-error-message-in-qcow2_inactivat.patch [bz#1518989]
+- kvm-bloc-qcow2-drop-dirty_bitmaps_loaded-state-variable.patch [bz#1518989]
+- kvm-dirty-bitmaps-clean-up-bitmaps-loading-and-migration.patch [bz#1518989]
+- kvm-iotests-improve-169.patch [bz#1518989]
+- kvm-iotests-169-add-cases-for-source-vm-resuming.patch [bz#1518989]
+- kvm-pc-dimm-turn-alignment-assert-into-check.patch [bz#1630116]
+- Resolves: bz#1518989
+  (RFE: QEMU Incremental live backup)
+- Resolves: bz#1625173
+  ([NVMe Device Assignment] Guest could not boot up with q35+iommu)
+- Resolves: bz#1629616
+  (boot guest with q35+vIOMMU+ device assignment, qemu terminal shows "qemu-kvm: VFIO_UNMAP_DMA: -22" when return assigned network devices from vfio driver to ixgbe in guest)
+- Resolves: bz#1630116
+  (pc_dimm_get_free_addr: assertion failed: (QEMU_ALIGN_UP(address_space_start, align) == address_space_start))
+- Resolves: bz#1636185
+  ([RFE] Report disk device name and serial number (qemu-guest-agent on Linux))
+
 * Mon Nov 05 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-42.el8
 - kvm-luks-Allow-share-rw-on.patch [bz#1629701]
 - kvm-redhat-reenable-gluster-support.patch [bz#1599340]
