@@ -978,6 +978,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Nov 27 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-43
+- kvm-block-Make-more-block-drivers-compile-time-configura.patch [bz#1598842 bz#1598842]
+- kvm-RHEL8-Add-disable-configure-options-to-qemu-spec-fil.patch [bz#1598842]
+- Resolves: bz#1598842
+  (Compile out unused block drivers)
+
 * Mon Nov 26 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-43
 
 - kvm-configure-add-test-for-libudev.patch [bz#1636185]
