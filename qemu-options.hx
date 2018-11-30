@@ -2827,6 +2827,7 @@ STEXI
 ETEXI
 DEFHEADING()
 
+#if 0
 DEFHEADING(Bluetooth(R) options:)
 STEXI
 @table @option
@@ -2901,6 +2902,7 @@ STEXI
 @end table
 ETEXI
 DEFHEADING()
+#endif
 
 #ifdef CONFIG_TPM
 DEFHEADING(TPM device options:)
