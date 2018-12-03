@@ -362,6 +362,15 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
         }
     }
 
+    /*
+     * All vfio-ccw devices are believed to operate in a way compatible with
+     * memory ballooning, ie. pages pinned in the host are in the current
+     * working set of the guest driver and therefore never overlap with pages
+     * available to the guest balloon driver.  This needs to be set before
+     * vfio_get_device() for vfio common to handle the balloon inhibitor.
+     */
+    vcdev->vdev.balloon_allowed = true;
+
     if (vfio_get_device(group, cdev->mdevid, &vcdev->vdev, &err)) {
         g_free(vcdev->vdev.name);
         goto out_device_err;
