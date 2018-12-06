@@ -978,6 +978,38 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Dec 06 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-45
+- kvm-target-ppc-add-basic-support-for-PTCR-on-POWER9.patch [bz#1639069]
+- kvm-linux-headers-Update-for-nested-KVM-HV-downstream-on.patch [bz#1639069]
+- kvm-target-ppc-Add-one-reg-id-for-ptcr.patch [bz#1639069]
+- kvm-ppc-spapr_caps-Add-SPAPR_CAP_NESTED_KVM_HV.patch [bz#1639069]
+- kvm-Re-enable-CONFIG_HYPERV_TESTDEV.patch [bz#1651195]
+- kvm-qxl-use-guest_monitor_config-for-local-renderer.patch [bz#1610163]
+- kvm-Declare-cirrus-vga-as-deprecated.patch [bz#1651994]
+- kvm-Do-not-build-bluetooth-support.patch [bz#1654651]
+- kvm-vfio-helpers-Fix-qemu_vfio_open_pci-crash.patch [bz#1645840]
+- kvm-balloon-Allow-multiple-inhibit-users.patch [bz#1650272]
+- kvm-Use-inhibit-to-prevent-ballooning-without-synchr.patch [bz#1650272]
+- kvm-vfio-Inhibit-ballooning-based-on-group-attachment-to.patch [bz#1650272]
+- kvm-vfio-ccw-pci-Allow-devices-to-opt-in-for-ballooning.patch [bz#1650272]
+- kvm-vfio-pci-Handle-subsystem-realpath-returning-NULL.patch [bz#1650272]
+- kvm-vfio-pci-Fix-failure-to-close-file-descriptor-on-err.patch [bz#1650272]
+- kvm-postcopy-Synchronize-usage-of-the-balloon-inhibitor.patch [bz#1650272]
+- Resolves: bz#1610163
+  (guest shows border blurred screen with some resolutions when qemu boot with -device qxl-vga ,and guest on rhel7.6 has no  such question)
+- Resolves: bz#1639069
+  ([IBM 8.0 FEAT] POWER9 - Nested virtualization in RHEL8.0 KVM for ppc64le - qemu-kvm side)
+- Resolves: bz#1645840
+  (Qemu core dump when hotplug nvme:// drive via -blockdev)
+- Resolves: bz#1650272
+  (Ballooning is incompatible with vfio assigned devices, but not prevented)
+- Resolves: bz#1651195
+  (Re-enable hyperv-testdev device)
+- Resolves: bz#1651994
+  (Declare the "Cirrus VGA" device emulation of QEMU as deprecated in RHEL8)
+- Resolves: bz#1654651
+  (Qemu: hw: bt: keep bt/* objects from building [rhel-8.0])
+
 * Tue Nov 27 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-43
 - kvm-block-Make-more-block-drivers-compile-time-configura.patch [bz#1598842 bz#1598842]
 - kvm-RHEL8-Add-disable-configure-options-to-qemu-spec-fil.patch [bz#1598842]
