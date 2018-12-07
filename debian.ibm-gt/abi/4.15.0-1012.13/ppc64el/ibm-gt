@@ -2440,6 +2440,7 @@ EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_debugfs_root
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_del_flow_rules
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_destroy_flow_table
+EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_eswitch_add_send_to_vport_rule
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fpga_get_sbu_caps
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fpga_mem_read
 EXPORT_SYMBOL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fpga_mem_write
@@ -12138,6 +12139,7 @@ EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	m
 EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_db_alloc_node
 EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_db_free
 EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_destroy_unmap_eq
+EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_eswitch_mode
 EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fill_page_array
 EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_fill_page_frag_array
 EXPORT_SYMBOL_GPL drivers/net/ethernet/mellanox/mlx5/core/mlx5_core 0x00000000	mlx5_modify_nic_vport_mac_address
