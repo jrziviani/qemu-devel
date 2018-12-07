@@ -77,11 +77,6 @@ URL: http://www.qemu.org/
 ExclusiveArch: x86_64 %{power64} aarch64 s390x
 
 
-# OOM killer breaks builds with parallel make on s390x
-%ifarch s390x
-    %define _smp_mflags %{nil}
-%endif
-
 Source0: http://wiki.qemu.org/download/%%TARBALL%%
 
 # KSM control scripts
@@ -300,11 +295,6 @@ Summary: QEMU guest agent
 Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
-
-# OOM killer breaks builds with parallel make on s390x
-%ifarch s390x
-    %define _smp_mflags %{nil}
-%endif
 
 %description -n qemu-guest-agent
 qemu-kvm is an open source virtualizer that provides hardware emulation for
