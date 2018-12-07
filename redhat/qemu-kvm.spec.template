@@ -381,9 +381,8 @@ the Secure Shell (SSH) protocol.
 
 
 %prep
-%setup -q -n qemu-%{version}
-
-%%PATCHAPPLY%%
+%setup -n qemu-%{version}
+%autopatch -p1
 
 %build
 %global buildarch %{kvm_target}-softmmu

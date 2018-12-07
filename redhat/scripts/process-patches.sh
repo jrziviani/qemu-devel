@@ -44,7 +44,7 @@ fi
 echo "Using $LOCAL_PYTHON"
 
 # Pre-cleaning
-rm -rf .tmp asection psection patchlist
+rm -rf .tmp psection patchlist
 
 if [ ! -f ${TARBALL} ]; then
    wget ${TARURL}
@@ -63,7 +63,6 @@ for patchfile in `cat patchlist`; do
   if grep -q '^diff --git ' .tmp; then
     num=$(echo $patchfile | sed 's/\([0-9]*\).*/\1/')
     echo "Patch${num}: ${patchfile}" >> psection
-    echo "%patch${num} -p1" >> asection
     mv .tmp ${SOURCES}/${patchfile}
   fi
 done
@@ -77,8 +76,6 @@ fi
 
 sed -i -e "/%%PATCHLIST%%/r psection
            /%%PATCHLIST%%/d
-           /%%PATCHAPPLY%%/r asection
-           /%%PATCHAPPLY%%/d
            s/%%VERSION%%/${VERSION}/
            s/%%RELEASE%%/${RELEASE}/
            s/%%ZRELEASE%%/${ZRELEASE}/
@@ -89,4 +86,4 @@ sed -i -e "/%%PATCHLIST%%/r psection
 
 # Final cleaning
 rm -rf `cat patchlist`
-rm -rf .tmp asection psection patchlist
+rm -rf .tmp psection patchlist
