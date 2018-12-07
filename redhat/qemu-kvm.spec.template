@@ -7,11 +7,8 @@
 %global have_fdt      0
 %global have_gluster  1
 %global have_kvm_setup 0
-%global have_seccomp 1
 %global have_memlock_limits 0
 %global have_vxhs     0
-%global have_vhost_user 1
-%global have_tcmalloc 0
 
 %ifnarch %{ix86} x86_64
     %global have_usbredir 0
@@ -113,7 +110,6 @@ Source34: 81-kvm-rhel.rules
 Source35: udev-kvm-check.c
 
 
-
 %%PATCHLIST%%
 
 BuildRequires: zlib-devel
@@ -141,9 +137,7 @@ BuildRequires: libcacard-devel
 # For smartcard NSS support
 BuildRequires: nss-devel
 %endif
-%if %{have_seccomp}
 BuildRequires: libseccomp-devel >= 2.3.0
-%endif
 # For network block driver
 BuildRequires: libcurl-devel
 BuildRequires: libssh2-devel
@@ -249,9 +243,7 @@ Requires: ipxe-roms-qemu >= 20170123-1
 Requires: SLOF >= %{SLOF_gittagdate}-1.git%{SLOF_gittagcommit}
 %endif
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
-%if %{have_seccomp}
 Requires: libseccomp >= 2.3.0
-%endif
 # For compressed guest memory dumps
 Requires: lzo snappy
 %if %{have_gluster}
@@ -434,11 +426,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 %else
   --disable-rdma \
 %endif
-%if 0%{have_seccomp}
   --enable-seccomp \
-%else
-  --disable-seccomp \
-%endif
 %if 0%{have_spice}
   --enable-spice \
   --enable-smartcard \
@@ -456,21 +444,13 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 %else
   --disable-usb-redir \
 %endif
-%if 0%{have_tcmalloc}
-  --enable-tcmalloc \
-%else
   --disable-tcmalloc \
-%endif
 %if 0%{have_vxhs}
   --enable-vxhs \
 %else
   --disable-vxhs \
 %endif
-%if 0%{have_vhost_user}
   --enable-vhost-user \
-%else
-  --disable-vhost-user \
-%endif
   --python=%{__python3} \
   --target-list="%{buildarch}" \
   --block-drv-rw-whitelist=%{block_drivers_list} \
