@@ -61,10 +61,9 @@ Requires: %{name}-block-rbd = %{epoch}:%{version}-%{release}     \
 Requires: %{name}-block-ssh = %{epoch}:%{version}-%{release}
 
 # Macro to properly setup RHEL/RHEV conflict handling
-%define rhel_rhev_conflicts()                                          \
-Conflicts: %1-ma                                                       \
-Conflicts: %1-rhev                                                     \
-Provides: %1-rhel = %{epoch}:%{version}-%{release}
+%define rhev_ma_conflicts()                                      \
+Obsoletes: %1-ma                                                 \
+Obsoletes: %1-rhev
 
 Summary: QEMU is a machine emulator and virtualizer
 Name: qemu-kvm
@@ -214,8 +213,7 @@ Requires:      mesa-dri-drivers
 %endif
 
 Requires: qemu-kvm-core = %{epoch}:%{version}-%{release}
-Conflicts: qemu-kvm-ma
-Conflicts: qemu-kvm-rhev
+%rhev_ma_conflicts qemu-kvm
 
 %{requires_all_modules}
 
@@ -260,7 +258,7 @@ Requires: libusbx >= 1.0.19
 Requires: usbredir >= 0.7.1
 %endif
 
-%rhel_rhev_conflicts qemu-kvm
+%rhev_ma_conflicts qemu-kvm
 
 %description -n qemu-kvm-core
 qemu-kvm is an open source virtualizer that provides hardware
@@ -273,7 +271,7 @@ hardware for a full system such as a PC and its associated peripherals.
 Summary: QEMU command line tool for manipulating disk images
 Group: Development/Tools
 
-%rhel_rhev_conflicts qemu-img
+%rhev_ma_conflicts qemu-img
 
 %description -n qemu-img
 This package provides a command line tool for manipulating disk images.
@@ -288,7 +286,7 @@ Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
 
-%rhel_rhev_conflicts qemu-kvm-common
+%rhev_ma_conflicts qemu-kvm-common
 
 %description -n qemu-kvm-common
 qemu-kvm is an open source virtualizer that provides hardware emulation for
