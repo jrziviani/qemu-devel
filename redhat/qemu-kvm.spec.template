@@ -978,6 +978,27 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Dec 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-46 
+- kvm-qcow2-Give-the-refcount-cache-the-minimum-possible-s.patch [bz#1656507]
+- kvm-docs-Document-the-new-default-sizes-of-the-qcow2-cac.patch [bz#1656507]
+- kvm-qcow2-Fix-Coverity-warning-when-calculating-the-refc.patch [bz#1656507]
+- kvm-include-Add-IEC-binary-prefixes-in-qemu-units.h.patch [bz#1656507]
+- kvm-qcow2-Options-documentation-fixes.patch [bz#1656507]
+- kvm-include-Add-a-lookup-table-of-sizes.patch [bz#1656507]
+- kvm-qcow2-Make-sizes-more-humanly-readable.patch [bz#1656507]
+- kvm-qcow2-Avoid-duplication-in-setting-the-refcount-cach.patch [bz#1656507]
+- kvm-qcow2-Assign-the-L2-cache-relatively-to-the-image-si.patch [bz#1656507]
+- kvm-qcow2-Increase-the-default-upper-limit-on-the-L2-cac.patch [bz#1656507]
+- kvm-qcow2-Resize-the-cache-upon-image-resizing.patch [bz#1656507]
+- kvm-qcow2-Set-the-default-cache-clean-interval-to-10-min.patch [bz#1656507]
+- kvm-qcow2-Explicit-number-replaced-by-a-constant.patch [bz#1656507]
+- kvm-block-backend-Set-werror-rerror-defaults-in-blk_new.patch [bz#1657637]
+- kvm-qcow2-Fix-cache-clean-interval-documentation.patch [bz#1656507]
+- Resolves: bz#1656507
+  ([RHEL.8] qcow2 cache is too small)
+- Resolves: bz#1657637
+  (Wrong werror default for -device drive=<node-name>)
+
 * Thu Dec 06 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-45
 - kvm-target-ppc-add-basic-support-for-PTCR-on-POWER9.patch [bz#1639069]
 - kvm-linux-headers-Update-for-nested-KVM-HV-downstream-on.patch [bz#1639069]
