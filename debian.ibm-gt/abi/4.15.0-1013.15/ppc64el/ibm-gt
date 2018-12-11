@@ -9814,6 +9814,7 @@ EXPORT_SYMBOL vmlinux 0x00000000	verify_spi_info
 EXPORT_SYMBOL vmlinux 0x00000000	vesa_modes
 EXPORT_SYMBOL vmlinux 0x00000000	vfio_info_add_capability
 EXPORT_SYMBOL vmlinux 0x00000000	vfio_info_cap_shift
+EXPORT_SYMBOL vmlinux 0x00000000	vfio_pci_driver_ptr
 EXPORT_SYMBOL vmlinux 0x00000000	vfio_pin_pages
 EXPORT_SYMBOL vmlinux 0x00000000	vfio_register_notifier
 EXPORT_SYMBOL vmlinux 0x00000000	vfio_set_irqs_validate_and_prepare
