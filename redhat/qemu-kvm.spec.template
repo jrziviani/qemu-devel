@@ -978,6 +978,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Dec 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-47
+- kvm-Disable-CONFIG_IPMI-and-CONFIG_I2C-for-ppc64.patch [bz#1640044]
+- kvm-Disable-CONFIG_CAN_BUS-and-CONFIG_CAN_SJA1000.patch [bz#1640042]
+- Resolves: bz#1640042
+  (Disable CONFIG_CAN_BUS and CONFIG_CAN_SJA1000 config switches)
+- Resolves: bz#1640044
+  (Disable CONFIG_I2C and CONFIG_IPMI in default-configs/ppc64-softmmu.mak)
+
 * Tue Dec 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-46 
 - kvm-qcow2-Give-the-refcount-cache-the-minimum-possible-s.patch [bz#1656507]
 - kvm-docs-Document-the-new-default-sizes-of-the-qcow2-cac.patch [bz#1656507]
