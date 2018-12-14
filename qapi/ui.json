@@ -1020,6 +1020,20 @@
   'data'    : { '*grab-on-hover' : 'bool' } }
 
 ##
+# @DisplayEGLHeadless:
+#
+# EGL headless display options.
+#
+# @rendernode: Which DRM render node should be used. Default is the first
+#              available node on the host.
+#
+# Since: 3.1
+#
+##
+{ 'struct'  : 'DisplayEGLHeadless',
+  'data'    : { '*rendernode' : 'str' } }
+
+##
 # @DisplayType:
 #
 # Display (user interface) type.
@@ -1054,6 +1068,6 @@
                 'none'           : 'DisplayNoOpts',
                 'gtk'            : 'DisplayGTK',
                 'sdl'            : 'DisplayNoOpts',
-                'egl-headless'   : 'DisplayNoOpts',
+                'egl-headless'   : 'DisplayEGLHeadless',
                 'curses'         : 'DisplayNoOpts',
                 'cocoa'          : 'DisplayNoOpts' } }
