@@ -939,6 +939,29 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Dec 14 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-48
+- kvm-redhat-use-autopatch-instead-of-PATCHAPPLY.patch [bz#1613128]
+- kvm-redhat-Removing-some-unused-build-flags-in-the-spec-.patch [bz#1613128]
+- kvm-redhat-Fixing-rhev-ma-conflicts.patch [bz#1613126]
+- kvm-redhat-Remove-_smp_mflags-cleanup-workaround-for-s39.patch [bz#1613128]
+- kvm-redhat-Removing-dead-code-from-the-spec-file.patch [bz#1613128]
+- kvm-i386-Add-stibp-flag-name.patch [bz#1639446]
+- kvm-Add-functional-acceptance-tests-infrastructure.patch [bz#1655807]
+- kvm-scripts-qemu.py-allow-adding-to-the-list-of-extra-ar.patch [bz#1655807]
+- kvm-Acceptance-tests-add-quick-VNC-tests.patch [bz#1655807]
+- kvm-scripts-qemu.py-introduce-set_console-method.patch [bz#1655807]
+- kvm-Acceptance-tests-add-Linux-kernel-boot-and-console-c.patch [bz#1655807]
+- kvm-Bootstrap-Python-venv-for-tests.patch [bz#1655807]
+- kvm-Acceptance-tests-add-make-rule-for-running-them.patch [bz#1655807]
+- Resolves: bz#1613126
+  (Check and fix qemu-kvm-rhev and qemu-kvm-ma conflicts in qemu-kvm for rhel-8)
+- Resolves: bz#1613128
+  (Spec file clean up)
+- Resolves: bz#1639446
+  (Cross migration from RHEL7.5 to RHEL8 shouldn't fail with cpu flag stibp [qemu-kvm])
+- Resolves: bz#1655807
+  (Backport avocado-qemu tests for QEMU 2.12)
+
 * Tue Dec 11 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-47
 - kvm-Disable-CONFIG_IPMI-and-CONFIG_I2C-for-ppc64.patch [bz#1640044]
 - kvm-Disable-CONFIG_CAN_BUS-and-CONFIG_CAN_SJA1000.patch [bz#1640042]
