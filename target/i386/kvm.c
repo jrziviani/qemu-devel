@@ -2072,6 +2072,7 @@ static int kvm_get_msrs(X86CPU *cpu)
     struct kvm_msr_entry *msrs = cpu->kvm_msr_buf->entries;
     int ret, i;
     uint64_t mtrr_top_bits;
+    MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
 
     kvm_msr_buf_reset(cpu);
 
@@ -2364,6 +2365,9 @@ static int kvm_get_msrs(X86CPU *cpu)
             break;
         case MSR_KVM_ASYNC_PF_EN:
             env->async_pf_en_msr = msrs[i].data;
+            if (mc->async_pf_vmexit_disable) {
+                env->async_pf_en_msr &= ~(1ULL << 2);
+            }
             break;
         case MSR_KVM_PV_EOI_EN:
             env->pv_eoi_en_msr = msrs[i].data;
