@@ -1,0 +1,28 @@
+Launching source VM...
+Launching destination VM...
+{u'return': {}}
+{u'return': {}}
+Enabling migration QMP events on A...
+{u'return': {}}
+Starting migration to B...
+{u'return': {}}
+{u'timestamp': {u'seconds': 'SECS', u'microseconds': 'USECS'}, u'data': {u'status': u'setup'}, u'event': u'MIGRATION'}
+{u'timestamp': {u'seconds': 'SECS', u'microseconds': 'USECS'}, u'data': {u'status': u'active'}, u'event': u'MIGRATION'}
+{u'timestamp': {u'seconds': 'SECS', u'microseconds': 'USECS'}, u'data': {u'status': u'completed'}, u'event': u'MIGRATION'}
+completed
+{u'return': {u'status': u'postmigrate', u'singlestep': False, u'running': False}}
+{u'return': {u'status': u'running', u'singlestep': False, u'running': True}}
+Add a second parent to drive0-file...
+{u'return': {}}
+Restart A with -incoming and second parent...
+{u'return': {}}
+Enabling migration QMP events on B...
+{u'return': {}}
+Starting migration back to A...
+{u'return': {}}
+{u'timestamp': {u'seconds': 'SECS', u'microseconds': 'USECS'}, u'data': {u'status': u'setup'}, u'event': u'MIGRATION'}
+{u'timestamp': {u'seconds': 'SECS', u'microseconds': 'USECS'}, u'data': {u'status': u'active'}, u'event': u'MIGRATION'}
+{u'timestamp': {u'seconds': 'SECS', u'microseconds': 'USECS'}, u'data': {u'status': u'completed'}, u'event': u'MIGRATION'}
+completed
+{u'return': {u'status': u'running', u'singlestep': False, u'running': True}}
+{u'return': {u'status': u'postmigrate', u'singlestep': False, u'running': False}}
