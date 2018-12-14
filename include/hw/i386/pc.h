@@ -976,6 +976,11 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
             .driver = "vfio-pci",\
             .property = "x-no-geforce-quirks",\
             .value = "on",\
+        },\
+        { /* PC_RHEL_COMPAT from PC_COMPAT_2_11 bz 1659565 */ \
+            .driver   = TYPE_X86_CPU,\
+            .property = "x-migrate-smi-count",\
+            .value    = "off",\
         },
 
 /* Similar to PC_COMPAT_2_11 + PC_COMPAT_2_10, but:
