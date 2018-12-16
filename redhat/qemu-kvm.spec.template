@@ -470,7 +470,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --enable-snappy \
   --disable-sparse \
   --disable-strip \
-  --disable-tpm \
+  --enable-tpm \
   --enable-trace-backend=dtrace \
   --disable-vde \
   --disable-vhost-scsi \
