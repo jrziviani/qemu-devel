@@ -361,7 +361,7 @@ the Secure Shell (SSH) protocol.
 
 
 %prep
-%setup -n qemu-%{version}
+%setup -q -n qemu-%{version}
 %autopatch -p1
 
 %build
@@ -939,8 +939,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
-rebuild for qemu-kvm-2.12.0-49
-
+* Mon Dec 17 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
 - kvm-redhat-enable-tpmdev-passthrough.patch [bz#1654486]
 - Resolves: bz#1654486
   ([RFE] enable TPM passthrough at compile time (qemu-kvm))
