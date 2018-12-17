@@ -939,6 +939,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+rebuild for qemu-kvm-2.12.0-49
+
+- kvm-redhat-enable-tpmdev-passthrough.patch [bz#1654486]
+- Resolves: bz#1654486
+  ([RFE] enable TPM passthrough at compile time (qemu-kvm))
+
 * Fri Dec 14 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - qemu-kvm-2.12.0-48
 - kvm-redhat-use-autopatch-instead-of-PATCHAPPLY.patch [bz#1613128]
 - kvm-redhat-Removing-some-unused-build-flags-in-the-spec-.patch [bz#1613128]
