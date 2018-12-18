@@ -227,7 +227,12 @@ Requires: qemu-img = %{epoch}:%{version}-%{release}
 %ifarch %{ix86} x86_64
 Requires: seabios-bin >= 1.10.2-1
 Requires: sgabios-bin
+Requires: edk2-ovmf
 %endif
+%ifarch aarch64
+Requires: edk2-aarch64
+%endif
+
 %ifnarch aarch64 s390x
 Requires: seavgabios-bin >= 1.10.2-1
 Requires: ipxe-roms-qemu >= 20170123-1
