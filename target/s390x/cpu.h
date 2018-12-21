@@ -691,8 +691,6 @@ static inline uint64_t s390_build_validity_mcic(void)
 
 
 /* cpu.c */
-int s390_get_clock(uint8_t *tod_high, uint64_t *tod_low);
-int s390_set_clock(uint8_t *tod_high, uint64_t *tod_low);
 void s390_crypto_reset(void);
 bool s390_get_squash_mcss(void);
 int s390_set_memory_limit(uint64_t new_limit, uint64_t *hw_limit);
