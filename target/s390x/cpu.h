@@ -134,7 +134,6 @@ struct CPUS390XState {
 #endif
 
     uint64_t tod_offset;
-    uint64_t tod_basetime;
     QEMUTimer *tod_timer;
 
     QEMUTimer *cpu_timer;
