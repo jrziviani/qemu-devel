@@ -939,6 +939,19 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Dec 24 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-51.el8
+- kvm-x86-host-phys-bits-limit-option.patch [bz#1598284]
+- kvm-rhel-Set-host-phys-bits-limit-48-on-rhel-machine-typ.patch [bz#1598284]
+- kvm-i386-do-not-migrate-MSR_SMI_COUNT-on-machine-types-2.patch [bz#1659565]
+- kvm-pc-x-migrate-smi-count-to-PC_RHEL_COMPAT.patch [bz#1659565]
+- kvm-slow-train-kvm-clear-out-KVM_ASYNC_PF_DELIVERY_AS_PF.patch [bz#1656829]
+- Resolves: bz#1598284
+  ([Intel 8.0 Alpha] physical bits should  < 48  when host with 5level paging &EPT5 and qemu command with "-cpu qemu64" parameters.)
+- Resolves: bz#1656829
+  (8->7 migration failed: qemu-kvm: error: failed to set MSR 0x4b564d02 to 0x27fc13285)
+- Resolves: bz#1659565
+  (machine type: required compat flag x-migrate-smi-count=off)
+
 * Mon Dec 17 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 
 - kvm-redhat-enable-tpmdev-passthrough.patch [bz#1654486]
 - Resolves: bz#1654486
