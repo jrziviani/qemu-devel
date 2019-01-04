@@ -944,6 +944,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Jan 04 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-52.el8
+- kvm-Add-edk2-Requires-to-qemu-kvm.patch [bz#1654276]
+- Resolves: bz#1654276
+  (qemu-kvm: Should depend on the architecture-appropriate guest firmware)
+
 * Mon Dec 24 2018 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-51.el8
 - kvm-x86-host-phys-bits-limit-option.patch [bz#1598284]
 - kvm-rhel-Set-host-phys-bits-limit-48-on-rhel-machine-typ.patch [bz#1598284]
