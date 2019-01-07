@@ -189,6 +189,10 @@ BuildRequires: systemd-devel
 BuildRequires: libcap-ng-devel
 
 BuildRequires: diffutils
+%ifarch x86_64
+BuildRequires: libpmem-devel
+Requires: libpmem
+%endif
 
 # qemu-keymap
 BuildRequires: pkgconfig(xkbcommon)
@@ -442,6 +446,11 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --enable-vxhs \
 %else
   --disable-vxhs \
+%endif
+%ifarch x86_64
+  --enable-libpmem \
+%else
+  --disable-libpmem \
 %endif
   --enable-vhost-user \
   --python=%{__python3} \
