@@ -45,4 +45,5 @@ SOURCES_FILELIST:=                     \
        kvm-s390x.conf                  \
        95-kvm-memlock.conf             \
        qemu-pr-helper.service          \
-       qemu-pr-helper.socket
+       qemu-pr-helper.socket           \
+       README.tests

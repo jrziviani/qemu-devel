@@ -102,6 +102,7 @@ Source32: qemu-pr-helper.service
 Source33: qemu-pr-helper.socket
 Source34: 81-kvm-rhel.rules
 Source35: udev-kvm-check.c
+Source36: README.tests
 
 
 %%PATCHLIST%%
@@ -314,6 +315,18 @@ with the host over a virtio-serial channel named "org.qemu.guest_agent.0"
 
 This package does not need to be installed on the host OS.
 
+%package tests
+Summary: tests for the qemu-kvm package
+Requires: %{name} = %{epoch}:%{version}-%{release}
+
+%define testsdir %{_libdir}/%{name}/tests-src
+
+%description tests
+The qemu-kvm-tests rpm contains tests that can be used to verify
+the functionality of the installed qemu-kvm package
+
+Install this package if you want access to the avocado_qemu
+tests, or qemu-iotests.
 
 %package  block-curl
 Summary: QEMU CURL block driver
@@ -591,11 +604,34 @@ mkdir -p $RPM_BUILD_ROOT%{_bindir}/
 mkdir -p $RPM_BUILD_ROOT%{_udevrulesdir}/
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}
 
+# Create new directories and put them all under tests-src
+mkdir -p $RPM_BUILD_ROOT%{testsdir}/tests/
+mkdir -p $RPM_BUILD_ROOT%{testsdir}/tests/acceptance
+mkdir -p $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests
+mkdir -p $RPM_BUILD_ROOT%{testsdir}/scripts
+mkdir -p $RPM_BUILD_ROOT%{testsdir}/scripts/qmp
+
 install -p -m 0755 udev-kvm-check $RPM_BUILD_ROOT%{_udevdir}
 install -p -m 0644 %{SOURCE34} $RPM_BUILD_ROOT%{_udevrulesdir}
 
 install -m 0644 scripts/dump-guest-memory.py \
                 $RPM_BUILD_ROOT%{_datadir}/%{name}
+
+# Install avocado_qemu tests
+cp -R tests/acceptance/* $RPM_BUILD_ROOT%{testsdir}/tests/acceptance/
+
+# Install qemu.py and qmp/ scripts required to run avocado_qemu tests
+install -p -m 0644 scripts/qemu.py $RPM_BUILD_ROOT%{testsdir}/scripts/
+cp -R scripts/qmp/* $RPM_BUILD_ROOT%{testsdir}/scripts/qmp
+install -p -m 0755 tests/Makefile.include $RPM_BUILD_ROOT%{testsdir}/tests/
+
+# Install qemu-iotests
+cp -R tests/qemu-iotests/* $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests/
+# Avoid ambiguous 'python' interpreter name
+find $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests/* -maxdepth 1 -type f -exec sed -i -e '1 s/python/python3/' {} \;
+find $RPM_BUILD_ROOT%{testsdir}/scripts/qmp/* -maxdepth 1 -type f -exec sed -i -e '1 s/python/python3/' {} \;
+
+install -p -m 0644 %{SOURCE36} $RPM_BUILD_ROOT%{testsdir}/README
 
 make DESTDIR=$RPM_BUILD_ROOT \
     sharedir="%{_datadir}/%{name}" \
@@ -937,6 +973,16 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %{_sysconfdir}/qemu-ga
 %{_datadir}/%{name}/qemu-ga
 %dir %{_localstatedir}/log/qemu-ga
+
+%files tests
+%{testsdir}/README
+%{testsdir}/tests/
+%{testsdir}/tests/acceptance/
+%{testsdir}/tests/qemu-iotests/
+%{testsdir}/tests/Makefile.include
+%{testsdir}/scripts/
+%{testsdir}/scripts/qmp/
+%{testsdir}/scripts/qemu.py
 
 %files block-curl
 %{_libdir}/qemu-kvm/block-curl.so
