@@ -335,4 +335,22 @@ extern const size_t hw_compat_2_2_len;
 extern GlobalProperty hw_compat_2_1[];
 extern const size_t hw_compat_2_1_len;
 
+extern GlobalProperty hw_compat_rhel_7_6[];
+extern const size_t hw_compat_rhel_7_6_len;
+
+extern GlobalProperty hw_compat_rhel_7_5[];
+extern const size_t hw_compat_rhel_7_5_len;
+
+extern GlobalProperty hw_compat_rhel_7_4[];
+extern const size_t hw_compat_rhel_7_4_len;
+
+extern GlobalProperty hw_compat_rhel_7_3[];
+extern const size_t hw_compat_rhel_7_3_len;
+
+extern GlobalProperty hw_compat_rhel_7_2[];
+extern const size_t hw_compat_rhel_7_2_len;
+
+extern GlobalProperty hw_compat_rhel_7_1[];
+extern const size_t hw_compat_rhel_7_1_len;
+
 #endif
