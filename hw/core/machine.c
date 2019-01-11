@@ -27,6 +27,152 @@
 #include "hw/pci/pci.h"
 #include "hw/mem/nvdimm.h"
 
+/* The same as hw_compat_3_1
+ * format of array has been changed by:
+ *     6c36bddf5340 ("machine: Use shorter format for GlobalProperty arrays")
+ */
+GlobalProperty hw_compat_rhel_8_0[] = {
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "pcie-root-port", "x-speed", "2_5" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "pcie-root-port", "x-width", "1" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "memory-backend-file", "x-use-canonical-path-for-ramblock-id", "true" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "memory-backend-memfd", "x-use-canonical-path-for-ramblock-id", "true" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "tpm-crb", "ppi", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "tpm-tis", "ppi", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "usb-kbd", "serial", "42" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "usb-mouse", "serial", "42" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "usb-tablet", "serial", "42" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "virtio-blk-device", "discard", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "virtio-blk-device", "write-zeroes", "false" },
+};
+const size_t hw_compat_rhel_8_0_len = G_N_ELEMENTS(hw_compat_rhel_8_0);
+
+/* The same as hw_compat_3_0 + hw_compat_2_12
+ * except that
+ *   there's nothing in 3_0
+ *   migration.decompress-error-check=off was in 7.5 from bz 1584139
+ */
+GlobalProperty hw_compat_rhel_7_6[] = {
+    /* hw_compat_rhel_7_6 from hw_compat_2_12 */
+    { "hda-audio", "use-timer", "false" },
+    /* hw_compat_rhel_7_6 from hw_compat_2_12 */
+    { "cirrus-vga", "global-vmstate", "true" },
+    /* hw_compat_rhel_7_6 from hw_compat_2_12 */
+    { "VGA", "global-vmstate", "true" },
+    /* hw_compat_rhel_7_6 from hw_compat_2_12 */
+    { "vmware-svga", "global-vmstate", "true" },
+    /* hw_compat_rhel_7_6 from hw_compat_2_12 */
+    { "qxl-vga", "global-vmstate",  "true" },
+};
+const size_t hw_compat_rhel_7_6_len = G_N_ELEMENTS(hw_compat_rhel_7_6);
+
+/* The same as hw_compat_2_11 + hw_compat_2_10 */
+GlobalProperty hw_compat_rhel_7_5[] = {
+    /* hw_compat_rhel_7_5 from hw_compat_2_11 */
+    { "hpet", "hpet-offset-saved", "false" },
+    /* hw_compat_rhel_7_5 from hw_compat_2_11 */
+    { "virtio-blk-pci", "vectors", "2" },
+    /* hw_compat_rhel_7_5 from hw_compat_2_11 */
+    { "vhost-user-blk-pci", "vectors", "2" },
+    /* hw_compat_rhel_7_5 from hw_compat_2_11
+       bz 1608778 modified for our naming */
+    { "e1000-82540em", "migrate_tso_props", "off" },
+    /* hw_compat_rhel_7_5 from hw_compat_2_10 */
+    { "virtio-mouse-device", "wheel-axis", "false" },
+    /* hw_compat_rhel_7_5 from hw_compat_2_10 */
+    { "virtio-tablet-device", "wheel-axis", "false" },
+    { "cirrus-vga", "vgamem_mb", "16" },
+    { "migration", "decompress-error-check", "off" },
+};
+const size_t hw_compat_rhel_7_5_len = G_N_ELEMENTS(hw_compat_rhel_7_5);
+
+/* Mostly like hw_compat_2_9 except
+ * x-mtu-bypass-backend, x-migrate-msix has already been
+ * backported to RHEL7.4. shpc was already on in 7.4.
+ */
+GlobalProperty hw_compat_rhel_7_4[] = {
+    { "intel-iommu", "pt", "off" },
+};
+
+const size_t hw_compat_rhel_7_4_len = G_N_ELEMENTS(hw_compat_rhel_7_4);
+/* Mostly like HW_COMPAT_2_6 + HW_COMPAT_2_7 + HW_COMPAT_2_8 except
+ * disable-modern, disable-legacy, page-per-vq have already been
+ * backported to RHEL7.3
+ */
+GlobalProperty hw_compat_rhel_7_3[] = {
+    { "virtio-mmio", "format_transport_address", "off" },
+    { "virtio-serial-device", "emergency-write", "off" },
+    { "ioapic", "version", "0x11" },
+    { "intel-iommu", "x-buggy-eim", "true" },
+    { "virtio-pci", "x-ignore-backend-features", "on" },
+    { "fw_cfg_mem", "x-file-slots", stringify(0x10) },
+    { "fw_cfg_io", "x-file-slots", stringify(0x10) },
+    { "pflash_cfi01", "old-multiple-chip-handling", "on" },
+    { TYPE_PCI_DEVICE, "x-pcie-extcap-init", "off" },
+    { "virtio-pci", "x-pcie-deverr-init", "off" },
+    { "virtio-pci", "x-pcie-lnkctl-init", "off" },
+    { "virtio-pci", "x-pcie-pm-init", "off" },
+    { "virtio-net-device", "x-mtu-bypass-backend", "off" },
+    { "e1000e", "__redhat_e1000e_7_3_intr_state", "on" },
+};
+const size_t hw_compat_rhel_7_3_len = G_N_ELEMENTS(hw_compat_rhel_7_3);
+
+/* Mostly like hw_compat_2_4 + 2_3 but:
+ *  we don't need "any_layout" as it has been backported to 7.2
+ */
+GlobalProperty hw_compat_rhel_7_2[] = {
+        { "virtio-blk-device", "scsi", "true" },
+        { "e1000-82540em", "extra_mac_registers", "off" },
+        { "virtio-pci", "x-disable-pcie", "on" },
+        { "virtio-pci", "migrate-extra", "off" },
+        { "fw_cfg_mem", "dma_enabled", "off" },
+        { "fw_cfg_io", "dma_enabled", "off" },
+        { "isa-fdc", "fallback", "144" },
+        { "virtio-pci", "disable-modern", "on" },
+        { "virtio-pci", "disable-legacy", "off" },
+        { TYPE_PCI_DEVICE, "x-pcie-lnksta-dllla", "off" },
+        { "virtio-pci", "page-per-vq", "on" },
+        /* hw_compat_rhel_7_2 - introduced with 2.10.0 */
+        { "migration", "send-section-footer", "off" },
+        /* hw_compat_rhel_7_2 - introduced with 2.10.0 */
+        { "migration", "store-global-state", "off",
+        },
+};
+const size_t hw_compat_rhel_7_2_len = G_N_ELEMENTS(hw_compat_rhel_7_2);
+
+/* Mostly like hw_compat_2_1 but:
+ *    we don't need virtio-scsi-pci since 7.0 already had that on
+ *
+ * RH: Note, qemu-extended-regs should have been enabled in the 7.1
+ * machine type, but was accidentally turned off in 7.2 onwards.
+ */
+GlobalProperty hw_compat_rhel_7_1[] = {
+    { "intel-hda-generic", "old_msi_addr", "on" },
+    { "VGA", "qemu-extended-regs", "off" },
+    { "secondary-vga", "qemu-extended-regs", "off" },
+    { "usb-mouse", "usb_version", stringify(1) },
+    { "usb-kbd", "usb_version", stringify(1) },
+    { "virtio-pci",  "virtio-pci-bus-master-bug-migration", "on" },
+    { "virtio-blk-pci", "any_layout", "off" },
+    { "virtio-balloon-pci", "any_layout", "off" },
+    { "virtio-serial-pci", "any_layout", "off" },
+    { "virtio-9p-pci", "any_layout", "off" },
+    { "virtio-rng-pci", "any_layout", "off" },
+    /* HW_COMPAT_RHEL7_1 - introduced with 2.10.0 */
+    { "migration", "send-configuration", "off" },
+};
+const size_t hw_compat_rhel_7_1_len = G_N_ELEMENTS(hw_compat_rhel_7_1);
+
 GlobalProperty hw_compat_4_0[] = {
     { "VGA",            "edid", "false" },
     { "secondary-vga",  "edid", "false" },
