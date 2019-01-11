@@ -1003,6 +1003,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Jan 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-56.el8
+- kvm-Run-iotests-as-part-of-the-build-process.patch [bz#1661026]
+- kvm-Introduce-the-qemu-kvm-tests-rpm.patch [bz#1601107]
+- Resolves: bz#1601107
+  (qemu-kvm packaging: make running qemu-iotests more robust)
+- Resolves: bz#1661026
+  (Run iotests as part of build process)
+
 * Tue Jan 08 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-55.el8
 - kvm-block-Don-t-inactivate-children-before-parents.patch [bz#1659395]
 - kvm-iotests-Test-migration-with-blockdev.patch [bz#1659395]
