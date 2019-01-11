@@ -996,6 +996,9 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Jan 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-57.el8
+- kvm-qemu-kvm.spec.template-Update-files-for-tests-rpm-to.patch [bz#1601107]
+
 * Fri Jan 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-56.el8
 - kvm-Run-iotests-as-part-of-the-build-process.patch [bz#1661026]
 - kvm-Introduce-the-qemu-kvm-tests-rpm.patch [bz#1601107]
