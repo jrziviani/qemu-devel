@@ -975,14 +975,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %dir %{_localstatedir}/log/qemu-ga
 
 %files tests
-%{testsdir}/README
-%{testsdir}/tests/
-%{testsdir}/tests/acceptance/
-%{testsdir}/tests/qemu-iotests/
-%{testsdir}/tests/Makefile.include
-%{testsdir}/scripts/
-%{testsdir}/scripts/qmp/
-%{testsdir}/scripts/qemu.py
+%{testsdir}
 
 %files block-curl
 %{_libdir}/qemu-kvm/block-curl.so
