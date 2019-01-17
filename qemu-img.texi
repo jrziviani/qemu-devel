@@ -172,6 +172,12 @@ Number of parallel coroutines for the convert process
 Allow out-of-order writes to the destination. This option improves performance,
 but is only recommended for preallocated devices like host devices or other
 raw block devices.
+@item -C
+Try to use copy offloading to move data from source image to target. This may
+improve performance if the data is remote, such as with NFS or iSCSI backends,
+but will not automatically sparsify zero sectors, and may result in a fully
+allocated target image depending on the host support for getting allocation
+information.
 @end table
 
 Parameters to dd subcommand:
@@ -340,7 +346,7 @@ Error on reading data
 
 @end table
 
-@item convert [-c] [-p] [-n] [-f @var{fmt}] [-t @var{cache}] [-T @var{src_cache}] [-O @var{output_fmt}] [-B @var{backing_file}] [-o @var{options}] [-s @var{snapshot_id_or_name}] [-l @var{snapshot_param}] [-m @var{num_coroutines}] [-W] [-S @var{sparse_size}] @var{filename} [@var{filename2} [...]] @var{output_filename}
+@item convert [-C] [-c] [-p] [-n] [-f @var{fmt}] [-t @var{cache}] [-T @var{src_cache}] [-O @var{output_fmt}] [-B @var{backing_file}] [-o @var{options}] [-s @var{snapshot_id_or_name}] [-l @var{snapshot_param}] [-m @var{num_coroutines}] [-W] [-S @var{sparse_size}] @var{filename} [@var{filename2} [...]] @var{output_filename}
 
 Convert the disk image @var{filename} or a snapshot @var{snapshot_param}(@var{snapshot_id_or_name} is deprecated)
 to disk image @var{output_filename} using format @var{output_fmt}. It can be optionally compressed (@code{-c}
