@@ -996,6 +996,26 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Jan 21 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-58.el8
+- kvm-block-Update-flags-in-bdrv_set_read_only.patch [bz#1644996]
+- kvm-block-Add-auto-read-only-option.patch [bz#1644996]
+- kvm-rbd-Close-image-in-qemu_rbd_open-error-path.patch [bz#1644996]
+- kvm-block-Require-auto-read-only-for-existing-fallbacks.patch [bz#1644996]
+- kvm-nbd-Support-auto-read-only-option.patch [bz#1644996]
+- kvm-file-posix-Support-auto-read-only-option.patch [bz#1644996]
+- kvm-curl-Support-auto-read-only-option.patch [bz#1644996]
+- kvm-gluster-Support-auto-read-only-option.patch [bz#1644996]
+- kvm-iscsi-Support-auto-read-only-option.patch [bz#1644996]
+- kvm-block-Make-auto-read-only-on-default-for-drive.patch [bz#1644996]
+- kvm-qemu-iotests-Test-auto-read-only-with-drive-and-bloc.patch [bz#1644996]
+- kvm-block-Fix-update-of-BDRV_O_AUTO_RDONLY-in-update_fla.patch [bz#1644996]
+- kvm-qemu-img-Add-C-option-for-convert-with-copy-offloadi.patch [bz#1623082]
+- kvm-iotests-Add-test-for-qemu-img-convert-C-compatibilit.patch [bz#1623082]
+- Resolves: bz#1623082
+  ([rhel.8.0]Target files for 'qemu-img convert' do not support thin_provisoning with iscsi/nfs backend)
+- Resolves: bz#1644996
+  (block-commit can't be used with -blockdev)
+
 * Fri Jan 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-57.el8
 - kvm-qemu-kvm.spec.template-Update-files-for-tests-rpm-to.patch [bz#1601107]
 
