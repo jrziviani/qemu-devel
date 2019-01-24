@@ -996,6 +996,18 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Jan 24 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-59.el8
+- kvm-hw-scsi-cleanups-before-VPD-BL-emulation.patch [bz#1639957]
+- kvm-hw-scsi-centralize-SG_IO-calls-into-single-function.patch [bz#1639957]
+- kvm-hw-scsi-add-VPD-Block-Limits-emulation.patch [bz#1639957]
+- kvm-scsi-disk-Block-Device-Characteristics-emulation-fix.patch [bz#1639957]
+- kvm-scsi-generic-keep-VPD-page-list-sorted.patch [bz#1639957]
+- kvm-scsi-generic-avoid-out-of-bounds-access-to-VPD-page-.patch [bz#1639957]
+- kvm-scsi-generic-avoid-invalid-access-to-struct-when-emu.patch [bz#1639957]
+- kvm-scsi-generic-do-not-do-VPD-emulation-for-sense-other.patch [bz#1639957]
+- Resolves: bz#1639957
+  ([RHEL.8] scsi host device passthrough limits IO writes - slow train)
+
 * Mon Jan 21 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-58.el8
 - kvm-block-Update-flags-in-bdrv_set_read_only.patch [bz#1644996]
 - kvm-block-Add-auto-read-only-option.patch [bz#1644996]
