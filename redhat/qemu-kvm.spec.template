@@ -996,6 +996,25 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Jan 28 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-60.el8
+- kvm-ne2000-fix-possible-out-of-bound-access-in-ne2000_re.patch [bz#1636784]
+- kvm-rtl8139-fix-possible-out-of-bound-access.patch [bz#1636784]
+- kvm-pcnet-fix-possible-buffer-overflow.patch [bz#1636784]
+- kvm-net-ignore-packet-size-greater-than-INT_MAX.patch [bz#1636784]
+- kvm-net-drop-too-large-packet-early.patch [bz#1636784]
+- kvm-net-hub-suppress-warnings-of-no-host-network-for-qte.patch [bz#1636784]
+- kvm-virtio-net-test-accept-variable-length-argument-in-p.patch [bz#1636784]
+- kvm-virtio-net-test-remove-unused-macro.patch [bz#1636784]
+- kvm-virtio-net-test-add-large-tx-buffer-test.patch [bz#1636784]
+- kvm-s390x-Return-specification-exception-for-unimplement.patch [bz#1668261]
+- kvm-cpus-ignore-ESRCH-in-qemu_cpu_kick_thread.patch [bz#1665844]
+- Resolves: bz#1636784
+  (CVE-2018-17963 qemu-kvm: Qemu: net: ignore packets with large size [rhel-8])
+- Resolves: bz#1665844
+  (Guest quit with error when hotunplug cpu)
+- Resolves: bz#1668261
+  ([RHEL8] Backport diag308 stable exception fix (qemu-kvm))
+
 * Thu Jan 24 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-59.el8
 - kvm-hw-scsi-cleanups-before-VPD-BL-emulation.patch [bz#1639957]
 - kvm-hw-scsi-centralize-SG_IO-calls-into-single-function.patch [bz#1639957]
