@@ -343,12 +343,19 @@ void spapr_check_pagesize(SpaprMachineState *spapr, hwaddr pagesize,
 static void cap_hpt_maxpagesize_apply(SpaprMachineState *spapr,
                                       uint8_t val, Error **errp)
 {
+#if 0 /* disabled for RHEL */
     if (val < 12) {
         error_setg(errp, "Require at least 4kiB hpt-max-page-size");
         return;
     } else if (val < 16) {
         warn_report("Many guests require at least 64kiB hpt-max-page-size");
     }
+#else /* Only page sizes >=64kiB supported for RHEL */
+    if (val < 16) {
+        error_setg(errp, "Require at least 64kiB hpt-max-page-size");
+        return;
+    }
+#endif
 
     spapr_check_pagesize(spapr, qemu_minrampagesize(), errp);
 }
