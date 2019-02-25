@@ -996,6 +996,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Feb 25 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-62.el8
+- kvm-slirp-check-data-length-while-emulating-ident-functi.patch [bz#1669069]
+- Resolves: bz#1669069
+  (CVE-2019-6778 qemu-kvm: QEMU: slirp: heap buffer overflow in tcp_emu() [rhel-8.0])
+
 * Mon Feb 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-61.el8
 - kvm-qemu-ga-make-get-fsinfo-work-over-pci-bridges.patch [bz#1666952]
 - kvm-qga-fix-driver-leak-in-guest-get-fsinfo.patch [bz#1666952]
