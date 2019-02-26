@@ -996,6 +996,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Feb 26 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-63.el8
+- kvm-scsi-generic-avoid-possible-out-of-bounds-access-to-.patch [bz#1668162]
+- Resolves: bz#1668162
+  (CVE-2019-6501 qemu-kvm: QEMU: scsi-generic: possible OOB access while handling inquiry request [rhel-8])
+
 * Mon Feb 25 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-62.el8
 - kvm-slirp-check-data-length-while-emulating-ident-functi.patch [bz#1669069]
 - Resolves: bz#1669069
