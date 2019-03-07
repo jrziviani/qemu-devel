@@ -39,6 +39,7 @@
 %endif
 %ifarch s390x
     %global kvm_target    s390x
+    %global have_kvm_setup 1
 %endif
 %ifarch ppc
     %global kvm_target    ppc
@@ -254,6 +255,7 @@ Requires: glusterfs-api >= 3.6.0
 %endif
 %if %{have_kvm_setup}
 Requires(post): systemd-units
+Requires(preun): systemd-units
     %ifarch %{power64}
 Requires: powerpc-utils
     %endif
@@ -832,6 +834,11 @@ sh %{_sysconfdir}/sysconfig/modules/kvm.modules &> /dev/null || :
     if systemctl is-enabled kvm-setup.service > /dev/null; then
         systemctl start kvm-setup.service
     fi
+%endif
+
+%if %{have_kvm_setup}
+%preun -n qemu-kvm-core
+%systemd_preun kvm-setup.service
 %endif
 
 %post -n qemu-kvm-common
