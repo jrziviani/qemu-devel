@@ -630,8 +630,9 @@ install -p -m 0755 tests/Makefile.include $RPM_BUILD_ROOT%{testsdir}/tests/
 # Install qemu-iotests
 cp -R tests/qemu-iotests/* $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests/
 # Avoid ambiguous 'python' interpreter name
-find $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests/* -maxdepth 1 -type f -exec sed -i -e '1 s/python/python3/' {} \;
-find $RPM_BUILD_ROOT%{testsdir}/scripts/qmp/* -maxdepth 1 -type f -exec sed -i -e '1 s/python/python3/' {} \;
+find $RPM_BUILD_ROOT%{testsdir}/tests/qemu-iotests/* -maxdepth 1 -type f -exec sed -i -e '1 s+/usr/bin/env python+%{__python3}+' {} \;
+find $RPM_BUILD_ROOT%{testsdir}/scripts/qmp/* -maxdepth 1 -type f -exec sed -i -e '1 s+/usr/bin/env python+%{__python3}+' {} \;
+find $RPM_BUILD_ROOT%{testsdir}/scripts/qmp/* -maxdepth 1 -type f -exec sed -i -e '1 s+/usr/bin/python+%{__python3}+' {} \;
 
 install -p -m 0644 %{SOURCE36} $RPM_BUILD_ROOT%{testsdir}/README
 
