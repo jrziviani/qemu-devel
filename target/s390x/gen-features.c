@@ -556,7 +556,15 @@ static uint16_t default_GEN14_GA1[] = {
     S390_FEAT_GROUP_MSA_EXT_8,
 };
 
-#define default_GEN14_GA2 EmptyFeat
+/*
+ * Red Hat only: We enable the MULTIPLE_EPOCH features only for z14 GA2 and
+ * not for GA1 already, since we do not have a new s390-ccw-virtio-rhel8.y.0
+ * machine type for applying upstream commit 84176c7906ffaf59457bd7 correctly.
+ */
+static uint16_t default_GEN14_GA2[] = {
+    S390_FEAT_MULTIPLE_EPOCH,
+    S390_FEAT_GROUP_MULTIPLE_EPOCH_PTFF,
+};
 
 /* QEMU (CPU model) features */
 
