@@ -1006,6 +1006,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Apr 08 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-64.el8
+- kvm-doc-fix-the-configuration-path.patch [bz#1645411]
+- kvm-Increase-number-of-iotests-being-run-as-a-part-of-RH.patch [bz#1664463]
+- kvm-Load-kvm-module-during-boot.patch [bz#1676907 bz#1685995]
+- kvm-qemu-kvm.spec.template-Update-pyton-path-to-system-i.patch []
+- Resolves: bz#1645411
+  (the "fsfreeze-hook" script path shown by command "qemu-ga --help" or "man qemu-ga" is wrong)
+- Resolves: bz#1664463
+  (Modify iotest behavior to include  luks and nbd and fail build if iotests fail)
+- Resolves: bz#1676907
+  (/dev/kvm device exists but kernel module is not loaded on boot up causing VM start to fail in libvirt)
+- Resolves: bz#1685995
+  (/dev/kvm device exists but kernel module is not loaded on boot up causing VM start to fail in libvirt)
+
 * Tue Feb 26 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-63.el8
 - kvm-scsi-generic-avoid-possible-out-of-bounds-access-to-.patch [bz#1668162]
 - Resolves: bz#1668162
