@@ -1006,6 +1006,23 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Apr 15 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-66.el8
+- kvm-iotests-153-Fix-dead-code.patch [bz#1694148]
+- kvm-file-posix-Include-filename-in-locking-error-message.patch [bz#1694148]
+- kvm-file-posix-Skip-effectiveless-OFD-lock-operations.patch [bz#1694148]
+- kvm-file-posix-Drop-s-lock_fd.patch [bz#1694148]
+- kvm-tests-Add-unit-tests-for-image-locking.patch [bz#1694148]
+- kvm-file-posix-Fix-shared-locks-on-reopen-commit.patch [bz#1694148]
+- kvm-iotests-Test-file-posix-locking-and-reopen.patch [bz#1694148]
+- kvm-block-file-posix-do-not-fail-on-unlock-bytes.patch [bz#1694148]
+- kvm-hostmem-file-remove-object-id-from-pmem-error-messag.patch [bz#1687596]
+- kvm-redhat-setting-target-release-to-rhel-8.1.0.patch []
+- kvm-redhat-removing-iotest-182.patch []
+- Resolves: bz#1687596
+  ([Intel 8.1 BUG][KVM][Crystal Ridge]object_get_canonical_path_component: assertion failed: (obj->parent != NULL))
+- Resolves: bz#1694148
+  (QEMU image locking needn't double open fd number, and it should not fail when attempting to release locks)
+
 * Tue Apr 09 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-65.el8
 - kvm-s390x-cpumodel-mepochptff-warn-when-no-mepoch-and-re.patch [bz#1664371]
 - kvm-s390x-cpumodel-add-z14-GA2-model.patch [bz#1664371]
