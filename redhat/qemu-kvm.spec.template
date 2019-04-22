@@ -996,6 +996,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Apr 22 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-63.el8_0.1
+- kvm-device_tree-Fix-integer-overflowing-in-load_device_t.patch [bz#1693116]
+- Resolves: bz#1693116
+  (CVE-2018-20815 qemu-kvm: QEMU: device_tree: heap buffer overflow while loading device tree blob [rhel-8.0])
+
 * Tue Feb 26 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-63.el8
 - kvm-scsi-generic-avoid-possible-out-of-bounds-access-to-.patch [bz#1668162]
 - Resolves: bz#1668162
