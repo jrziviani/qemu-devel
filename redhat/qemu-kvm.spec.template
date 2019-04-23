@@ -1006,6 +1006,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Apr 23 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-67.el8
+- kvm-device_tree-Fix-integer-overflowing-in-load_device_t.patch [bz#1693116]
+- Resolves: bz#1693116
+  (CVE-2018-20815 qemu-kvm: QEMU: device_tree: heap buffer overflow while loading device tree blob [rhel-8.0])
+
 * Mon Apr 15 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-66.el8
 - kvm-iotests-153-Fix-dead-code.patch [bz#1694148]
 - kvm-file-posix-Include-filename-in-locking-error-message.patch [bz#1694148]
