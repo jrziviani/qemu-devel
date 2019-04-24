@@ -32,7 +32,7 @@ ifneq ($(NOLOCALVERSION),1)
     LOCALVERSION=$(shell cat ../localversion 2>/dev/null)
   endif
   ifeq ($(LOCALVERSION),)
-    LOCALVERSION:=.$(shell id -u -n)$(shell date +"%Y%m%d%H%M")
+    LOCALVERSION:=.$(shell id -u -n | tr -dc '[:alnum:]')$(shell date +"%Y%m%d%H%M")
   else
     LOCALVERSION:=.$(LOCALVERSION)
   endif
