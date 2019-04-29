@@ -1006,6 +1006,34 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Apr 29 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-68.el8
+- kvm-s390x-ipl-Try-to-detect-Linux-vs-non-Linux-for-initi.patch [bz#1699070]
+- kvm-loader-Check-access-size-when-calling-rom_ptr-to-avo.patch [bz#1699070]
+- kvm-hw-s390x-Use-the-IEC-binary-prefix-definitions.patch [bz#1699070]
+- kvm-s390x-storage-attributes-fix-CMMA_BLOCK_SIZE-usage.patch [bz#1699070]
+- kvm-s390x-cpumodel-fix-segmentation-fault-when-baselinin.patch [bz#1699070]
+- kvm-hw-s390x-s390-pci-bus-Convert-sysbus-init-function-t.patch [bz#1699070]
+- kvm-s390x-pci-properly-fail-if-the-zPCI-device-cannot-be.patch [bz#1699070]
+- kvm-s390x-pci-rename-hotplug-handler-callbacks.patch [bz#1699070]
+- kvm-s390-avoid-potential-null-dereference-in-s390_pcihos.patch [bz#1699070]
+- kvm-s390x-pci-Send-correct-event-on-hotplug.patch [bz#1699070]
+- kvm-s390x-pci-Set-the-iommu-region-size-mpcifc-request.patch [bz#1699070]
+- kvm-s390x-pci-Always-delete-and-free-the-release_timer.patch [bz#1699070]
+- kvm-s390x-pci-Ignore-the-unplug-call-if-we-already-have-.patch [bz#1699070]
+- kvm-s390x-pci-Use-hotplug_dev-instead-of-looking-up-the-.patch [bz#1699070]
+- kvm-s390x-pci-Move-some-hotplug-checks-to-the-pre_plug-h.patch [bz#1699070]
+- kvm-s390x-pci-Introduce-unplug-requests-and-split-unplug.patch [bz#1699070]
+- kvm-s390x-pci-Drop-release-timer-and-replace-it-with-a-f.patch [bz#1699070]
+- kvm-s390x-pci-mark-zpci-devices-as-unmigratable.patch [bz#1699070]
+- kvm-s390x-pci-Fix-primary-bus-number-for-PCI-bridges.patch [bz#1699070]
+- kvm-s390x-pci-Fix-hotplugging-of-PCI-bridges.patch [bz#1699070]
+- kvm-s390x-pci-Warn-when-adding-PCI-devices-without-the-z.patch [bz#1699070]
+- kvm-s390x-pci-Unplug-remaining-requested-devices-on-pcih.patch [bz#1699070]
+- kvm-s390x-refactor-reset-reipl-handling.patch [bz#1699070]
+- kvm-s390-ipl-fix-ipl-with-no-reboot.patch [bz#1699070]
+- Resolves: bz#1699070
+  (Backport s390x-related fixes for qemu-kvm)
+
 * Tue Apr 23 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-67.el8
 - kvm-device_tree-Fix-integer-overflowing-in-load_device_t.patch [bz#1693116]
 - Resolves: bz#1693116
