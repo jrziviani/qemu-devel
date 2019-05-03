@@ -1006,6 +1006,19 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri May 03 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-69.el8
+- kvm-tests-crypto-Use-the-IEC-binary-prefix-definitions.patch [bz#1680231]
+- kvm-crypto-expand-algorithm-coverage-for-cipher-benchmar.patch [bz#1680231]
+- kvm-crypto-remove-code-duplication-in-tweak-encrypt-decr.patch [bz#1680231]
+- kvm-crypto-introduce-a-xts_uint128-data-type.patch [bz#1680231]
+- kvm-crypto-convert-xts_tweak_encdec-to-use-xts_uint128-t.patch [bz#1680231]
+- kvm-crypto-convert-xts_mult_x-to-use-xts_uint128-type.patch [bz#1680231]
+- kvm-crypto-annotate-xts_tweak_encdec-as-inlineable.patch [bz#1680231]
+- kvm-crypto-refactor-XTS-cipher-mode-test-suite.patch [bz#1680231]
+- kvm-crypto-add-testing-for-unaligned-buffers-with-XTS-ci.patch [bz#1680231]
+- Resolves: bz#1680231
+  (severe performance impact using luks format)
+
 * Mon Apr 29 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-68.el8
 - kvm-s390x-ipl-Try-to-detect-Linux-vs-non-Linux-for-initi.patch [bz#1699070]
 - kvm-loader-Check-access-size-when-calling-rom_ptr-to-avo.patch [bz#1699070]
