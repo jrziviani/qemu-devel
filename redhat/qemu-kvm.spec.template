@@ -1006,6 +1006,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue May 07 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-70.el8
+- kvm-i386-Add-new-MSR-indices-for-IA32_PRED_CMD-and-IA32_.patch [bz#1561761]
+- kvm-i386-Add-CPUID-bit-and-feature-words-for-IA32_ARCH_C.patch [bz#1561761]
+- kvm-i386-Add-CPUID-bit-for-PCONFIG.patch [bz#1561761]
+- kvm-i386-Add-CPUID-bit-for-WBNOINVD.patch [bz#1561761]
+- kvm-i386-Add-new-CPU-model-Icelake-Server-Client.patch [bz#1561761]
+- kvm-Add-support-to-KVM_GET_MSR_FEATURE_INDEX_LIST-an.patch [bz#1561761]
+- kvm-x86-Data-structure-changes-to-support-MSR-based-feat.patch [bz#1561761]
+- kvm-x86-define-a-new-MSR-based-feature-word-FEATURE_WORD.patch [bz#1561761]
+- kvm-i386-remove-the-new-CPUID-PCONFIG-from-Icelake-Serve.patch [bz#1561761]
+- kvm-Revert-i386-Add-CPUID-bit-for-PCONFIG.patch [bz#1561761]
+- Resolves: bz#1561761
+  ([Intel 8.1 Feat] qemu-kvm Introduce Icelake cpu model)
+
 * Fri May 03 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-69.el8
 - kvm-tests-crypto-Use-the-IEC-binary-prefix-definitions.patch [bz#1680231]
 - kvm-crypto-expand-algorithm-coverage-for-cipher-benchmar.patch [bz#1680231]
