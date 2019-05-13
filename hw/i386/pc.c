@@ -360,6 +360,11 @@ GlobalProperty pc_rhel_compat[] = {
             .property = "host-phys-bits",
             .value = "on",
         },
+        { /* PC_RHEL_COMPAT */ 
+            .driver = TYPE_X86_CPU,
+            .property = "host-phys-bits-limit",
+            .value = "48",
+        },
         { /* PC_RHEL_COMPAT bz 1508330 */ 
             .driver = "vfio-pci",
             .property = "x-no-geforce-quirks",
