@@ -2411,6 +2411,10 @@ if test "$seccomp" != "no" ; then
         seccomp="no"
     fi
 fi
+
+# RHEL8-specific, only passthrough for now, rhbz#1688312
+tpm_emulator=no
+
 ##########################################
 # xen probe
 

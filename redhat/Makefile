@@ -1,7 +1,7 @@
 include Makefile.common
 
 rh-brew rh-env-prep: SRPM_NAME=$(NAME)-$(VERSION)$(RELEASE_SEPARATOR)$(RELEASE)$(DIST)
-rh-brew: BUILD_TARGET=rhel-8.0.0-candidate
+rh-brew: BUILD_TARGET=rhel-8.1.0-candidate
 
 REDHAT:=$(shell pwd)
 SCRIPTS:=$(REDHAT)/scripts
@@ -32,7 +32,7 @@ ifneq ($(NOLOCALVERSION),1)
     LOCALVERSION=$(shell cat ../localversion 2>/dev/null)
   endif
   ifeq ($(LOCALVERSION),)
-    LOCALVERSION:=.$(shell id -u -n)$(shell date +"%Y%m%d%H%M")
+    LOCALVERSION:=.$(shell id -u -n | tr -dc '[:alnum:]')$(shell date +"%Y%m%d%H%M")
   else
     LOCALVERSION:=.$(LOCALVERSION)
   endif
