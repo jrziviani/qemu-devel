@@ -1006,6 +1006,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue May 14 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-73.el8
+- kvm-i386-remove-the-INTEL_PT-CPUID-bit-from-named-CPU-mo.patch [bz#1561761]
+- kvm-i386-Disable-OSPKE-on-CPU-model-definitions.patch [bz#1561761]
+- Resolves: bz#1561761
+  ([Intel 8.1 Feat] qemu-kvm Introduce Icelake cpu model)
+
 * Tue May 14 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-72.el8
 - kvm-Use-KVM_GET_MSR_INDEX_LIST-for-MSR_IA32_ARCH_CAP.patch [bz#1707706]
 - kvm-i386-kvm-Disable-arch_capabilities-if-MSR-can-t-be-s.patch [bz#1707706]
