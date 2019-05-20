@@ -1006,6 +1006,23 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon May 20 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-74.el8
+- kvm-x86-cpu-Enable-CLDEMOTE-Demote-Cache-Line-cpu-featur.patch [bz#1696436]
+- kvm-memory-Fix-the-memory-region-type-assignment-order.patch [bz#1667249]
+- kvm-target-i386-sev-Do-not-pin-the-ram-device-memory-reg.patch [bz#1667249]
+- kvm-block-Fix-invalidate_cache-error-path-for-parent-act.patch [bz#1673010]
+- kvm-target-i386-define-md-clear-bit.patch [bz#1703302 bz#1703308]
+- Resolves: bz#1667249
+  (Fail to launch AMD SEV VM with assigned PCI device)
+- Resolves: bz#1673010
+  (Local VM and migrated VM on the same host can run with same RAW file as visual disk source while without shareable configured or lock manager enabled)
+- Resolves: bz#1696436
+  ([Intel 8.0 Feat] KVM Enabling SnowRidge new NIs - qemu-kvm)
+- Resolves: bz#1703302
+  (CVE-2018-12130 virt:rhel/qemu-kvm: hardware: Microarchitectural Fill Buffer Data Sampling (MFBDS) [rhel-8])
+- Resolves: bz#1703308
+  (CVE-2018-12127 virt:rhel/qemu-kvm: hardware: Micro-architectural Load Port Data Sampling - Information Leak (MLPDS) [rhel-8])
+
 * Tue May 14 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-73.el8
 - kvm-i386-remove-the-INTEL_PT-CPUID-bit-from-named-CPU-mo.patch [bz#1561761]
 - kvm-i386-Disable-OSPKE-on-CPU-model-definitions.patch [bz#1561761]
