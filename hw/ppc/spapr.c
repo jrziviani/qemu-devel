@@ -4670,15 +4670,39 @@ DEFINE_SPAPR_MACHINE(2_1, "2.1", false);
 #endif
 
 /*
- * pseries-rhel8.0.0
+ * pseries-rhel8.1.0
  */
 
-static void spapr_machine_rhel800_class_options(MachineClass *mc)
+static void spapr_machine_rhel810_class_options(MachineClass *mc)
 {
     /* Defaults for the latest behaviour inherited from the base class */
 }
 
-DEFINE_SPAPR_MACHINE(rhel800, "rhel8.0.0", true);
+DEFINE_SPAPR_MACHINE(rhel810, "rhel8.1.0", true);
+
+/*
+ * pseries-rhel8.0.0
+ * like spapr_compat_3_1
+ * except SPAPR_CAP_CFPC, SPAPR_CAP_SBBC and SPAPR_CAP_IBS
+ * that have been backported to pseries-rhel8.0.0
+ */
+
+static void spapr_machine_rhel800_class_options(MachineClass *mc)
+{
+    SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
+
+    spapr_machine_rhel810_class_options(mc);
+    compat_props_add(mc->compat_props, hw_compat_rhel_8_0,
+                     hw_compat_rhel_8_0_len);
+
+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power8_v2.0");
+    smc->update_dt_enabled = false;
+    smc->dr_phb_enabled = false;
+    smc->broken_host_serial_model = true;
+    smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_OFF;
+}
+
+DEFINE_SPAPR_MACHINE(rhel800, "rhel8.0.0", false);
 
 /*
  * pseries-rhel7.6.0
