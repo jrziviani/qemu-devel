@@ -4719,8 +4719,14 @@ static void spapr_machine_rhel760_class_options(MachineClass *mc)
      * yet. Postpone this to machine init (see default_caps_with_cpu()).
      */
     smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 0;
-    /* Defaults for the latest behaviour inherited from the base class */
-    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power8_v2.0");
+
+    /* SPAPR_CAP_WORKAROUND enabled in pseries-rhel800 by
+     * f21757edc554
+     * "Enable mitigations by default for pseries-4.0 machine type")
+     */
+    smc->default_caps.caps[SPAPR_CAP_CFPC] = SPAPR_CAP_BROKEN;
+    smc->default_caps.caps[SPAPR_CAP_SBBC] = SPAPR_CAP_BROKEN;
+    smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_BROKEN;
 }
 
 DEFINE_SPAPR_MACHINE(rhel760, "rhel7.6.0", false);
