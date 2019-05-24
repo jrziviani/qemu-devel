@@ -25,12 +25,12 @@
 #include "hw/mem/nvdimm.h"
 
 /* Mostly like hw_compat_2_1 but:
- *  *    we don't need virtio-scsi-pci since 7.0 already had that on
- *   *
- *    * RH: Note, qemu-extended-regs should have been enabled in the 7.1
- *     * machine type, but was accidentally turned off in 7.2 onwards.
- *      *
- *       */
+ *    we don't need virtio-scsi-pci since 7.0 already had that on
+ *
+ * RH: Note, qemu-extended-regs should have been enabled in the 7.1
+ * machine type, but was accidentally turned off in 7.2 onwards.
+ *
+ */
 GlobalProperty hw_compat_rhel_7_1[] = {
         { /* COMPAT_RHEL7.1 */
             .driver   = "intel-hda-generic",
@@ -81,8 +81,8 @@ GlobalProperty hw_compat_rhel_7_1[] = {
 const size_t hw_compat_rhel_7_1_len = G_N_ELEMENTS(hw_compat_rhel_7_1);
 
 /* Mostly like hw_compat_2_4 + 2_3 but:
- *  *  we don't need "any_layout" as it has been backported to 7.2
- *   */
+ *  we don't need "any_layout" as it has been backported to 7.2
+ */
 
 GlobalProperty hw_compat_rhel_7_2[] = {
         {
@@ -144,9 +144,9 @@ GlobalProperty hw_compat_rhel_7_2[] = {
 const size_t hw_compat_rhel_7_2_len = G_N_ELEMENTS(hw_compat_rhel_7_2);
 
 /* Mostly like HW_COMPAT_2_6 + HW_COMPAT_2_7 + HW_COMPAT_2_8 except
- *  * disable-modern, disable-legacy, page-per-vq have already been
- *   * backported to RHEL7.3
- *    */
+ * disable-modern, disable-legacy, page-per-vq have already been
+ * backported to RHEL7.3
+ */
 GlobalProperty hw_compat_rhel_7_3[] = {
     { /* HW_COMPAT_RHEL7_3 */
         .driver   = "virtio-mmio",
@@ -209,9 +209,9 @@ GlobalProperty hw_compat_rhel_7_3[] = {
 const size_t hw_compat_rhel_7_3_len = G_N_ELEMENTS(hw_compat_rhel_7_3);
 
 /* Mostly like hw_compat_2_9 except
- *  * x-mtu-bypass-backend, x-migrate-msix has already been
- *   * backported to RHEL7.4. shpc was already on in 7.4.
- *    */
+ * x-mtu-bypass-backend, x-migrate-msix has already been
+ * backported to RHEL7.4. shpc was already on in 7.4.
+ */
 GlobalProperty hw_compat_rhel_7_4[] = {
     { /* HW_COMPAT_RHEL7_4 */
         .driver   = "intel-iommu",
@@ -261,11 +261,11 @@ GlobalProperty hw_compat_rhel_7_5[] = {
 const size_t hw_compat_rhel_7_5_len = G_N_ELEMENTS(hw_compat_rhel_7_5);
 
 /* The same as hw_compat_3_0 + hw_compat_2_12
- *  * except that
- *   *   there's nothing in 3_0
- *    *   migration.decompress-error-check=off was in 7.5 from bz 1584139
- *     *
- *      */
+ * except that
+ *   there's nothing in 3_0
+ *   migration.decompress-error-check=off was in 7.5 from bz 1584139
+ *
+ */
 GlobalProperty hw_compat_rhel_7_6[] = {
     { /* HW_COMPAT_RHEL7_6 from HW_COMPAT_2_12 */
         .driver   = "hda-audio",
