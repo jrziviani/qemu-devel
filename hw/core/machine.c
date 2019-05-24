@@ -291,6 +291,36 @@ GlobalProperty hw_compat_rhel_7_6[] = {
 };
 const size_t hw_compat_rhel_7_6_len = G_N_ELEMENTS(hw_compat_rhel_7_6);
 
+/* The same as hw_compat_3_1
+ * format of array has been changed by:
+ *     6c36bddf5340 ("machine: Use shorter format for GlobalProperty arrays")
+ */
+GlobalProperty hw_compat_rhel_8_0[] = {
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "pcie-root-port", "x-speed", "2_5" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "pcie-root-port", "x-width", "1" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "memory-backend-file", "x-use-canonical-path-for-ramblock-id", "true" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "memory-backend-memfd", "x-use-canonical-path-for-ramblock-id", "true" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "tpm-crb", "ppi", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "tpm-tis", "ppi", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "usb-kbd", "serial", "42" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "usb-mouse", "serial", "42" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "usb-tablet", "serial", "42" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "virtio-blk-device", "discard", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 */
+    { "virtio-blk-device", "write-zeroes", "false" },
+};
+const size_t hw_compat_rhel_8_0_len = G_N_ELEMENTS(hw_compat_rhel_8_0);
+
 
 GlobalProperty hw_compat_3_1[] = {
     { "pcie-root-port", "x-speed", "2_5" },
