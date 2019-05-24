@@ -1006,6 +1006,24 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri May 24 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-75.el8
+- kvm-s390x-cpumodel-enum-type-S390FeatGroup-now-gets-gene.patch [bz#1660912]
+- kvm-linux-headers-update-against-Linux-5.2-rc1.patch [bz#1660912]
+- kvm-s390x-cpumodel-ignore-csske-for-expansion.patch [bz#1660912]
+- kvm-s390x-cpumodel-Miscellaneous-Instruction-Extensions-.patch [bz#1660912]
+- kvm-s390x-cpumodel-msa9-facility.patch [bz#1660912]
+- kvm-s390x-cpumodel-vector-enhancements.patch [bz#1660912]
+- kvm-s390x-cpumodel-enhanced-sort-facility.patch [bz#1660912]
+- kvm-s390x-cpumodel-add-Deflate-conversion-facility.patch [bz#1660912]
+- kvm-s390x-cpumodel-add-gen15-defintions.patch [bz#1660912]
+- kvm-s390x-cpumodel-wire-up-8561-and-8562-as-gen15-machin.patch [bz#1660912]
+- kvm-spice-set-device-address-and-device-display-ID-in-QX.patch [bz#1712946]
+- kvm-hw-pci-Add-missing-include.patch [bz#1712946]
+- Resolves: bz#1660912
+  ([IBM 8.1 FEAT] KVM s390x: Add hardware CPU Model - qemu part)
+- Resolves: bz#1712946
+  (qemu-kvm build is broken due to spice_qxl_set_max_monitors being deprecated)
+
 * Mon May 20 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-74.el8
 - kvm-x86-cpu-Enable-CLDEMOTE-Demote-Cache-Line-cpu-featur.patch [bz#1696436]
 - kvm-memory-Fix-the-memory-region-type-assignment-order.patch [bz#1667249]
