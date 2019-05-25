@@ -1033,6 +1033,17 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Sat May 25 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.0.0-2.el8
+- kvm-target-i386-define-md-clear-bit.patch [bz#1703297 bz#1703304 bz#1703310 bz#1707274]
+- Resolves: bz#1703297
+  (CVE-2018-12126 virt:8.0.0/qemu-kvm: hardware: Microarchitectural Store Buffer Data Sampling (MSBDS) [rhel-av-8])
+- Resolves: bz#1703304
+  (CVE-2018-12130 virt:8.0.0/qemu-kvm: hardware: Microarchitectural Fill Buffer Data Sampling (MFBDS) [rhel-av-8])
+- Resolves: bz#1703310
+  (CVE-2018-12127 virt:8.0.0/qemu-kvm: hardware: Micro-architectural Load Port Data Sampling - Information Leak (MLPDS) [rhel-av-8])
+- Resolves: bz#1707274
+  (CVE-2019-11091 virt:8.0.0/qemu-kvm: hardware: Microarchitectural Data Sampling Uncacheable Memory (MDSUM) [rhel-av-8.1.0])
+
 * Mon May 06 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 3.1.0-25.el8
 - kvm-redhat-enable-tpmdev-passthrough.patch [bz#1688312]
 - kvm-exec-Only-count-mapped-memory-backends-for-qemu_getr.patch [bz#1680492]
