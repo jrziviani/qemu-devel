@@ -1326,6 +1326,8 @@ static void spapr_populate_pci_child_dt(PCIDevice *dev, void *fdt, int offset,
     if (sphb->pcie_ecs && pci_is_express(dev)) {
         _FDT(fdt_setprop_cell(fdt, offset, "ibm,pci-config-space-type", 0x1));
     }
+
+    spapr_phb_nvgpu_populate_pcidev_dt(dev, fdt, offset, sphb);
 }
 
 /* create OF node for pci device and required OF DT properties */
@@ -1559,7 +1561,9 @@ static void spapr_phb_realize(DeviceState *dev, Error **errp)
         smc->phb_placement(spapr, sphb->index,
                            &sphb->buid, &sphb->io_win_addr,
                            &sphb->mem_win_addr, &sphb->mem64_win_addr,
-                           windows_supported, sphb->dma_liobn, &local_err);
+                           windows_supported, sphb->dma_liobn,
+                           &sphb->nv2_gpa_win_addr, &sphb->nv2_atsd_win_addr,
+                           &local_err);
         if (local_err) {
             error_propagate(errp, local_err);
             return;
@@ -1764,8 +1768,14 @@ void spapr_phb_dma_reset(sPAPRPHBState *sphb)
 static void spapr_phb_reset(DeviceState *qdev)
 {
     sPAPRPHBState *sphb = SPAPR_PCI_HOST_BRIDGE(qdev);
+    Error *errp = NULL;
 
     spapr_phb_dma_reset(sphb);
+    spapr_phb_nvgpu_free(sphb);
+    spapr_phb_nvgpu_setup(sphb, &errp);
+    if (errp) {
+        error_report_err(errp);
+    }
 
     /* Reset the IOMMU state */
     object_child_foreach(OBJECT(qdev), spapr_phb_children_reset, NULL);
@@ -1798,6 +1808,8 @@ static Property spapr_phb_properties[] = {
                      pre_2_8_migration, false),
     DEFINE_PROP_BOOL("pcie-extended-configuration-space", sPAPRPHBState,
                      pcie_ecs, true),
+    DEFINE_PROP_UINT64("gpa", sPAPRPHBState, nv2_gpa_win_addr, 0),
+    DEFINE_PROP_UINT64("atsd", sPAPRPHBState, nv2_atsd_win_addr, 0),
     DEFINE_PROP_END_OF_LIST(),
 };
 
@@ -2089,6 +2101,7 @@ int spapr_populate_pci_dt(sPAPRPHBState *phb,
     sPAPRTCETable *tcet;
     PCIBus *bus = PCI_HOST_BRIDGE(phb)->bus;
     sPAPRFDT s_fdt;
+    Error *errp = NULL;
 
     /* Start populating the FDT */
     nodename = g_strdup_printf("pci@%" PRIx64, phb->buid);
@@ -2169,6 +2182,12 @@ int spapr_populate_pci_dt(sPAPRPHBState *phb,
     if (ret) {
         return ret;
     }
+
+    spapr_phb_nvgpu_populate_dt(phb, fdt, bus_off, &errp);
+    if (errp) {
+        error_report_err(errp);
+    }
+    spapr_phb_nvgpu_ram_populate_dt(phb, fdt);
 
     return 0;
 }
