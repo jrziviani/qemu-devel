@@ -2158,7 +2158,7 @@ static void rhel_machine_init(void)
 }
 type_init(rhel_machine_init);
 
-static void rhel800_virt_instance_init(Object *obj)
+static void rhel810_virt_instance_init(Object *obj)
 {
     VirtMachineState *vms = VIRT_MACHINE(obj);
     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
@@ -2204,8 +2204,8 @@ static void rhel800_virt_instance_init(Object *obj)
     vms->irqmap=a15irqmap;
 }
 
-static void rhel800_virt_options(MachineClass *mc)
+static void rhel810_virt_options(MachineClass *mc)
 {
     compat_props_add(mc->compat_props, arm_rhel_compat, arm_rhel_compat_len);
 }
-DEFINE_RHEL_MACHINE_AS_LATEST(8, 0, 0)
+DEFINE_RHEL_MACHINE_AS_LATEST(8, 1, 0)
