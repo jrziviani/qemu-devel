@@ -1785,7 +1785,6 @@ static void virt_set_gic_version(Object *obj, const char *value, Error **errp)
     }
 }
 
-#if 0 /* Disabled for Red Hat Enterprise Linux */
 static char *virt_get_iommu(Object *obj, Error **errp)
 {
     VirtMachineState *vms = VIRT_MACHINE(obj);
@@ -1813,7 +1812,6 @@ static void virt_set_iommu(Object *obj, const char *value, Error **errp)
         error_append_hint(errp, "Valid values are none, smmuv3.\n");
     }
 }
-#endif /* disabled for RHEL */
 
 static CpuInstanceProperties
 virt_cpu_index_to_props(MachineState *ms, unsigned cpu_index)
@@ -2198,8 +2196,13 @@ static void rhel810_virt_instance_init(Object *obj)
                                         NULL);
     }
 
-    /* IOMMU is disabled by default and non-configurable for RHEL */
+    /* Default disallows iommu instantiation */
     vms->iommu = VIRT_IOMMU_NONE;
+    object_property_add_str(obj, "iommu", virt_get_iommu, virt_set_iommu, NULL);
+    object_property_set_description(obj, "iommu",
+                                    "Set the IOMMU type. "
+                                    "Valid values are none and smmuv3",
+                                    NULL);
 
     vms->irqmap=a15irqmap;
 }
