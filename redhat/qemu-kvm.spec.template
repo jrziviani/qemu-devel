@@ -8,7 +8,6 @@
 %global have_gluster  1
 %global have_kvm_setup 0
 %global have_memlock_limits 0
-%global have_vxhs     0
 
 %ifnarch %{ix86} x86_64
     %global have_usbredir 0
@@ -25,7 +24,6 @@
 %endif
 %ifarch x86_64
     %global kvm_target    x86_64
-    %global have_vxhs    1
 %else
     %global have_spice   0
     %global have_opengl  0
@@ -396,9 +394,6 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 
 %global block_drivers_list qcow2,raw,file,host_device,nbd,iscsi,rbd,blkdebug,luks,null-co,nvme,copy-on-read,throttle
 
-%if 0%{have_vxhs}
-    %global block_drivers_list %{block_drivers_list},vxhs
-%endif
 %if 0%{have_gluster}
     %global block_drivers_list %{block_drivers_list},gluster
 %endif
@@ -457,11 +452,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --disable-usb-redir \
 %endif
   --disable-tcmalloc \
-%if 0%{have_vxhs}
-  --enable-vxhs \
-%else
   --disable-vxhs \
-%endif
 %ifarch x86_64
   --enable-libpmem \
 %else
