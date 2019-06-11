@@ -997,6 +997,24 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Jun 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-76.el8
+- kvm-Introduce-new-no_guest_reset-parameter-for-usb-host-.patch [bz#1713677]
+- kvm-usb-call-reset-handler-before-updating-state.patch [bz#1713677]
+- kvm-usb-host-skip-reset-for-untouched-devices.patch [bz#1713677]
+- kvm-usb-host-avoid-libusb_set_configuration-calls.patch [bz#1713677]
+- kvm-virtio-scsi-Move-BlockBackend-back-to-the-main-AioCo.patch [bz#1673396 bz#1673401]
+- kvm-scsi-disk-Acquire-the-AioContext-in-scsi_-_realize.patch [bz#1673396 bz#1673401]
+- kvm-virtio-scsi-Forbid-devices-with-different-iothreads-.patch [bz#1673396 bz#1673401]
+- kvm-Disable-VXHS-support.patch [bz#1714933]
+- Resolves: bz#1673396
+  (qemu-kvm core dumped after hotplug the deleted disk with iothread parameter)
+- Resolves: bz#1673401
+  (Qemu core dump when start guest with two disks using same drive)
+- Resolves: bz#1713677
+  (Detached device when trying to upgrade USB device firmware when in doing USB Passthrough via QEMU)
+- Resolves: bz#1714933
+  (Disable VXHS  in qemu-kvm)
+
 * Fri May 24 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-75.el8
 - kvm-s390x-cpumodel-enum-type-S390FeatGroup-now-gets-gene.patch [bz#1660912]
 - kvm-linux-headers-update-against-Linux-5.2-rc1.patch [bz#1660912]
