@@ -1024,6 +1024,27 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Jun 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.0.0-4.el8
+- kvm-Disable-VXHS-support.patch [bz#1714937]
+- kvm-aarch64-Add-virt-rhel8.1.0-machine-type-for-ARM.patch [bz#1713735]
+- kvm-aarch64-Allow-ARM-VIRT-iommu-option-in-RHEL8.1-machi.patch [bz#1713735]
+- kvm-usb-call-reset-handler-before-updating-state.patch [bz#1713679]
+- kvm-usb-host-skip-reset-for-untouched-devices.patch [bz#1713679]
+- kvm-usb-host-avoid-libusb_set_configuration-calls.patch [bz#1713679]
+- kvm-aarch64-Compile-out-IOH3420.patch [bz#1627283]
+- kvm-vl-Fix-drive-blockdev-persistent-reservation-managem.patch [bz#1714891]
+- kvm-vl-Document-why-objects-are-delayed.patch [bz#1714891]
+- Resolves: bz#1627283
+  (Compile out IOH3420 on aarch64)
+- Resolves: bz#1713679
+  (Detached device when trying to upgrade USB device firmware when in doing USB Passthrough via QEMU)
+- Resolves: bz#1713735
+  (Allow ARM VIRT iommu option in RHEL8.1 machine)
+- Resolves: bz#1714891
+  (Guest with persistent reservation manager for a disk fails to start)
+- Resolves: bz#1714937
+  (Disable VXHS support)
+
 * Tue May 28 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.0.0-3.el8
 - kvm-redhat-fix-cut-n-paste-garbage-in-hw_compat-comments.patch [bz#1709726]
 - kvm-compat-Generic-hw_compat_rhel_8_0.patch [bz#1709726]
