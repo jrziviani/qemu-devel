@@ -36,10 +36,12 @@
 #include "qapi/error.h"
 
 #define MSIX_CAP_LENGTH 12
-#define MAX_DEV_ASSIGN_CMDLINE 32
 
 #define TYPE_VFIO_PCI "vfio-pci"
 #define PCI_VFIO(obj)    OBJECT_CHECK(VFIOPCIDevice, obj, TYPE_VFIO_PCI)
+
+/* RHEL only: Set once for the first assigned dev */
+static uint16_t device_limit;
 
 static void vfio_disable_interrupts(VFIOPCIDevice *vdev);
 static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled);
@@ -2810,15 +2812,24 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
     int ret, i = 0;
     bool is_mdev;
 
+    if (device_limit && device_limit != vdev->assigned_device_limit) {
+            error_setg(errp, "Assigned device limit has been redefined. "
+                       "Old:%d, New:%d",
+                       device_limit, vdev->assigned_device_limit);
+            return;
+    } else {
+        device_limit = vdev->assigned_device_limit;
+    }
+
     QLIST_FOREACH(group, &vfio_group_list, next) {
         QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
             i++;
         }
     }
 
-    if (i >= MAX_DEV_ASSIGN_CMDLINE) {
+    if (i >= vdev->assigned_device_limit) {
         error_setg(errp, "Maximum supported vfio devices (%d) "
-                     "already attached", MAX_DEV_ASSIGN_CMDLINE);
+                     "already attached", vdev->assigned_device_limit);
         return;
     }
 
@@ -3223,6 +3234,9 @@ static Property vfio_pci_dev_properties[] = {
     DEFINE_PROP_BOOL("x-no-kvm-msix", VFIOPCIDevice, no_kvm_msix, false),
     DEFINE_PROP_BOOL("x-no-geforce-quirks", VFIOPCIDevice,
                      no_geforce_quirks, false),
+    /* RHEL only */
+    DEFINE_PROP_UINT16("x-assigned-device-limit", VFIOPCIDevice,
+                       assigned_device_limit, 64),
     DEFINE_PROP_BOOL("x-no-kvm-ioeventfd", VFIOPCIDevice, no_kvm_ioeventfd,
                      false),
     DEFINE_PROP_BOOL("x-no-vfio-ioeventfd", VFIOPCIDevice, no_vfio_ioeventfd,
