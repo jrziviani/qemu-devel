@@ -997,6 +997,22 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Jun 13 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-77.el8
+- kvm-i386-Make-arch_capabilities-migratable.patch [bz#1709970]
+- kvm-spapr-Fix-ibm-max-associativity-domains-property-num.patch [bz#1710662]
+- kvm-linux-headers-Update-for-NVLink2-passthrough-downstr.patch [bz#1710662]
+- kvm-pci-Move-NVIDIA-vendor-id-to-the-rest-of-ids.patch [bz#1710662]
+- kvm-vfio-quirks-Add-common-quirk-alloc-helper.patch [bz#1710662]
+- kvm-vfio-Make-vfio_get_region_info_cap-public.patch [bz#1710662]
+- kvm-spapr-Support-NVIDIA-V100-GPU-with-NVLink2.patch [bz#1710662]
+- kvm-qemu-kvm.spec-bump-libseccomp-2.4.0.patch [bz#1719578]
+- Resolves: bz#1709970
+  ([Intel 8.1 Bug] [KVM][CLX] CPUID_7_0_EDX_ARCH_CAPABILITIES is not enabled in VM - qemu-kvm)
+- Resolves: bz#1710662
+  ([IBM 8.1 FEAT] POWER9 - Virt: qemu: NVLink2 passthru to guest - Nvidia Volta (GPU) (kvm))
+- Resolves: bz#1719578
+  (VM failed to start with error "failed to install seccomp syscall filter in the kernel")
+
 * Tue Jun 11 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-76.el8
 - kvm-Introduce-new-no_guest_reset-parameter-for-usb-host-.patch [bz#1713677]
 - kvm-usb-call-reset-handler-before-updating-state.patch [bz#1713677]
