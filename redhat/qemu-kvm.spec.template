@@ -131,7 +131,7 @@ BuildRequires: libcacard-devel
 # For smartcard NSS support
 BuildRequires: nss-devel
 %endif
-BuildRequires: libseccomp-devel >= 2.3.0
+BuildRequires: libseccomp-devel >= 2.4.0
 # For network block driver
 BuildRequires: libcurl-devel
 BuildRequires: libssh2-devel
@@ -248,7 +248,7 @@ Requires: ipxe-roms-qemu >= 20170123-1
 Requires: SLOF >= %{SLOF_gittagdate}-1.git%{SLOF_gittagcommit}
 %endif
 Requires: %{name}-common = %{epoch}:%{version}-%{release}
-Requires: libseccomp >= 2.3.0
+Requires: libseccomp >= 2.4.0
 # For compressed guest memory dumps
 Requires: lzo snappy
 %if %{have_gluster}
