@@ -997,6 +997,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Jun 20 2019 Miroslav Rezanina <mrezanin@redhat.com> - 2.12.0-78.el8
+- kvm-gluster-Handle-changed-glfs_ftruncate-signature.patch [bz#1721983]
+- kvm-gluster-the-glfs_io_cbk-callback-function-pointer-ad.patch [bz#1721983]
+- Resolves: bz#1721983
+  (qemu-kvm can't be build with new gluster version (6.0.6))
+
 * Thu Jun 13 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-77.el8
 - kvm-i386-Make-arch_capabilities-migratable.patch [bz#1709970]
 - kvm-spapr-Fix-ibm-max-associativity-domains-property-num.patch [bz#1710662]
