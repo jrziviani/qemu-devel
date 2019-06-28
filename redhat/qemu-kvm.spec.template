@@ -796,6 +796,8 @@ rom_link() {
   rom_link ../seavgabios/vgabios-stdvga.bin vgabios-stdvga.bin
   rom_link ../seavgabios/vgabios-vmware.bin vgabios-vmware.bin
   rom_link ../seavgabios/vgabios-virtio.bin vgabios-virtio.bin
+  rom_link ../seavgabios/vgabios-ramfb.bin vgabios-ramfb.bin
+  rom_link ../seavgabios/vgabios-bochs-display.bin vgabios-bochs-display.bin
 %endif
 %ifarch x86_64
   rom_link ../seabios/bios.bin bios.bin
@@ -953,6 +955,8 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
     %{_datadir}/%{name}/vgabios-stdvga.bin
     %{_datadir}/%{name}/vgabios-vmware.bin
     %{_datadir}/%{name}/vgabios-virtio.bin
+    %{_datadir}/%{name}/vgabios-ramfb.bin
+    %{_datadir}/%{name}/vgabios-bochs-display.bin
     %{_datadir}/%{name}/efi-e1000.rom
     %{_datadir}/%{name}/efi-e1000e.rom
     %{_datadir}/%{name}/efi-virtio.rom
