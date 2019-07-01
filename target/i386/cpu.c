@@ -2517,7 +2517,7 @@ static X86CPUDefinition builtin_x86_defs[] = {
             CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512CD |
             CPUID_7_0_EBX_AVX512VL | CPUID_7_0_EBX_CLFLUSHOPT,
         .features[FEAT_7_0_ECX] =
-            CPUID_7_0_ECX_PKU | CPUID_7_0_ECX_OSPKE |
+            CPUID_7_0_ECX_PKU |
             CPUID_7_0_ECX_AVX512VNNI,
         .features[FEAT_7_0_EDX] =
             CPUID_7_0_EDX_SPEC_CTRL | CPUID_7_0_EDX_SPEC_CTRL_SSBD,
