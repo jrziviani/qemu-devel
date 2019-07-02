@@ -997,6 +997,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Jul 02 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-80.el8
+- kvm-qxl-check-release-info-object.patch [bz#1712705]
+- kvm-iotests-Make-182-do-without-device_add.patch [bz#1707598]
+- Resolves: bz#1707598
+  (qemu-iotest 182 fails without device hotplugging support)
+- Resolves: bz#1712705
+  (CVE-2019-12155 qemu-kvm: QEMU: qxl: null pointer dereference while releasing spice resources [rhel-8])
+
 * Thu Jun 20 2019 Miroslav Rezanina <mrezanin@redhat.com> - 2.12.0-78.el8
 - kvm-gluster-Handle-changed-glfs_ftruncate-signature.patch [bz#1721983]
 - kvm-gluster-the-glfs_io_cbk-callback-function-pointer-ad.patch [bz#1721983]
