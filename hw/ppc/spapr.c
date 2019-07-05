@@ -4427,14 +4427,30 @@ static const TypeInfo spapr_machine_info = {
     type_init(spapr_machine_register_##suffix)
 
 /*
- * pseries-4.1
+ * pseries-4.2
  */
-static void spapr_machine_4_1_class_options(MachineClass *mc)
+static void spapr_machine_4_2_class_options(MachineClass *mc)
 {
     /* Defaults for the latest behaviour inherited from the base class */
 }
 
-DEFINE_SPAPR_MACHINE(4_1, "4.1", true);
+DEFINE_SPAPR_MACHINE(4_2, "4.2", true);
+
+/*
+ * pseries-4.1
+ */
+static void spapr_machine_4_1_class_options(MachineClass *mc)
+{
+    static GlobalProperty compat[] = {
+        /* Only allow 4kiB and 64kiB IOMMU pagesizes */
+        { TYPE_SPAPR_PCI_HOST_BRIDGE, "pgsz", "0x11000" },
+    };
+
+    spapr_machine_4_2_class_options(mc);
+    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+}
+
+DEFINE_SPAPR_MACHINE(4_1, "4.1", false);
 
 /*
  * pseries-4.0
