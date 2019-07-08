@@ -4,7 +4,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu/ trusty universe multiverse" >> \
 RUN apt-get update
 ENV PACKAGES flex bison \
     libusb-1.0-0-dev libiscsi-dev librados-dev libncurses5-dev libncursesw5-dev \
-    libseccomp-dev libgnutls-dev libssh2-1-dev  libspice-server-dev \
+    libseccomp-dev libgnutls-dev libssh-dev  libspice-server-dev \
     libspice-protocol-dev libnss3-dev libfdt-dev \
     libgtk-3-dev libvte-2.91-dev libsdl1.2-dev libpng12-dev libpixman-1-dev \
     libvdeplug-dev liblzo2-dev libsnappy-dev libbz2-dev libxen-dev librdmacm-dev libibverbs-dev \
