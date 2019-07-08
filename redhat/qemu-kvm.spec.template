@@ -134,7 +134,7 @@ BuildRequires: nss-devel
 BuildRequires: libseccomp-devel >= 2.4.0
 # For network block driver
 BuildRequires: libcurl-devel
-BuildRequires: libssh2-devel
+BuildRequires: libssh-devel
 BuildRequires: librados-devel
 BuildRequires: librbd-devel
 %if %{have_gluster}
@@ -478,7 +478,7 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --enable-kvm \
   --enable-libiscsi \
   --disable-libnfs \
-  --enable-libssh2 \
+  --enable-libssh \
   --enable-libusb \
   --disable-bzip2 \
   --enable-linux-aio \
