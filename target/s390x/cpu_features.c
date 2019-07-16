@@ -111,7 +111,7 @@ static const S390FeatDef s390_features[] = {
     FEAT_INIT("vxeh2", S390_FEAT_TYPE_STFL, 148, "Vector Enhancements facility 2"),
     FEAT_INIT("esort-base", S390_FEAT_TYPE_STFL, 150, "Enhanced-sort facility (excluding subfunctions)"),
     FEAT_INIT("deflate-base", S390_FEAT_TYPE_STFL, 151, "Deflate-conversion facility (excluding subfunctions)"),
-    FEAT_INIT("vxbeh", S390_FEAT_TYPE_STFL, 152, "Vector-Packed-Decimal-Enhancement Facility"),
+    FEAT_INIT("vxpdeh", S390_FEAT_TYPE_STFL, 152, "Vector-Packed-Decimal-Enhancement Facility"),
     FEAT_INIT("msa9-base", S390_FEAT_TYPE_STFL, 155, "Message-security-assist-extension-9 facility (excluding subfunctions)"),
     FEAT_INIT("etoken", S390_FEAT_TYPE_STFL, 156, "Etoken facility"),
 
