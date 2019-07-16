@@ -9,6 +9,7 @@
  */
 
 #include "qemu/osdep.h"
+#include "qemu/units.h"
 #include <glusterfs/api/glfs.h>
 #include "block/block_int.h"
 #include "block/qdict.h"
@@ -41,6 +42,12 @@
 #define GLUSTER_DEBUG_MAX           9
 #define GLUSTER_OPT_LOGFILE         "logfile"
 #define GLUSTER_LOGFILE_DEFAULT     "-" /* handled in libgfapi as /dev/stderr */
+/*
+ * Several versions of GlusterFS (3.12? -> 6.0.1) fail when the transfer size
+ * is greater or equal to 1024 MiB, so we are limiting the transfer size to 512
+ * MiB to avoid this rare issue.
+ */
+#define GLUSTER_MAX_TRANSFER        (512 * MiB)
 
 #define GERR_INDEX_HINT "hint: check in 'server' array index '%d'\n"
 
@@ -887,6 +894,11 @@ out:
     return ret;
 }
 
+static void qemu_gluster_refresh_limits(BlockDriverState *bs, Error **errp)
+{
+    bs->bl.max_transfer = GLUSTER_MAX_TRANSFER;
+}
+
 static int qemu_gluster_reopen_prepare(BDRVReopenState *state,
                                        BlockReopenQueue *queue, Error **errp)
 {
@@ -1527,6 +1539,7 @@ static BlockDriver bdrv_gluster = {
     .bdrv_co_pwrite_zeroes        = qemu_gluster_co_pwrite_zeroes,
 #endif
     .bdrv_co_block_status         = qemu_gluster_co_block_status,
+    .bdrv_refresh_limits          = qemu_gluster_refresh_limits,
     .create_opts                  = &qemu_gluster_create_opts,
 };
 
@@ -1556,6 +1569,7 @@ static BlockDriver bdrv_gluster_tcp = {
     .bdrv_co_pwrite_zeroes        = qemu_gluster_co_pwrite_zeroes,
 #endif
     .bdrv_co_block_status         = qemu_gluster_co_block_status,
+    .bdrv_refresh_limits          = qemu_gluster_refresh_limits,
     .create_opts                  = &qemu_gluster_create_opts,
 };
 
@@ -1585,6 +1599,7 @@ static BlockDriver bdrv_gluster_unix = {
     .bdrv_co_pwrite_zeroes        = qemu_gluster_co_pwrite_zeroes,
 #endif
     .bdrv_co_block_status         = qemu_gluster_co_block_status,
+    .bdrv_refresh_limits          = qemu_gluster_refresh_limits,
     .create_opts                  = &qemu_gluster_create_opts,
 };
 
@@ -1620,6 +1635,7 @@ static BlockDriver bdrv_gluster_rdma = {
     .bdrv_co_pwrite_zeroes        = qemu_gluster_co_pwrite_zeroes,
 #endif
     .bdrv_co_block_status         = qemu_gluster_co_block_status,
+    .bdrv_refresh_limits          = qemu_gluster_refresh_limits,
     .create_opts                  = &qemu_gluster_create_opts,
 };
 
