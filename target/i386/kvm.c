@@ -127,6 +127,11 @@ bool kvm_has_adjust_clock_stable(void)
     return (ret == KVM_CLOCK_TSC_STABLE);
 }
 
+bool kvm_has_exception_payload(void)
+{
+    return has_exception_payload;
+}
+
 bool kvm_allows_irq0_override(void)
 {
     return !kvm_irqchip_in_kernel() || kvm_has_gsi_routing();
@@ -814,7 +819,6 @@ static int hyperv_handle_properties(CPUState *cs)
 }
 
 static Error *invtsc_mig_blocker;
-static Error *nested_virt_mig_blocker;
 
 #define KVM_MAX_CPUID_ENTRIES  100
 
@@ -1159,22 +1163,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
                                   !!(c->ecx & CPUID_EXT_SMX);
     }
 
-    if (cpu_has_vmx(env) && !nested_virt_mig_blocker &&
-        ((kvm_max_nested_state_length() <= 0) || !has_exception_payload)) {
-        error_setg(&nested_virt_mig_blocker,
-                   "Kernel do not provide required capabilities for "
-                   "nested virtualization migration. "
-                   "(CAP_NESTED_STATE=%d, CAP_EXCEPTION_PAYLOAD=%d)",
-                   kvm_max_nested_state_length() > 0,
-                   has_exception_payload);
-        r = migrate_add_blocker(nested_virt_mig_blocker, &local_err);
-        if (local_err) {
-            error_report_err(local_err);
-            error_free(nested_virt_mig_blocker);
-            return r;
-        }
-    }
-
     if (env->mcg_cap & MCG_LMCE_P) {
         has_msr_mcg_ext_ctl = has_msr_feature_control = true;
     }
@@ -1190,7 +1178,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
             if (local_err) {
                 error_report_err(local_err);
                 error_free(invtsc_mig_blocker);
-                goto fail2;
+                return r;
             }
             /* for savevm */
             vmstate_x86_cpu.unmigratable = 1;
@@ -1256,8 +1244,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
 
  fail:
     migrate_del_blocker(invtsc_mig_blocker);
- fail2:
-    migrate_del_blocker(nested_virt_mig_blocker);
 
     return r;
 }
