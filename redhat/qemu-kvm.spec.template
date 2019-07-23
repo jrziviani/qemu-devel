@@ -1028,6 +1028,15 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Jul 23 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.0.0-6.el8
+- kvm-x86_64-rh-devices-add-missing-TPM-passthrough.patch [bz#1519013]
+- kvm-x86_64-rh-devices-enable-TPM-emulation.patch [bz#1519013]
+- kvm-vfio-increase-the-cap-on-number-of-assigned-devices-.patch [bz#1719823]
+- Resolves: bz#1519013
+  ([RFE] QEMU Software TPM support (vTPM, or TPM emulation))
+- Resolves: bz#1719823
+  ([RHEL 8.1] [RFE] increase the maximum of vfio devices to more than 32 in qemu-kvm)
+
 * Mon Jul 08 2019 Miroslav Rezanina <mrezanin@redhat.com> - 4.0.0-5.el8
 - kvm-qemu-kvm.spec-bump-libseccomp-2.4.0.patch [bz#1720306]
 - kvm-qxl-check-release-info-object.patch [bz#1712717]
