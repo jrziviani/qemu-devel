@@ -1014,6 +1014,12 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Jul 25 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 3.1.0-30.el8
+- kvm-target-ppc-Fix-TCG-temporary-leaks-in-gen_bcond.patch [bz#1732497]
+- kvm-target-ppc-Enable-decrement-and-test-CTR-version-of-.patch [bz#1732497]
+- Resolves: bz#1732497
+  (qemu-system-ppc64le can't boot the kernel)
+
 * Mon Jul 22 2019 Danilo de Paula <ddepaula@redhat.com> - 15:3.1.0-29
 - Resolves: rhbz#1669053
   (Revert patch kvm-hostmem-file-reject-invalid-pmem-file-sizes.patch)
