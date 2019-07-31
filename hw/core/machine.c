@@ -54,6 +54,20 @@ GlobalProperty hw_compat_rhel_8_0[] = {
     { "virtio-blk-device", "discard", "false" },
     /* hw_compat_rhel_8_0 from hw_compat_3_1 */
     { "virtio-blk-device", "write-zeroes", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_4_0 */
+    { "VGA",            "edid", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_4_0 */
+    { "secondary-vga",  "edid", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_4_0 */
+    { "bochs-display",  "edid", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_4_0 */
+    { "virtio-vga",     "edid", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_4_0 */
+    { "virtio-gpu-pci", "edid", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_4_0 */
+    { "virtio-device", "use-started", "false" },
+    /* hw_compat_rhel_8_0 from hw_compat_3_1 - that was added in 4.1 */
+    { "pcie-root-port-base", "disable-acs", "true" },
 };
 const size_t hw_compat_rhel_8_0_len = G_N_ELEMENTS(hw_compat_rhel_8_0);
 
