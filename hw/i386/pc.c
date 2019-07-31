@@ -366,6 +366,39 @@ GlobalProperty pc_rhel_compat[] = {
 };
 const size_t pc_rhel_compat_len = G_N_ELEMENTS(pc_rhel_compat);
 
+GlobalProperty pc_rhel_8_0_compat[] = {
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "intel-iommu", "dma-drain", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G3" "-" TYPE_X86_CPU, "rdtscp", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G4" "-" TYPE_X86_CPU, "rdtscp", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G4" "-" TYPE_X86_CPU, "npt", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G4" "-" TYPE_X86_CPU, "nrip-save", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G5" "-" TYPE_X86_CPU, "rdtscp", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G5" "-" TYPE_X86_CPU, "npt", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Opteron_G5" "-" TYPE_X86_CPU, "nrip-save", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "EPYC" "-" TYPE_X86_CPU, "npt", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "EPYC" "-" TYPE_X86_CPU, "nrip-save", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "EPYC-IBPB" "-" TYPE_X86_CPU, "npt", "off" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "EPYC-IBPB" "-" TYPE_X86_CPU, "nrip-save", "off" },
+    /** The mpx=on entries from pc_compat_3_1 are in pc_rhel_7_6_compat **/
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { "Cascadelake-Server" "-" TYPE_X86_CPU, "stepping", "5" },
+    /* pc_rhel_8_0_compat from pc_compat_3_1 */
+    { TYPE_X86_CPU, "x-intel-pt-auto-level", "off" },
+};
+const size_t pc_rhel_8_0_compat_len = G_N_ELEMENTS(pc_rhel_8_0_compat);
+
 /* Similar to PC_COMPAT_3_0 + PC_COMPAT_2_12, but:
  * all of the 2_12 stuff was already in 7.6 from bz 1481253
  * x-migrate-smi-count comes from PC_COMPAT_2_11 but
