@@ -554,6 +554,7 @@ static void pc_q35_machine_rhel_options(MachineClass *m)
     m->default_display = "std";
     m->no_floppy = 1;
     m->no_parallel = 1;
+    pcmc->default_cpu_version = 1;
     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
@@ -562,6 +563,20 @@ static void pc_q35_machine_rhel_options(MachineClass *m)
     compat_props_add(m->compat_props, pc_rhel_compat, pc_rhel_compat_len);
 }
 
+static void pc_q35_init_rhel810(MachineState *machine)
+{
+    pc_q35_init(machine);
+}
+
+static void pc_q35_machine_rhel810_options(MachineClass *m)
+{
+    pc_q35_machine_rhel_options(m);
+    m->desc = "RHEL-8.1.0 PC (Q35 + ICH9, 2009)";
+}
+
+DEFINE_PC_MACHINE(q35_rhel810, "pc-q35-rhel8.1.0", pc_q35_init_rhel810,
+                  pc_q35_machine_rhel810_options);
+
 static void pc_q35_init_rhel800(MachineState *machine)
 {
     pc_q35_init(machine);
@@ -569,8 +584,15 @@ static void pc_q35_init_rhel800(MachineState *machine)
 
 static void pc_q35_machine_rhel800_options(MachineClass *m)
 {
-    pc_q35_machine_rhel_options(m);
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+    pc_q35_machine_rhel810_options(m);
     m->desc = "RHEL-8.0.0 PC (Q35 + ICH9, 2009)";
+    m->smbus_no_migration_support = true;
+    m->alias = NULL;
+    pcmc->pvh_enabled = false;
+    pcmc->default_cpu_version = CPU_VERSION_LEGACY;
+    compat_props_add(m->compat_props, hw_compat_rhel_8_0, hw_compat_rhel_8_0_len);
+    compat_props_add(m->compat_props, pc_rhel_8_0_compat, pc_rhel_8_0_compat_len);
 }
 
 DEFINE_PC_MACHINE(q35_rhel800, "pc-q35-rhel8.0.0", pc_q35_init_rhel800,

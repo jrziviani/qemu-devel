@@ -1051,9 +1051,15 @@ static void pc_init_rhel760(MachineState *machine)
 
 static void pc_machine_rhel760_options(MachineClass *m)
 {
+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
     pc_machine_rhel7_options(m);
     m->desc = "RHEL 7.6.0 PC (i440FX + PIIX, 1996)";
     m->async_pf_vmexit_disable = true;
+    m->smbus_no_migration_support = true;
+    pcmc->pvh_enabled = false;
+    pcmc->default_cpu_version = CPU_VERSION_LEGACY;
+    compat_props_add(m->compat_props, hw_compat_rhel_8_0, hw_compat_rhel_8_0_len);
+    compat_props_add(m->compat_props, pc_rhel_8_0_compat, pc_rhel_8_0_compat_len);
     compat_props_add(m->compat_props, hw_compat_rhel_7_6, hw_compat_rhel_7_6_len);
     compat_props_add(m->compat_props, pc_rhel_7_6_compat, pc_rhel_7_6_compat_len);
 }
