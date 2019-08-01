@@ -152,8 +152,9 @@ GlobalProperty hw_compat_rhel_7_2[] = {
         { "fw_cfg_mem", "dma_enabled", "off" },
         { "fw_cfg_io", "dma_enabled", "off" },
         { "isa-fdc", "fallback", "144" },
-        { "virtio-pci", "disable-modern", "on" },
-        { "virtio-pci", "disable-legacy", "off" },
+        /* Optional because not all virtio-pci devices support legacy mode */
+        { "virtio-pci", "disable-modern", "on", .optional = true },
+        { "virtio-pci", "disable-legacy", "off", .optional = true },
         { TYPE_PCI_DEVICE, "x-pcie-lnksta-dllla", "off" },
         { "virtio-pci", "page-per-vq", "on" },
         /* hw_compat_rhel_7_2 - introduced with 2.10.0 */
