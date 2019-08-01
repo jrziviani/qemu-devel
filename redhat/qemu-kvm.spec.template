@@ -997,6 +997,32 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Aug 01 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-83.el8
+- kvm-hw-block-pflash_cfi01-Add-missing-DeviceReset-handle.patch [bz#1707192]
+- kvm-block-file-posix-Unaligned-O_DIRECT-block-status.patch [bz#1678979]
+- kvm-iotests-Test-unaligned-raw-images-with-O_DIRECT.patch [bz#1678979]
+- kvm-nbd-client-Lower-min_block-for-block-status-unaligne.patch [bz#1678979]
+- kvm-nbd-client-Reject-inaccessible-tail-of-inconsistent-.patch [bz#1678979]
+- kvm-nbd-client-Support-qemu-img-convert-from-unaligned-s.patch [bz#1678979]
+- kvm-block-Add-bdrv_get_request_alignment.patch [bz#1678979]
+- kvm-nbd-server-Advertise-actual-minimum-block-size.patch [bz#1678979]
+- kvm-slirp-check-sscanf-result-when-emulating-ident.patch [bz#1727642]
+- kvm-slirp-fix-big-little-endian-conversion-in-ident-prot.patch [bz#1727642]
+- kvm-slirp-ensure-there-is-enough-space-in-mbuf-to-null-t.patch [bz#1727642]
+- kvm-slirp-don-t-manipulate-so_rcv-in-tcp_emu.patch [bz#1727642]
+- kvm-tap-set-vhostfd-passed-from-qemu-cli-to-non-blocking.patch [bz#1732642]
+- kvm-Fix-heap-overflow-in-ip_reass-on-big-packet-input.patch [bz#1734751]
+- Resolves: bz#1678979
+  (qemu-img convert abort when converting image with unaligned size (qemu-img: block/io.c:2134: bdrv_co_block_status: Assertion `*pnum && (((*pnum) % (align)) == 0) && align > offset - aligned_offset\' failed))
+- Resolves: bz#1707192
+  (implement missing reset handler for cfi.pflash01 - slow train)
+- Resolves: bz#1727642
+  (CVE-2019-6778 qemu-kvm: QEMU: slirp: heap buffer overflow in tcp_emu())
+- Resolves: bz#1732642
+  (enable the virtio-net frontend to work with the vhost-net backend in SEV guests)
+- Resolves: bz#1734751
+  (CVE-2019-14378 qemu-kvm: QEMU: slirp: heap buffer overflow during packet reassembly [rhel-8.1.0])
+
 * Tue Jul 23 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-82.el8
 - kvm-i386-Add-new-model-of-Cascadelake-Server.patch [bz#1629906]
 - kvm-i386-Update-stepping-of-Cascadelake-Server.patch [bz#1629906]
