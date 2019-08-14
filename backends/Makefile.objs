@@ -15,4 +15,5 @@ common-obj-$(call land,$(CONFIG_VHOST_USER),$(CONFIG_LINUX)) += \
     cryptodev-vhost-user.o
 endif
 
-common-obj-$(CONFIG_LINUX) += hostmem-memfd.o
+# RHEL: disable memfd
+# common-obj-$(CONFIG_LINUX) += hostmem-memfd.o

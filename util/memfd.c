@@ -202,7 +202,7 @@ bool qemu_memfd_alloc_check(void)
  */
 bool qemu_memfd_check(void)
 {
-#ifdef CONFIG_LINUX
+#if 0 /* RHEL: memfd support disabled */
     static int memfd_check = MEMFD_TODO;
 
     if (memfd_check == MEMFD_TODO) {
