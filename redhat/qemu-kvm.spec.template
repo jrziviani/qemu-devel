@@ -1046,6 +1046,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Aug 14 2019 Miroslav Rezanina <mrezanin@redhat.com> - 4.1.0-1.el8
+- Rebase to qemu 4.1.0 rc4 [bz#1705235]
+- Resolves: bz#1705235
+  (Rebase qemu-kvm for RHEL-AV 8.1.0)
+
 * Tue Jul 23 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.0.0-6.el8
 - kvm-x86_64-rh-devices-add-missing-TPM-passthrough.patch [bz#1519013]
 - kvm-x86_64-rh-devices-enable-TPM-emulation.patch [bz#1519013]
