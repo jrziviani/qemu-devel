@@ -3,16 +3,16 @@ NAME:=qemu-kvm
 VERSION:=4.1.0
 DATE:=
 COMMIT:=
-RELEASE:=0
+RELEASE:=2
 ZRELEASE:=
 RELEASE_SEPARATOR:=-
 
 #TARFILE:=qemu-$(VERSION).tar.xz
-TARFILE:=qemu-$(VERSION)-rc4.tar.xz
+TARFILE:=qemu-$(VERSION).tar.xz
 TARURL:=http://download.qemu-project.org/$(TARFILE)
 #TARURL:=http://batcave.lab.eng.brq.redhat.com/www/qemu/weekly/20190704/$(TARFILE)
-TARSHA256:=7786e27652f94779c7b5c070fed1067aad5ac5800c86aec4e7bcfac878644d7d
-MARKER:=864ab314f1d924129d06ac7b571f105a2b76a4b2
+TARSHA256:=656e60218689bdeec69903087fd7582d5d3e72238d02f4481d8dc6d79fd909c6
+MARKER:=9e06029aea3b2eca1d5261352e695edc1e7d7b8b
 
 
 SPECFILE:=$(NAME).spec
