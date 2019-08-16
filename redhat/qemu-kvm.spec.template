@@ -997,6 +997,28 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Aug 16 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-84.el8
+- kvm-vnc-detect-and-optimize-pageflips.patch [bz#1727033]
+- kvm-block-backend-Make-blk_inc-dec_in_flight-public.patch [bz#1716349]
+- kvm-virtio-blk-Increase-in_flight-for-request-restart-BH.patch [bz#1716349]
+- kvm-block-Fix-AioContext-switch-for-drained-node.patch [bz#1716349]
+- kvm-test-bdrv-drain-AioContext-switch-in-drained-section.patch [bz#1716349]
+- kvm-block-Use-normal-drain-for-bdrv_set_aio_context.patch [bz#1716349]
+- kvm-block-Fix-AioContext-switch-for-bs-drv-NULL.patch [bz#1716347]
+- kvm-iothread-fix-crash-with-invalid-properties.patch [bz#1687541]
+- kvm-iothread-replace-init_done_cond-with-a-semaphore.patch [bz#1687541]
+- kvm-RHEL-disable-hostmem-memfd.patch [bz#1740797]
+- Resolves: bz#1687541
+  (qemu aborted when start guest with a big iothreads)
+- Resolves: bz#1716347
+  (Qemu Core dump when quit vm that's in status "paused(io-error)" with data plane enabled)
+- Resolves: bz#1716349
+  (qemu with iothreads enabled crashes on resume after enospc pause for disk extension)
+- Resolves: bz#1727033
+  (vnc server should detect page-flips and avoid sending fullscreen updates then.)
+- Resolves: bz#1740797
+  (Disable memfd in QEMU)
+
 * Thu Aug 01 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-83.el8
 - kvm-hw-block-pflash_cfi01-Add-missing-DeviceReset-handle.patch [bz#1707192]
 - kvm-block-file-posix-Unaligned-O_DIRECT-block-status.patch [bz#1678979]
