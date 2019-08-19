@@ -1046,6 +1046,16 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Aug 19 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-3.el8
+- kvm-x86-machine-types-pc_rhel_8_0_compat.patch [bz#1719649]
+- kvm-x86-machine-types-q35-Fixup-units_per_default_bus.patch [bz#1719649]
+- kvm-x86-machine-types-Fixup-dynamic-sysbus-entries.patch [bz#1719649]
+- kvm-x86-machine-types-add-pc-q35-rhel8.1.0.patch [bz#1719649]
+- kvm-machine-types-Update-hw_compat_rhel_8_0-from-hw_comp.patch [bz#1719649]
+- kvm-virtio-Make-disable-legacy-disable-modern-compat-pro.patch [bz#1719649]
+- Resolves: bz#1719649
+  (8.1 machine type for x86)
+
 * Mon Aug 19 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-2.el8
 - kvm-spec-Update-seavgabios-dependency.patch [bz#1725664]
 - kvm-pc-Don-t-make-die-id-mandatory-unless-necessary.patch [bz#1741451]
