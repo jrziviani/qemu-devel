@@ -1046,6 +1046,23 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Aug 19 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-2.el8
+- kvm-spec-Update-seavgabios-dependency.patch [bz#1725664]
+- kvm-pc-Don-t-make-die-id-mandatory-unless-necessary.patch [bz#1741451]
+- kvm-display-bochs-fix-pcie-support.patch [bz#1733977 bz#1740692]
+- kvm-spapr-Reset-CAS-IRQ-subsystem-after-devices.patch [bz#1733977]
+- kvm-spapr-xive-Fix-migration-of-hot-plugged-CPUs.patch [bz#1733977]
+- kvm-riscv-roms-Fix-make-rules-for-building-sifive_u-bios.patch [bz#1733977 bz#1740692]
+- kvm-Update-version-for-v4.1.0-release.patch [bz#1733977 bz#1740692]
+- Resolves: bz#1725664
+  (Update seabios dependency)
+- Resolves: bz#1733977
+  (Qemu core dumped: /home/ngu/qemu/hw/intc/xics_kvm.c:321: ics_kvm_set_irq: Assertion `kernel_xics_fd != -1' failed)
+- Resolves: bz#1740692
+  (Backport QEMU 4.1.0 rc5 & ga patches)
+- Resolves: bz#1741451
+  (Failed to hot-plug vcpus)
+
 * Wed Aug 14 2019 Miroslav Rezanina <mrezanin@redhat.com> - 4.1.0-1.el8
 - Rebase to qemu 4.1.0 rc4 [bz#1705235]
 - Resolves: bz#1705235
