@@ -997,6 +997,17 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Aug 19 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-85.el8
+- kvm-console-Avoid-segfault-in-screendump.patch [bz#1684383]
+- kvm-usb-hub-clear-suspend-on-detach.patch [bz#1619661]
+- kvm-qemu-img-fix-regression-copying-secrets-during-conve.patch [bz#1727821]
+- Resolves: bz#1619661
+  (the attach hub on one hub still exits in device manager after unhotplug)
+- Resolves: bz#1684383
+  (qemu crashed when take screenshot for 2nd head of virtio video device if the display not opened by virt-viewer)
+- Resolves: bz#1727821
+  (Failed to convert a source image to the qcow2 image encrypted by luks)
+
 * Fri Aug 16 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-84.el8
 - kvm-vnc-detect-and-optimize-pageflips.patch [bz#1727033]
 - kvm-block-backend-Make-blk_inc-dec_in_flight-public.patch [bz#1716349]
