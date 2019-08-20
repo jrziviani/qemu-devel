@@ -905,12 +905,25 @@ DEFINE_CCW_MACHINE(rhel810, "rhel8.1.0", true);
 
 static void ccw_machine_rhel760_instance_options(MachineState *machine)
 {
+    static const S390FeatInit qemu_cpu_feat = { S390_FEAT_LIST_QEMU_V3_1 };
+
     ccw_machine_rhel810_instance_options(machine);
+
+    s390_set_qemu_cpu_model(0x2827, 12, 2, qemu_cpu_feat);
+
+    /* The multiple-epoch facility was not available with rhel7.6.0 on z14GA1 */
+    s390_cpudef_featoff(14, 1, S390_FEAT_MULTIPLE_EPOCH);
+    s390_cpudef_featoff(14, 1, S390_FEAT_PTFF_QSIE);
+    s390_cpudef_featoff(14, 1, S390_FEAT_PTFF_QTOUE);
+    s390_cpudef_featoff(14, 1, S390_FEAT_PTFF_STOE);
+    s390_cpudef_featoff(14, 1, S390_FEAT_PTFF_STOUE);
 }
 
 static void ccw_machine_rhel760_class_options(MachineClass *mc)
 {
     ccw_machine_rhel810_class_options(mc);
+    /* We never published the s390x version of RHEL8.0 AV, so add this here */
+    compat_props_add(mc->compat_props, hw_compat_rhel_8_0, hw_compat_rhel_8_0_len);
     compat_props_add(mc->compat_props, hw_compat_rhel_7_6, hw_compat_rhel_7_6_len);
     compat_props_add(mc->compat_props, ccw_compat_rhel_7_6, ccw_compat_rhel_7_6_len);
 }
