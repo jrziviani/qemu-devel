@@ -894,23 +894,23 @@ GlobalProperty ccw_compat_rhel_7_5[] = {
 };
 const size_t ccw_compat_rhel_7_5_len = G_N_ELEMENTS(ccw_compat_rhel_7_5);
 
-static void ccw_machine_rhel800_instance_options(MachineState *machine)
+static void ccw_machine_rhel810_instance_options(MachineState *machine)
 {
 }
 
-static void ccw_machine_rhel800_class_options(MachineClass *mc)
+static void ccw_machine_rhel810_class_options(MachineClass *mc)
 {
 }
-DEFINE_CCW_MACHINE(rhel800, "rhel8.0.0", true);
+DEFINE_CCW_MACHINE(rhel810, "rhel8.1.0", true);
 
 static void ccw_machine_rhel760_instance_options(MachineState *machine)
 {
-    ccw_machine_rhel800_instance_options(machine);
+    ccw_machine_rhel810_instance_options(machine);
 }
 
 static void ccw_machine_rhel760_class_options(MachineClass *mc)
 {
-    ccw_machine_rhel800_class_options(mc);
+    ccw_machine_rhel810_class_options(mc);
     compat_props_add(mc->compat_props, hw_compat_rhel_7_6, hw_compat_rhel_7_6_len);
     compat_props_add(mc->compat_props, ccw_compat_rhel_7_6, ccw_compat_rhel_7_6_len);
 }
