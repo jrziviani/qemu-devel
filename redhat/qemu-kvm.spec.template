@@ -1046,6 +1046,13 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Aug 20 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-4.el8
+- kvm-RHEL-disable-hostmem-memfd.patch [bz#1738626 bz#1740797]
+- Resolves: bz#1738626
+  (Disable memfd in QEMU)
+- Resolves: bz#1740797
+  (Disable memfd in QEMU)
+
 * Mon Aug 19 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-3.el8
 - kvm-x86-machine-types-pc_rhel_8_0_compat.patch [bz#1719649]
 - kvm-x86-machine-types-q35-Fixup-units_per_default_bus.patch [bz#1719649]
