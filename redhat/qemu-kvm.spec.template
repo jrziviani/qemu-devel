@@ -131,6 +131,7 @@ BuildRequires: python3-sphinx
 BuildRequires: spice-protocol >= 0.12.12
 BuildRequires: spice-server-devel >= 0.12.8
 BuildRequires: libcacard-devel
+BuildRequires: virglrenderer-devel
 # For smartcard NSS support
 BuildRequires: nss-devel
 %endif
@@ -444,9 +445,11 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
 %if 0%{have_spice}
   --enable-spice \
   --enable-smartcard \
+  --enable-virglrenderer \
 %else
   --disable-spice \
   --disable-smartcard \
+  --disable-virglrenderer \
 %endif
 %if 0%{have_opengl}
   --enable-opengl \
