@@ -4437,6 +4437,7 @@ static void spapr_machine_4_1_class_options(MachineClass *mc)
 }
 
 DEFINE_SPAPR_MACHINE(4_1, "4.1", true);
+#endif
 
 /*
  * pseries-4.0
@@ -4453,6 +4454,7 @@ static void phb_placement_4_0(SpaprMachineState *spapr, uint32_t index,
     *nv2atsd = 0;
 }
 
+#if 0 /* Disabled for Red Hat Enterprise Linux */
 static void spapr_machine_4_0_class_options(MachineClass *mc)
 {
     SpaprMachineClass *smc = SPAPR_MACHINE_CLASS(mc);
@@ -4796,7 +4798,7 @@ DEFINE_SPAPR_MACHINE(rhel810, "rhel8.1.0", true);
 
 /*
  * pseries-rhel8.0.0
- * like spapr_compat_3_1
+ * like pseries-3.1 and pseries-4.0
  * except SPAPR_CAP_CFPC, SPAPR_CAP_SBBC and SPAPR_CAP_IBS
  * that have been backported to pseries-rhel8.0.0
  */
@@ -4809,6 +4811,12 @@ static void spapr_machine_rhel800_class_options(MachineClass *mc)
     compat_props_add(mc->compat_props, hw_compat_rhel_8_0,
                      hw_compat_rhel_8_0_len);
 
+    /* pseries-4.0 */
+    smc->phb_placement = phb_placement_4_0;
+    smc->irq = &spapr_irq_xics;
+    smc->pre_4_1_migration = true;
+
+    /* pseries-3.1 */
     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power8_v2.0");
     smc->update_dt_enabled = false;
     smc->dr_phb_enabled = false;
