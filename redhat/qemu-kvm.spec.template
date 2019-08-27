@@ -1043,6 +1043,23 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Aug 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-5.el8
+- kvm-redhat-s390x-Rename-s390-ccw-virtio-rhel8.0.0-to-s39.patch [bz#1693772]
+- kvm-redhat-s390x-Add-proper-compatibility-options-for-th.patch [bz#1693772]
+- kvm-enable-virgl.patch [bz#1559740]
+- kvm-redhat-update-pseries-rhel8.1.0-machine-type.patch [bz#1744170]
+- kvm-Do-not-run-iotests-on-brew-build.patch [bz#1742197 bz#1742819]
+- Resolves: bz#1559740
+  ([RFE] Enable virgl as TechPreview (qemu))
+- Resolves: bz#1693772
+  ([IBM zKVM] RHEL AV 8.1.0 machine type update for s390x)
+- Resolves: bz#1742197
+  (Remove iotests from qemu-kvm builds [RHEL AV 8.1.0])
+- Resolves: bz#1742819
+  (Remove iotests from qemu-kvm builds [RHEL 8.1.0])
+- Resolves: bz#1744170
+  ([IBM Power] New 8.1.0 machine type for pseries)
+
 * Tue Aug 20 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-4.el8
 - kvm-RHEL-disable-hostmem-memfd.patch [bz#1738626 bz#1740797]
 - Resolves: bz#1738626
