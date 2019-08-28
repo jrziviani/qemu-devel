@@ -996,6 +996,19 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Aug 28 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-65.el8_0_0.5
+- kvm-i386-Add-new-MSR-indices-for-IA32_PRED_CMD-and-IA32_.patch [bz#1718235]
+- kvm-i386-Add-CPUID-bit-and-feature-words-for-IA32_ARCH_C.patch [bz#1718235]
+- kvm-x86-Data-structure-changes-to-support-MSR-based-feat.patch [bz#1718235]
+- kvm-x86-define-a-new-MSR-based-feature-word-FEATURE_WORD.patch [bz#1718235]
+- kvm-Add-support-to-KVM_GET_MSR_FEATURE_INDEX_LIST-an.patch [bz#1718235]
+- kvm-Use-KVM_GET_MSR_INDEX_LIST-for-MSR_IA32_ARCH_CAP.patch [bz#1718235]
+- kvm-i386-kvm-Disable-arch_capabilities-if-MSR-can-t-be-s.patch [bz#1718235]
+- kvm-i386-Make-arch_capabilities-migratable.patch [bz#1718235]
+- kvm-target-i386-add-MDS-NO-feature.patch [bz#1718235]
+- Resolves: bz#1718235
+  ([Intel 8.1 Bug] [KVM][CLX] CPUID_7_0_EDX_ARCH_CAPABILITIES is not enabled in VM - qemu-kvm [rhel-8.0.0.z])
+
 * Mon Aug 26 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-65.el8_0_0.4
 - kvm-Introduce-new-no_guest_reset-parameter-for-usb-host-.patch [bz#1719228]
 - kvm-usb-call-reset-handler-before-updating-state.patch [bz#1719228]
