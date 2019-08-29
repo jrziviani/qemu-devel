@@ -68,8 +68,10 @@ typedef enum {
 #define SPAPR_CAP_IBS                   0x05
 /* Nested KVM-HV */
 #define SPAPR_CAP_NESTED_KVM_HV         0x06
+/* Count Cache Flush Assist HW Instruction */
+#define SPAPR_CAP_CCF_ASSIST            0x07
 /* Num Caps */
-#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_KVM_HV + 1)
+#define SPAPR_CAP_NUM                   (SPAPR_CAP_CCF_ASSIST + 1)
 
 /*
  * Capability Values
@@ -807,6 +809,7 @@ extern const VMStateDescription vmstate_spapr_cap_cfpc;
 extern const VMStateDescription vmstate_spapr_cap_sbbc;
 extern const VMStateDescription vmstate_spapr_cap_ibs;
 extern const VMStateDescription vmstate_spapr_cap_nested_kvm_hv;
+extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
 
 static inline uint8_t spapr_get_cap(sPAPRMachineState *spapr, int cap)
 {
