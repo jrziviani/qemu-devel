@@ -538,7 +538,6 @@ buildldflags="VL_LDFLAGS=-Wl,--build-id"
   --enable-vhost-vsock \
   --enable-vnc \
   --enable-mpath \
-  --disable-virglrenderer \
   --disable-xen-pci-passthrough \
   --enable-tcg \
   --with-git=git \
@@ -999,6 +998,10 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 %endif
 %if 0%{have_memlock_limits}
     %{_sysconfdir}/security/limits.d/95-kvm-memlock.conf
+%endif
+%if %{have_spice}
+%{_libexecdir}/vhost-user-gpu
+%{_datadir}/%{name}/vhost-user/50-qemu-gpu.json
 %endif
 
 %files -n qemu-img
