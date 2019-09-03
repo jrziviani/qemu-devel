@@ -991,6 +991,26 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Sep 03 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-86.el8
+- kvm-Do-not-run-iotests-on-brew-build.patch [bz#1742819]
+- kvm-target-ppc-spapr-Add-workaround-option-to-SPAPR_CAP_.patch [bz#1744415]
+- kvm-target-ppc-spapr-Add-SPAPR_CAP_CCF_ASSIST.patch [bz#1744415]
+- kvm-i386-x86_cpu_list_feature_names-function.patch [bz#1747185]
+- kvm-i386-unavailable-features-QOM-property.patch [bz#1747185]
+- kvm-file-posix-Handle-undetectable-alignment.patch [bz#1738839]
+- kvm-iotests-Tweak-221-sizing-for-different-hole-granular.patch [bz#1738839]
+- kvm-iotests-Filter-175-s-allocation-information.patch [bz#1738839]
+- kvm-block-posix-Always-allocate-the-first-block.patch [bz#1738839]
+- kvm-iotests-Test-allocate_first_block-with-O_DIRECT.patch [bz#1738839]
+- Resolves: bz#1738839
+  (I/O error when virtio-blk disk is backed by a raw image on 4k disk)
+- Resolves: bz#1742819
+  (Remove iotests from qemu-kvm builds [RHEL 8.1.0])
+- Resolves: bz#1744415
+  (Backport support for count cache flush Spectre v2 mitigation [slow train])
+- Resolves: bz#1747185
+  ("filtered-features" QOM property is not available)
+
 * Mon Aug 19 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-85.el8
 - kvm-console-Avoid-segfault-in-screendump.patch [bz#1684383]
 - kvm-usb-hub-clear-suspend-on-detach.patch [bz#1619661]
