@@ -1746,7 +1746,13 @@ static void spapr_machine_reset(MachineState *machine)
         spapr_ovec_cleanup(spapr->ov5_cas);
         spapr->ov5_cas = spapr_ovec_new();
 
-        ppc_set_compat(first_ppc_cpu, spapr->max_compat_pvr, &error_fatal);
+        /*
+         * reset compat_pvr for all CPUs
+         * as qemu_devices_reset() is called before this,
+         * it can't be propagated by spapr_cpu_reset()
+         * from the first CPU to all the others
+         */
+        ppc_set_compat_all(spapr->max_compat_pvr, &error_fatal);
     }
 
     if (!SPAPR_MACHINE_GET_CLASS(spapr)->legacy_irq_allocation) {
