@@ -1,3 +1,5 @@
+%global is_scratchbuild 1
+
 %global SLOF_gittagdate 20170724
 %global SLOF_gittagcommit 89f519f
 
@@ -391,6 +393,12 @@ the Secure Shell (SSH) protocol.
 
 %prep
 %setup -n qemu-%{version}
+%if %{is_scratchbuild}
+# Remove slirp content in scratchbuilds because it's being applyed
+# as a patch.
+rm -fr slirp
+mkdir slirp
+%endif
 %autopatch -p1
 
 %build
