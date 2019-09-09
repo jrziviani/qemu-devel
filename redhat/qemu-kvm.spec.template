@@ -1054,6 +1054,22 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Sep 09 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-8.el8
+- kvm-migration-Do-not-re-read-the-clock-on-pre_save-in-ca.patch [bz#1747836]
+- kvm-ehci-fix-queue-dev-null-ptr-dereference.patch [bz#1746790]
+- kvm-spapr-Use-SHUTDOWN_CAUSE_SUBSYSTEM_RESET-for-CAS-reb.patch [bz#1743477]
+- kvm-file-posix-Handle-undetectable-alignment.patch [bz#1749134]
+- kvm-block-posix-Always-allocate-the-first-block.patch [bz#1749134]
+- kvm-iotests-Test-allocate_first_block-with-O_DIRECT.patch [bz#1749134]
+- Resolves: bz#1743477
+  (Since bd94bc06479a "spapr: change default interrupt mode to 'dual'", QEMU resets the machine to select the appropriate interrupt controller. And -no-reboot prevents that.)
+- Resolves: bz#1746790
+  (qemu core dump while migrate from RHEL7.6 to RHEL8.1)
+- Resolves: bz#1747836
+  (Call traces after guest migration due to incorrect handling of the timebase)
+- Resolves: bz#1749134
+  (I/O error when virtio-blk disk is backed by a raw image on 4k disk)
+
 * Fri Sep 06 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-7.el8
 - kvm-trace-Clarify-DTrace-SystemTap-help-message.patch [bz#1516220]
 - kvm-socket-Add-backlog-parameter-to-socket_listen.patch [bz#1726898]
