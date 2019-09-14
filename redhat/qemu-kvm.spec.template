@@ -991,6 +991,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Sep 13 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-87.el8
+- kvm-Using-ip_deq-after-m_free-might-read-pointers-from-a.patch [bz#1749724]
+- Resolves: bz#1749724
+  (CVE-2019-15890 qemu-kvm: QEMU: Slirp: use-after-free during packet reassembly [rhel-8])
+
 * Tue Sep 03 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-86.el8
 - kvm-Do-not-run-iotests-on-brew-build.patch [bz#1742819]
 - kvm-target-ppc-spapr-Add-workaround-option-to-SPAPR_CAP_.patch [bz#1744415]
