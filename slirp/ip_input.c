@@ -300,7 +300,6 @@ ip_reass(Slirp *slirp, struct ip *ip, struct ipq *fp)
 	 */
 	while (q != (struct ipasfrag*)&fp->frag_link &&
             ip->ip_off + ip->ip_len > q->ipf_off) {
-		struct ipasfrag *prev;
 		i = (ip->ip_off + ip->ip_len) - q->ipf_off;
 		if (i < q->ipf_len) {
 			q->ipf_len -= i;
@@ -308,10 +307,9 @@ ip_reass(Slirp *slirp, struct ip *ip, struct ipq *fp)
 			m_adj(dtom(slirp, q), i);
 			break;
 		}
-		prev = q;
 		q = q->ipf_next;
-		ip_deq(prev);
-		m_free(dtom(slirp, prev));
+		m_free(dtom(slirp, q->ipf_prev));
+		ip_deq(q->ipf_prev);
 	}
 
 insert:
