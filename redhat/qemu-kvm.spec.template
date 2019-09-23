@@ -1054,6 +1054,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Sep 23 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-11.el8
+- kvm-blockjob-update-nodes-head-while-removing-all-bdrv.patch [bz#1746631]
+- kvm-hostmem-file-fix-pmem-file-size-check.patch [bz#1724008 bz#1736788]
+- kvm-memory-fetch-pmem-size-in-get_file_size.patch [bz#1724008 bz#1736788]
+- kvm-pr-manager-Fix-invalid-g_free-crash-bug.patch [bz#1753992]
+- Resolves: bz#1724008
+  (QEMU core dumped "memory_region_get_ram_ptr: Assertion `mr->ram_block' failed")
+- Resolves: bz#1736788
+  (QEMU core dumped if boot guest with nvdimm backed by /dev/dax0.0 and option pmem=off)
+- Resolves: bz#1746631
+  (Qemu core dump when do block commit under stress)
+- Resolves: bz#1753992
+  (core dump when testing persistent reservation in guest)
+
 * Mon Sep 16 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-10.el8
 - kvm-spapr-xive-Mask-the-EAS-when-allocating-an-IRQ.patch [bz#1748725]
 - kvm-block-create-Do-not-abort-if-a-block-driver-is-not-a.patch [bz#1746267]
