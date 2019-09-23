@@ -295,7 +295,7 @@ int spapr_vio_send_crq(SpaprVioDevice *dev, uint8_t *crq)
     dev->crq.qnext = (dev->crq.qnext + 16) % dev->crq.qsize;
 
     if (dev->signal_state & 1) {
-        qemu_irq_pulse(spapr_vio_qirq(dev));
+        spapr_vio_irq_pulse(dev);
     }
 
     return 0;

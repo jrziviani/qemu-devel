@@ -35,7 +35,7 @@ static void vty_receive(void *opaque, const uint8_t *buf, int size)
 
     if ((dev->in == dev->out) && size) {
         /* toggle line to simulate edge interrupt */
-        qemu_irq_pulse(spapr_vio_qirq(&dev->sdev));
+        spapr_vio_irq_pulse(&dev->sdev);
     }
     for (i = 0; i < size; i++) {
         if (dev->in - dev->out >= VTERM_BUFSIZE) {
