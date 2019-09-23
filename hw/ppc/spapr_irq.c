@@ -214,11 +214,6 @@ static void spapr_irq_reset_xics(SpaprMachineState *spapr, Error **errp)
     }
 }
 
-static const char *spapr_irq_get_nodename_xics(SpaprMachineState *spapr)
-{
-    return XICS_NODENAME;
-}
-
 static void spapr_irq_init_kvm_xics(SpaprMachineState *spapr, Error **errp)
 {
     if (kvm_enabled()) {
@@ -240,7 +235,6 @@ SpaprIrq spapr_irq_xics = {
     .post_load   = spapr_irq_post_load_xics,
     .reset       = spapr_irq_reset_xics,
     .set_irq     = spapr_irq_set_irq_xics,
-    .get_nodename = spapr_irq_get_nodename_xics,
     .init_kvm    = spapr_irq_init_kvm_xics,
 };
 
@@ -365,11 +359,6 @@ static void spapr_irq_set_irq_xive(void *opaque, int irq, int val)
     }
 }
 
-static const char *spapr_irq_get_nodename_xive(SpaprMachineState *spapr)
-{
-    return spapr->xive->nodename;
-}
-
 static void spapr_irq_init_kvm_xive(SpaprMachineState *spapr, Error **errp)
 {
     if (kvm_enabled()) {
@@ -391,7 +380,6 @@ SpaprIrq spapr_irq_xive = {
     .post_load   = spapr_irq_post_load_xive,
     .reset       = spapr_irq_reset_xive,
     .set_irq     = spapr_irq_set_irq_xive,
-    .get_nodename = spapr_irq_get_nodename_xive,
     .init_kvm    = spapr_irq_init_kvm_xive,
 };
 
@@ -536,11 +524,6 @@ static void spapr_irq_set_irq_dual(void *opaque, int irq, int val)
     spapr_irq_current(spapr)->set_irq(spapr, irq, val);
 }
 
-static const char *spapr_irq_get_nodename_dual(SpaprMachineState *spapr)
-{
-    return spapr_irq_current(spapr)->get_nodename(spapr);
-}
-
 /*
  * Define values in sync with the XIVE and XICS backend
  */
@@ -558,7 +541,6 @@ SpaprIrq spapr_irq_dual = {
     .post_load   = spapr_irq_post_load_dual,
     .reset       = spapr_irq_reset_dual,
     .set_irq     = spapr_irq_set_irq_dual,
-    .get_nodename = spapr_irq_get_nodename_dual,
     .init_kvm    = NULL, /* should not be used */
 };
 
@@ -700,13 +682,13 @@ void spapr_irq_reset(SpaprMachineState *spapr, Error **errp)
 
 int spapr_irq_get_phandle(SpaprMachineState *spapr, void *fdt, Error **errp)
 {
-    const char *nodename = spapr->irq->get_nodename(spapr);
+    const char *nodename = "interrupt-controller";
     int offset, phandle;
 
     offset = fdt_subnode_offset(fdt, 0, nodename);
     if (offset < 0) {
-        error_setg(errp, "Can't find node \"%s\": %s", nodename,
-                   fdt_strerror(offset));
+        error_setg(errp, "Can't find node \"%s\": %s",
+                   nodename, fdt_strerror(offset));
         return -1;
     }
 
@@ -790,6 +772,5 @@ SpaprIrq spapr_irq_xics_legacy = {
     .post_load   = spapr_irq_post_load_xics,
     .reset       = spapr_irq_reset_xics,
     .set_irq     = spapr_irq_set_irq_xics,
-    .get_nodename = spapr_irq_get_nodename_xics,
     .init_kvm    = spapr_irq_init_kvm_xics,
 };
