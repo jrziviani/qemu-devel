@@ -156,10 +156,9 @@ static void spapr_irq_free_xics(SpaprMachineState *spapr, int irq, int num)
 static qemu_irq spapr_qirq_xics(SpaprMachineState *spapr, int irq)
 {
     ICSState *ics = spapr->ics;
-    uint32_t srcno = irq - ics->offset;
 
     if (ics_valid_irq(ics, irq)) {
-        return spapr->qirqs[srcno];
+        return spapr->qirqs[irq];
     }
 
     return NULL;
@@ -207,9 +206,10 @@ static int spapr_irq_post_load_xics(SpaprMachineState *spapr, int version_id)
     return 0;
 }
 
-static void spapr_irq_set_irq_xics(void *opaque, int srcno, int val)
+static void spapr_irq_set_irq_xics(void *opaque, int irq, int val)
 {
     SpaprMachineState *spapr = opaque;
+    uint32_t srcno = irq - spapr->ics->offset;
 
     ics_set_irq(spapr->ics, srcno, val);
 }
@@ -380,14 +380,14 @@ static void spapr_irq_reset_xive(SpaprMachineState *spapr, Error **errp)
     spapr_xive_mmio_set_enabled(spapr->xive, true);
 }
 
-static void spapr_irq_set_irq_xive(void *opaque, int srcno, int val)
+static void spapr_irq_set_irq_xive(void *opaque, int irq, int val)
 {
     SpaprMachineState *spapr = opaque;
 
     if (kvm_irqchip_in_kernel()) {
-        kvmppc_xive_source_set_irq(&spapr->xive->source, srcno, val);
+        kvmppc_xive_source_set_irq(&spapr->xive->source, irq, val);
     } else {
-        xive_source_set_irq(&spapr->xive->source, srcno, val);
+        xive_source_set_irq(&spapr->xive->source, irq, val);
     }
 }
 
@@ -561,11 +561,11 @@ static void spapr_irq_reset_dual(SpaprMachineState *spapr, Error **errp)
     spapr_irq_current(spapr)->reset(spapr, errp);
 }
 
-static void spapr_irq_set_irq_dual(void *opaque, int srcno, int val)
+static void spapr_irq_set_irq_dual(void *opaque, int irq, int val)
 {
     SpaprMachineState *spapr = opaque;
 
-    spapr_irq_current(spapr)->set_irq(spapr, srcno, val);
+    spapr_irq_current(spapr)->set_irq(spapr, irq, val);
 }
 
 static const char *spapr_irq_get_nodename_dual(SpaprMachineState *spapr)
