@@ -101,7 +101,7 @@ static void spapr_irq_init_xics(SpaprMachineState *spapr, int nr_irqs,
     Object *obj;
     Error *local_err = NULL;
 
-    obj = object_new(TYPE_ICS_SIMPLE);
+    obj = object_new(TYPE_ICS);
     object_property_add_child(OBJECT(spapr), "ics", obj, &error_abort);
     object_property_add_const_link(obj, ICS_PROP_XICS, OBJECT(spapr),
                                    &error_fatal);
@@ -112,7 +112,7 @@ static void spapr_irq_init_xics(SpaprMachineState *spapr, int nr_irqs,
         return;
     }
 
-    spapr->ics = ICS_BASE(obj);
+    spapr->ics = ICS(obj);
 
     xics_spapr_init(spapr);
 }
