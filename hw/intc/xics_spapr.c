@@ -180,7 +180,7 @@ static void rtas_set_xive(PowerPCCPU *cpu, SpaprMachineState *spapr,
     }
 
     srcno = nr - ics->offset;
-    ics_simple_write_xive(ics, srcno, server, priority, priority);
+    ics_write_xive(ics, srcno, server, priority, priority);
 
     rtas_st(rets, 0, RTAS_OUT_SUCCESS);
 }
@@ -244,8 +244,8 @@ static void rtas_int_off(PowerPCCPU *cpu, SpaprMachineState *spapr,
     }
 
     srcno = nr - ics->offset;
-    ics_simple_write_xive(ics, srcno, ics->irqs[srcno].server, 0xff,
-                          ics->irqs[srcno].priority);
+    ics_write_xive(ics, srcno, ics->irqs[srcno].server, 0xff,
+                   ics->irqs[srcno].priority);
 
     rtas_st(rets, 0, RTAS_OUT_SUCCESS);
 }
@@ -277,9 +277,9 @@ static void rtas_int_on(PowerPCCPU *cpu, SpaprMachineState *spapr,
     }
 
     srcno = nr - ics->offset;
-    ics_simple_write_xive(ics, srcno, ics->irqs[srcno].server,
-                          ics->irqs[srcno].saved_priority,
-                          ics->irqs[srcno].saved_priority);
+    ics_write_xive(ics, srcno, ics->irqs[srcno].server,
+                   ics->irqs[srcno].saved_priority,
+                   ics->irqs[srcno].saved_priority);
 
     rtas_st(rets, 0, RTAS_OUT_SUCCESS);
 }
