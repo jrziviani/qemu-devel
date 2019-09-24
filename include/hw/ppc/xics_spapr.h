@@ -33,8 +33,6 @@
 #define ICS_SPAPR(obj) OBJECT_CHECK(ICSState, (obj), TYPE_ICS_SPAPR)
 
 void ics_spapr_create(SpaprMachineState *spapr, int nr_xirqs, Error **errp);
-void spapr_dt_xics(SpaprMachineState *spapr, uint32_t nr_servers, void *fdt,
-                   uint32_t phandle);
 int xics_kvm_connect(SpaprMachineState *spapr, Error **errp);
 void xics_kvm_disconnect(SpaprMachineState *spapr, Error **errp);
 bool xics_kvm_has_broken_disconnect(SpaprMachineState *spapr);
