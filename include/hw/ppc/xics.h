@@ -104,7 +104,6 @@ struct ICSStateClass {
     DeviceClass parent_class;
 
     DeviceRealize parent_realize;
-    DeviceReset parent_reset;
 };
 
 struct ICSState {
