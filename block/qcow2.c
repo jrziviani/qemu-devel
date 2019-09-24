@@ -2073,7 +2073,8 @@ static coroutine_fn int qcow2_co_preadv(BlockDriverState *bs, uint64_t offset,
                 assert(s->crypto);
                 assert(QEMU_IS_ALIGNED(offset, BDRV_SECTOR_SIZE));
                 assert(QEMU_IS_ALIGNED(cur_bytes, BDRV_SECTOR_SIZE));
-                if (qcow2_co_decrypt(bs, cluster_offset, offset,
+                if (qcow2_co_decrypt(bs, cluster_offset + offset_in_cluster,
+                                     offset,
                                      cluster_data, cur_bytes) < 0) {
                     ret = -EIO;
                     goto fail;
@@ -2288,7 +2289,7 @@ static coroutine_fn int qcow2_co_pwritev(BlockDriverState *bs, uint64_t offset,
                    QCOW_MAX_CRYPT_CLUSTERS * s->cluster_size);
             qemu_iovec_to_buf(&hd_qiov, 0, cluster_data, hd_qiov.size);
 
-            if (qcow2_co_encrypt(bs, cluster_offset, offset,
+            if (qcow2_co_encrypt(bs, cluster_offset + offset_in_cluster, offset,
                                  cluster_data, cur_bytes) < 0) {
                 ret = -EIO;
                 goto out_unlocked;
