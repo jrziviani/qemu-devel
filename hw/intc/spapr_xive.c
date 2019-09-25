@@ -530,9 +530,7 @@ bool spapr_xive_irq_claim(SpaprXive *xive, uint32_t lisn, bool lsi)
 {
     XiveSource *xsrc = &xive->source;
 
-    if (lisn >= xive->nr_irqs) {
-        return false;
-    }
+    assert(lisn < xive->nr_irqs);
 
     /*
      * Set default values when allocating an IRQ number
@@ -557,9 +555,7 @@ bool spapr_xive_irq_claim(SpaprXive *xive, uint32_t lisn, bool lsi)
 
 bool spapr_xive_irq_free(SpaprXive *xive, uint32_t lisn)
 {
-    if (lisn >= xive->nr_irqs) {
-        return false;
-    }
+    assert(lisn < xive->nr_irqs);
 
     xive->eat[lisn].w &= cpu_to_be64(~EAS_VALID);
     return true;
