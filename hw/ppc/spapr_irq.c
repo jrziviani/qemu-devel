@@ -246,7 +246,13 @@ static void spapr_irq_init_xive(SpaprMachineState *spapr, Error **errp)
 
     /* Enable the CPU IPIs */
     for (i = 0; i < nr_servers; ++i) {
-        spapr_xive_irq_claim(spapr->xive, SPAPR_IRQ_IPI + i, false);
+        Error *local_err = NULL;
+
+        spapr_xive_irq_claim(spapr->xive, SPAPR_IRQ_IPI + i, false, &local_err);
+        if (local_err) {
+            error_propagate(errp, local_err);
+            return;
+        }
     }
 
     spapr_xive_hcall_init(spapr);
@@ -255,11 +261,7 @@ static void spapr_irq_init_xive(SpaprMachineState *spapr, Error **errp)
 static int spapr_irq_claim_xive(SpaprMachineState *spapr, int irq, bool lsi,
                                 Error **errp)
 {
-    if (!spapr_xive_irq_claim(spapr->xive, irq, lsi)) {
-        error_setg(errp, "IRQ %d is invalid", irq);
-        return -1;
-    }
-    return 0;
+    return spapr_xive_irq_claim(spapr->xive, irq, lsi, errp);
 }
 
 static void spapr_irq_free_xive(SpaprMachineState *spapr, int irq)
