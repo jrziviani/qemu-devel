@@ -32,6 +32,7 @@
 #define TYPE_ICS_SPAPR "ics-spapr"
 #define ICS_SPAPR(obj) OBJECT_CHECK(ICSState, (obj), TYPE_ICS_SPAPR)
 
+void ics_spapr_create(SpaprMachineState *spapr, int nr_xirqs, Error **errp);
 void spapr_dt_xics(SpaprMachineState *spapr, uint32_t nr_servers, void *fdt,
                    uint32_t phandle);
 int xics_kvm_connect(SpaprMachineState *spapr, Error **errp);
