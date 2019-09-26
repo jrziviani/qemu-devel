@@ -4279,7 +4279,7 @@ static void spapr_pic_print_info(InterruptStatsProvider *obj,
 {
     SpaprMachineState *spapr = SPAPR_MACHINE(obj);
 
-    spapr->irq->print_info(spapr, mon);
+    spapr_irq_print_info(spapr, mon);
 }
 
 int spapr_get_vcpu_id(PowerPCCPU *cpu)
