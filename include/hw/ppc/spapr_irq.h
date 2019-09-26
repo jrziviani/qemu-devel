@@ -59,6 +59,7 @@ typedef struct SpaprInterruptControllerClass {
 
     /* These methods should only be called on the active intc */
     void (*set_irq)(SpaprInterruptController *intc, int irq, int val);
+    void (*print_info)(SpaprInterruptController *intc, Monitor *mon);
 } SpaprInterruptControllerClass;
 
 void spapr_irq_update_active_intc(SpaprMachineState *spapr);
@@ -81,7 +82,6 @@ typedef struct SpaprIrq {
     bool        xics;
     bool        xive;
 
-    void (*print_info)(SpaprMachineState *spapr, Monitor *mon);
     void (*dt_populate)(SpaprMachineState *spapr, uint32_t nr_servers,
                         void *fdt, uint32_t phandle);
     int (*post_load)(SpaprMachineState *spapr, int version_id);
