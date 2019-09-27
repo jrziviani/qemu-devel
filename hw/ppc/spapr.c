@@ -1142,12 +1142,13 @@ static void spapr_dt_ov5_platform_support(SpaprMachineState *spapr, void *fdt,
         26, 0x40, /* Radix options: GTSE == yes. */
     };
 
-    if (spapr->irq->xics && spapr->irq->xive) {
+    if (spapr_get_cap(spapr, SPAPR_CAP_XICS)
+        && spapr_get_cap(spapr, SPAPR_CAP_XIVE)) {
         val[1] = SPAPR_OV5_XIVE_BOTH;
-    } else if (spapr->irq->xive) {
+    } else if (spapr_get_cap(spapr, SPAPR_CAP_XIVE)) {
         val[1] = SPAPR_OV5_XIVE_EXPLOIT;
     } else {
-        assert(spapr->irq->xics);
+        assert(spapr_get_cap(spapr, SPAPR_CAP_XICS));
         val[1] = SPAPR_OV5_XIVE_LEGACY;
     }
 
@@ -2845,7 +2846,7 @@ static void spapr_machine_init(MachineState *machine)
     spapr_ovec_set(spapr->ov5, OV5_DRMEM_V2);
 
     /* advertise XIVE on POWER9 machines */
-    if (spapr->irq->xive) {
+    if (spapr_get_cap(spapr, SPAPR_CAP_XIVE)) {
         spapr_ovec_set(spapr->ov5, OV5_XIVE_EXPLOIT);
     }
 
@@ -3312,14 +3313,18 @@ static void spapr_set_vsmt(Object *obj, Visitor *v, const char *name,
 static char *spapr_get_ic_mode(Object *obj, Error **errp)
 {
     SpaprMachineState *spapr = SPAPR_MACHINE(obj);
+    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
 
-    if (spapr->irq == &spapr_irq_xics_legacy) {
+    if (smc->legacy_irq_allocation) {
         return g_strdup("legacy");
-    } else if (spapr->irq == &spapr_irq_xics) {
+    } else if (spapr_get_cap(spapr, SPAPR_CAP_XICS)
+               && !spapr_get_cap(spapr, SPAPR_CAP_XIVE)) {
         return g_strdup("xics");
-    } else if (spapr->irq == &spapr_irq_xive) {
+    } else if (!spapr_get_cap(spapr, SPAPR_CAP_XICS)
+               && spapr_get_cap(spapr, SPAPR_CAP_XIVE)) {
         return g_strdup("xive");
-    } else if (spapr->irq == &spapr_irq_dual) {
+    } else if (spapr_get_cap(spapr, SPAPR_CAP_XICS)
+               && spapr_get_cap(spapr, SPAPR_CAP_XIVE)) {
         return g_strdup("dual");
     }
     g_assert_not_reached();
@@ -3336,11 +3341,15 @@ static void spapr_set_ic_mode(Object *obj, const char *value, Error **errp)
 
     /* The legacy IRQ backend can not be set */
     if (strcmp(value, "xics") == 0) {
-        spapr->irq = &spapr_irq_xics;
+        fprintf(stderr, "Setting ic-mode=xics\n");
+        object_property_set_bool(obj, true, "cap-xics", errp);
+        object_property_set_bool(obj, false, "cap-xive", errp);
     } else if (strcmp(value, "xive") == 0) {
-        spapr->irq = &spapr_irq_xive;
+        object_property_set_bool(obj, false, "cap-xics", errp);
+        object_property_set_bool(obj, true, "cap-xive", errp);
     } else if (strcmp(value, "dual") == 0) {
-        spapr->irq = &spapr_irq_dual;
+        object_property_set_bool(obj, true, "cap-xics", errp);
+        object_property_set_bool(obj, true, "cap-xive", errp);
     } else {
         error_setg(errp, "Bad value for \"ic-mode\" property");
     }
@@ -3379,7 +3388,6 @@ static void spapr_set_host_serial(Object *obj, const char *value, Error **errp)
 static void spapr_instance_init(Object *obj)
 {
     SpaprMachineState *spapr = SPAPR_MACHINE(obj);
-    SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
 
     spapr->htab_fd = -1;
     spapr->use_hotplug_event_source = true;
@@ -3415,7 +3423,6 @@ static void spapr_instance_init(Object *obj)
                              spapr_get_msix_emulation, NULL, NULL);
 
     /* The machine class defines the default interrupt controller mode */
-    spapr->irq = smc->irq;
     object_property_add_str(obj, "ic-mode", spapr_get_ic_mode,
                             spapr_set_ic_mode, NULL);
     object_property_set_description(obj, "ic-mode",
@@ -4509,8 +4516,9 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
     smc->default_caps.caps[SPAPR_CAP_NESTED_KVM_HV] = SPAPR_CAP_OFF;
     smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = SPAPR_CAP_ON;
     smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_OFF;
+    smc->default_caps.caps[SPAPR_CAP_XICS] = SPAPR_CAP_ON;
+    smc->default_caps.caps[SPAPR_CAP_XIVE] = SPAPR_CAP_ON;
     spapr_caps_add_properties(smc, &error_abort);
-    smc->irq = &spapr_irq_dual;
     smc->dr_phb_enabled = true;
     smc->linux_pci_probe = true;
     smc->nr_xirqs = SPAPR_NR_XIRQS;
@@ -4609,7 +4617,7 @@ static void spapr_machine_4_0_class_options(MachineClass *mc)
     spapr_machine_4_1_class_options(mc);
     compat_props_add(mc->compat_props, hw_compat_4_0, hw_compat_4_0_len);
     smc->phb_placement = phb_placement_4_0;
-    smc->irq = &spapr_irq_xics;
+    smc->default_caps.caps[SPAPR_CAP_XIVE] = SPAPR_CAP_OFF;
     smc->pre_4_1_migration = true;
 }
 
@@ -4650,7 +4658,6 @@ static void spapr_machine_3_0_class_options(MachineClass *mc)
 
     smc->legacy_irq_allocation = true;
     smc->nr_xirqs = 0x400;
-    smc->irq = &spapr_irq_xics_legacy;
 }
 
 DEFINE_SPAPR_MACHINE(3_0, "3.0", false);
