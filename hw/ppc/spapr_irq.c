@@ -27,9 +27,14 @@ static const TypeInfo spapr_intc_info = {
     .class_size = sizeof(SpaprInterruptControllerClass),
 };
 
-void spapr_irq_msi_init(SpaprMachineState *spapr, uint32_t nr_msis)
+static void spapr_irq_msi_init(SpaprMachineState *spapr)
 {
-    spapr->irq_map_nr = nr_msis;
+    if (SPAPR_MACHINE_GET_CLASS(spapr)->legacy_irq_allocation) {
+        /* Legacy mode doesn't use this allocator */
+        return;
+    }
+
+    spapr->irq_map_nr = spapr_irq_nr_msis(spapr);
     spapr->irq_map = bitmap_new(spapr->irq_map_nr);
 }
 
@@ -100,7 +105,6 @@ int spapr_irq_init_kvm(int (*fn)(SpaprInterruptController *, Error **),
 
 SpaprIrq spapr_irq_xics = {
     .nr_xirqs    = SPAPR_NR_XIRQS,
-    .nr_msis     = SPAPR_NR_MSIS,
     .xics        = true,
     .xive        = false,
 };
@@ -111,7 +115,6 @@ SpaprIrq spapr_irq_xics = {
 
 SpaprIrq spapr_irq_xive = {
     .nr_xirqs    = SPAPR_NR_XIRQS,
-    .nr_msis     = SPAPR_NR_MSIS,
     .xics        = false,
     .xive        = true,
 };
@@ -130,7 +133,6 @@ SpaprIrq spapr_irq_xive = {
  */
 SpaprIrq spapr_irq_dual = {
     .nr_xirqs    = SPAPR_NR_XIRQS,
-    .nr_msis     = SPAPR_NR_MSIS,
     .xics        = true,
     .xive        = true,
 };
@@ -245,6 +247,15 @@ void spapr_irq_dt(SpaprMachineState *spapr, uint32_t nr_servers,
     sicc->dt(spapr->active_intc, nr_servers, fdt, phandle);
 }
 
+uint32_t spapr_irq_nr_msis(SpaprMachineState *spapr)
+{
+    if (SPAPR_MACHINE_GET_CLASS(spapr)->legacy_irq_allocation) {
+        return spapr->irq->nr_xirqs;
+    } else {
+        return SPAPR_XIRQ_BASE + spapr->irq->nr_xirqs - SPAPR_IRQ_MSI;
+    }
+}
+
 void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
 {
     MachineState *machine = MACHINE(spapr);
@@ -265,9 +276,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
     }
 
     /* Initialize the MSI IRQ allocator. */
-    if (!SPAPR_MACHINE_GET_CLASS(spapr)->legacy_irq_allocation) {
-        spapr_irq_msi_init(spapr, spapr->irq->nr_msis);
-    }
+    spapr_irq_msi_init(spapr);
 
     if (spapr->irq->xics) {
         Error *local_err = NULL;
@@ -549,7 +558,6 @@ int spapr_irq_find(SpaprMachineState *spapr, int num, bool align, Error **errp)
 
 SpaprIrq spapr_irq_xics_legacy = {
     .nr_xirqs    = SPAPR_IRQ_XICS_LEGACY_NR_XIRQS,
-    .nr_msis     = SPAPR_IRQ_XICS_LEGACY_NR_XIRQS,
     .xics        = true,
     .xive        = false,
 };
