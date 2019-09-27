@@ -1054,6 +1054,14 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Fri Sep 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-13.el8
+- kvm-nbd-server-attach-client-channel-to-the-export-s-Aio.patch [bz#1748253]
+- kvm-virtio-blk-schedule-virtio_notify_config-to-run-on-m.patch [bz#1744955]
+- Resolves: bz#1744955
+  (Qemu hang when block resize a qcow2 image)
+- Resolves: bz#1748253
+  (QEMU crashes (core dump) when using the integrated NDB server with data-plane)
+
 * Thu Sep 26 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-12.el8
 - kvm-block-Use-QEMU_IS_ALIGNED.patch [bz#1745922]
 - kvm-block-qcow2-Fix-corruption-introduced-by-commit-8ac0.patch [bz#1745922]
