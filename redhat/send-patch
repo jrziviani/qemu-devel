@@ -1,0 +1,483 @@
+#!/usr/bin/python3
+
+# Download git-publish
+
+import os
+import sys
+import urllib.request
+import hashlib
+import subprocess
+import logging
+import configparser
+import argparse
+
+try:
+    import bugzilla
+    BUGZILLA_SUPPORT = True
+
+except ModuleNotFoundError:
+    print("WARNING: Bugzilla python support is missing! Bugzilla information cannot be checked.")
+    print("WARNING: Please install python3-bugzilla.")
+    BUGZILLA_SUPPORT = False
+
+VERSION = '0.0.2'
+
+GIT_PUBLISH_URL = "https://araw.githubusercontent.com/danilocesar/git-publish/master/git-publish"
+REDHAT_FOLDER = os.path.dirname(os.path.realpath(__file__))
+GIT_PUBLISH_EXECUTABLE = os.path.join(REDHAT_FOLDER, 'scripts', 'git-publish')
+GIT_PUBLISH_SHA1 = "9a90849a92d78e7bf777a8f8833cec6ed3a14eab"
+
+GIT_PUBLISH_CONFIG = os.path.join(REDHAT_FOLDER, '..', '.gitpublish')
+
+REMOTE_BRANCH = None
+REMOTE_REPOSITORY = None
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger('send_patch')
+
+
+def yesno(question="(y/n)?"):
+    """
+    Return True is 'y' was selected. Otherwise returns false.
+
+    If no question was provided it will only show "(y/n)?"
+    """
+    while True:
+        response = input(question + " ")
+        if response.lower() == 'y':
+            return True
+        if response.lower() == 'n':
+            return False
+
+        logger.warning("Not valid answer")
+
+
+def run_command(cmd, allow_terminate=False, allow_failure=False,
+                silent=False):
+    """
+    Runs a bash command and returns it's output.
+
+    @allow_terminate: allows the user to press CTRL+C and the sigterm
+    be carried to the child application instead of the python script
+
+    @allow_failure: Supress the warning message in case
+    a coomand fails.
+    """
+
+    retval = -1
+    try:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        retval = proc.wait()
+
+    except KeyboardInterrupt:
+        proc.terminate()
+        retval = -1
+
+        # re-raise the exception in case CTRL+C is not expected by
+        # the child
+        if not allow_terminate:
+            raise
+
+    finally:
+        outputbytes = proc.stdout.read()
+
+    # This is a bit complex... BUT:
+    # if retval == 0 means that it got this value from the returncode and
+    #    it's all OK
+    # if retval == -1 means that we called proc.terminate()
+    # if retval > 0 means that it got from the returncode but the application
+    #    failed
+    #
+    # We're only showing an error message in case the application fails
+    if retval > 0 and not allow_failure:
+        if not silent:
+            logger.warning("Command %s failed: %d" % (cmd, retval))
+        return "", retval
+
+    outstring = outputbytes.decode()
+    return (outstring.strip(), retval)
+
+
+def load_static_data():
+    '''
+    Populate some global variable with static data
+    from .gitpublish
+    '''
+    global REMOTE_BRANCH
+    global REMOTE_REPOSITORY
+    global BZ_FIELDS
+    global BZ_FLAGS
+
+    # TODO: Make reading work from any directory
+    config = configparser.ConfigParser(strict=False)
+    config.read(GIT_PUBLISH_CONFIG)
+
+    section = config['gitpublishprofile "default"']
+
+    REMOTE_BRANCH = section.get('base')
+    REMOTE_REPOSITORY = section.get('DOWNSTREAM-REPOSITORY')
+
+    BZ_FLAGS = {}
+    BZ_FIELDS = {}
+
+    bz_flag_names = section.get('DOWNSTREAM-BZ-FLAGS')
+    if bz_flag_names:
+        bz_flag_names = bz_flag_names.split(',')
+
+    for name in bz_flag_names:
+        section_name = 'DOWNSTREAM-BZ-{}'.format(name.replace('_', '-'))
+        value = section.get(section_name)
+
+        if not value:
+            logger.warning(
+                "Flag %s couldn't be found in .gitpublish", section_name)
+            exit(5)
+
+        BZ_FLAGS[name] = value
+
+    bz_fields_names = section.get('DOWNSTREAM-BZ-FIELDS')
+    if bz_fields_names:
+        bz_fields_names = bz_fields_names.split(',')
+
+    for name in bz_fields_names:
+        section_name = 'DOWNSTREAM-BZ-{}'.format(name.replace('_', '-'))
+        value = section.get(section_name)
+
+        if not value:
+            logger.warning(
+                "Field %s couldn't be found in .gitpublish", section_name)
+            exit(6)
+
+        BZ_FIELDS[name] = value
+
+
+def get_latest_git_commit():
+    """
+    Returns the latest git commit from specific branch
+    """
+
+    logger.debug("Checking what's the latest git remote.")
+    command = "git ls-remote {0} {1} | awk '{{ print $1}}'".format(
+        REMOTE_REPOSITORY, REMOTE_BRANCH)
+    output, retval = run_command(command)
+
+    if retval != 0:
+        logger.warning("git remote couldn't be checked.")
+        return None
+
+    if not output:
+        logger.warning("No valid git remote was found.")
+        return None
+
+    logger.debug("Latest commit in git remote is is {}".format(output))
+    return output
+
+
+def get_current_branch():
+    """
+    Returns the current branch.
+    """
+    command = "git symbolic-ref --short HEAD"
+    output, retval = run_command(command)
+
+    if retval != 0 or not output:
+        logger.warning(
+            'Current branch could not be found. {} {}'.format(retval, output))
+        return None
+
+    logger.debug("Getting current branch name: {}".format(output))
+    return output
+
+
+def git_branch_contains_commit(branch, commit):
+    """
+    Returns true if a git branch contains a commit
+    """
+
+    command = "git merge-base --is-ancestor {} {} 2>/dev/null".format(
+        commit, branch)
+    output, retval = run_command(command, allow_failure=True)
+
+    if retval == 0:
+        logger.debug(
+            'Git commit {} is part of the branch "{}"'.format(commit, branch))
+        return True
+
+    logger.debug(
+        'Git commit {} is NOT part of the branch "{}"'.format(commit, branch))
+    return False
+
+
+def download_git_publish():
+    """
+    Download git-publish and make sure it's executable
+    """
+    def check_git_publish():
+        try:
+            sha1 = hashlib.sha1()
+            with open(GIT_PUBLISH_EXECUTABLE, 'rb') as f:
+                data = f.read()
+                sha1.update(data)
+
+            sha1_sum = sha1.hexdigest()
+            if sha1_sum == GIT_PUBLISH_SHA1:
+                return True
+            logger.debug("Git publish SHA1 didn't match: '{}' != '{}'".format(
+                sha1_sum, GIT_PUBLISH_SHA1))
+
+        except FileNotFoundError:
+            logger.debug("Git publish file not found")
+            return False
+
+    logger.info("Checking for git publish existance in %s." %
+                (GIT_PUBLISH_EXECUTABLE))
+    if check_git_publish():
+        logger.info("Git-publish checksum matches.")
+        return True
+    logger.debug("A valid version of gitpublish could not be found.")
+
+    try:
+        logger.debug("Downloading the supported version of gitpublish...")
+        response = urllib.request.urlopen(GIT_PUBLISH_URL)
+        data = response.read()
+        text = data.decode('utf-8')
+
+        file1 = open(GIT_PUBLISH_EXECUTABLE, 'w+')
+        file1.write(text)
+        file1.close()
+
+        os.chmod(GIT_PUBLISH_EXECUTABLE, 0o700)
+
+    except urllib.error.URLError:
+        logger.warning("URL couldn't be reached: {}".format(GIT_PUBLISH_URL))
+
+    if check_git_publish():
+        return True
+
+    logger.warning("Git publish couldn't be found and couldn't be downloaded.")
+    return False
+
+
+def get_git_history(commit):
+    """
+    Returns an array with all commits since an specific commit
+    """
+    command = "git log --oneline {}..HEAD".format(commit)
+    output, retval = run_command(command)
+
+    if retval != 0:
+        logger.warning("Git history couldn't be calculated.")
+        return None
+
+    history = output.strip().split("\n")
+    logger.debug("Your current git_history is:")
+    for line in history:
+        logger.debug(line)
+
+    return history
+
+
+def call_git_publish(num, bzlist, brew_id, upstream, branch_name=None, unknown_args=[]):
+    """
+    Callculate the arguments and call git-publish
+
+    :num number of commits to send
+    :brew_id Brew ID
+    :upstream The upstream status
+    :branch_name name of the git branch
+    :unknown_args unparsed arguments sent to the application that needs to be sent to gitpublish instead
+    """
+    arguments = [GIT_PUBLISH_EXECUTABLE, '-b', 'HEAD~{}'.format(num)]
+
+    commits = get_git_history('HEAD~{}'.format(num))
+    for commit in commits:
+        header = 'X-Included-Commmit: {}'.format(commit)
+        arguments.append('--add-header={}'.format(header))
+    arguments.append('--add-header=X-Send-Patch: {}'.format(VERSION))
+
+    blurb = []
+    for bz in bzlist:
+        blurb.append("BZ: bz#{}".format(bz))
+    blurb.append("BRANCH: {}".format(REMOTE_BRANCH))
+    blurb.append("BREW: {}".format(brew_id))
+    blurb.append("UPSTREM: {}".format(upstream))
+    blurb.append("")
+    blurb.append("**** WRITE YOUR MESSAGE HERE ****")
+
+    arguments.append('--blurb-template={}'.format('\n'.join(blurb)))
+
+    if branch_name:
+        arguments.append('--topic={}'.format(branch_name))
+
+    if unknown_args:
+        arguments.extend(unknown_args)
+
+    subprocess.call(arguments)
+
+
+def tag_exists(tag):
+    """
+    Returns True if a specific @tag exists
+    """
+    command = "git rev-parse {} >/dev/null 2>&1".format(tag)
+    output, retval = run_command(command, allow_failure=False, silent=True)
+
+    if retval == 0:
+        return True
+
+    return False
+
+
+def check_bugzilla_info(bz_list):
+    """
+    Check the list of bugzilla against the information in git-publish
+    """
+
+    ret = True
+
+    bzapi = bugzilla.Bugzilla('https://bugzilla.redhat.com')
+    if not bzapi.logged_in:
+        logger.warning("Bugzilla is not signed in.")
+        print("You need Bugilla login credentials.")
+        print("To avoid providing it at every usage, we suggest define an API-KEY in ~/.config/python-bugzilla/bugzillarc")
+
+        bzapi.interactive_login()
+
+    if not bzapi.logged_in:
+        logger.warning("Bugzilla does not have the right credentials.")
+        print("Bugzilla does not have the right credentials")
+        print("So the bugzilla information won't be checked")
+        return False
+
+    for bug_id in bz_list:
+        bug = bzapi.getbug(bug_id)
+
+        for field in BZ_FIELDS.keys():
+            try:
+                if BZ_FIELDS[field] != getattr(bug, field):
+                    logger.debug("BZ Field %s mismatch: '%s' != '%s'",
+                                 field, BZ_FIELDS[field], getattr(bug, field))
+                    print("BZ Field %s didn't match '%s' != '%s'" %
+                          (field, BZ_FIELDS[field], getattr(bug, field)))
+                    ret = False
+
+            except AttributeError:
+                logger.debug("BZ Field %s couldn't be found", field)
+                print("BZ Field %s couldn't be found" % (field))
+                ret = False
+
+        bug_flags = {flag['name']: flag['status']
+                     for flag in bug.flags if flag['name'] in BZ_FLAGS.keys()}
+        for flag_name in BZ_FLAGS.keys():
+            try:
+                if bug_flags[flag_name] != BZ_FLAGS[flag_name]:
+                    logger.debug("BZ Flag %s mismatch: '%s' != '%s'",
+                                 flag_name, BZ_FLAGS[flag_name], bug_flags['flag_name'])
+                    print("BZ Flag %s didn't match '%s' != '%s'" % (
+                        flag_name, BZ_FLAGS[flag_name], bug_flags['flag_name']))
+
+            except KeyError:
+                ret = False
+                logger.debug("BZ Flag %s couldn't be found", flag_name)
+                print("BZ Flag %s couldn't be found" % (flag_name))
+
+    return ret
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        usage='%(prog)s [options] -- [git publish options]',
+        description='Prepare, format and verify patch series before using git-publish.',
+        epilog='Please report bugs to Danilo de Paula <ddepaula@gmail.com>.')
+    parser.add_argument('-v', '--verbose', dest='verbose',
+                        action='store_true', default=False,
+                        help='If send-patch should be run in debug mode')
+
+    return parser.parse_known_args()
+
+
+def main():
+    options, unknown_args = parse_args()
+
+    print ("Warning: This tool *does not* provide to support to send patches for multiple-queues!")
+
+    if options.verbose:
+        logger.setLevel(logging.DEBUG)
+
+    load_static_data()
+
+    if not download_git_publish():
+        logger.warning(
+            "The required version of gitpublish couldn't be downloaded.")
+        sys.exit(1)
+
+    latest_commit = get_latest_git_commit()
+    if not latest_commit:
+        logger.warning(
+            "We couldn't reach the remote server and look for the latest commit.")
+        logger.warning(
+            "This is not a major issue, but you need to provide how many commits you're sending")
+
+    current_branch = get_current_branch()
+    if not current_branch:
+        logger.warning("We couldn't determine the current branch.")
+        sys.exit(2)
+
+    git_history = []
+    if (not latest_commit or
+            not git_branch_contains_commit(current_branch, latest_commit)):
+        logger.warning(
+            "Looks like you're not rebased on the latest commit from the remote server.")
+        logger.warning(
+            "Or the latest commit in the remote server couldn't be identified.")
+        logger.warning("Only continue if you're sure what you're doing")
+
+    else:
+        logger.debug(
+            'Looks like your branch is in sync with the latest commit')
+
+        git_history = get_git_history(latest_commit)
+
+    bz_list = []
+    brew_id = ""
+    upstream = ""
+
+    if not tag_exists("{}-staging".format(current_branch)):
+        bz = input("Provide a list of BZ IDs you're fixing in this series (space separated): ")
+        bz_list = bz.strip().split()
+        for bz in bz_list:
+            if not bz.isdigit():
+                logger.warning("BZ %s is not valid", bz)
+                sys.exit(4)
+
+        if bz_list and BUGZILLA_SUPPORT:
+            if not check_bugzilla_info(bz_list):
+                print(
+                    "Bugzilla information did not match. Please verify before sending.")
+
+        brew_id = input("Please provide a BREW_ID of this series: ")
+
+        upstream = 'Merged'
+        if not yesno("Are all those patches in this series merged upstream? (y/n) "):
+            upstream = input("Please, describe the status of the patches: ")
+
+    if git_history:
+        call_git_publish(len(git_history), bz_list,
+                         brew_id, upstream, current_branch, unknown_args)
+    else:
+        num_commits = input("How many commits do you want to send? ")
+        try:
+            num_commits = int(num_commits)
+            if num_commits <= 0:
+                raise ValueError("Number too low")
+        except ValueError:
+            logging.fatal(
+                "This is not a valid number. Please specify how many commits do you want to send.")
+            sys.exit(3)
+
+        call_git_publish(num_commits, bz_list, brew_id,
+                         upstream, current_branch, unknown_args)
+
+
+if __name__ == '__main__':
+    sys.exit(main())
