@@ -10,3 +10,17 @@ blurb-template = BRANCH: rhel-av-8.1.1
 blurb-template = UPSTREAM: <upstream status>
 blurb-template = BREW: <brew id>
 blurb-template = *** YOUR MESSAGE HERE ***
+
+DOWNSTREAM-BZ-FIELDS = product,component,cf_internal_target_release
+DOWNSTREAM-BZ-FLAGS= qa_ack,pm_ack,devel_ack,release
+
+DOWNSTREAM-BZ-product = Red Hat Enterprise Linux Advanced Virtualization
+DOWNSTREAM-BZ-component = qemu-kvm
+DOWNSTREAM-BZ-cf-internal-target-release = 8.1.1
+
+DOWNSTREAM-BZ-release = +
+DOWNSTREAM-BZ-qa-ack = +
+DOWNSTREAM-BZ-pm-ack = +
+DOWNSTREAM-BZ-devel-ack = +
+
+DOWNSTREAM-REPOSITORY = https://code.engineering.redhat.com/gerrit/virt-rhel8-qemu-kvm

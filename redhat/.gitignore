@@ -2,3 +2,4 @@ qemu-*.tar.xz
 debug*
 rpm
 localversion
+scripts/git-publish
