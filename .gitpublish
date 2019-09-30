@@ -1,12 +1,12 @@
 # The default profile
 [gitpublishprofile "default"]
-base = rhel-av-8.1.0/master-4.1.0
-prefix = RHEL-AV-8.1.0 qemu-kvm PATCH
+base = rhel-av-8.1.1
+prefix = RHEL-AV-8.1.1 qemu-kvm PATCH
 to = rhvirt-patches@redhat.com
 suppresscc = all
 message = True
 blurb-template = BZ: <XYZ>
-blurb-template = BRANCH: rhel-av-8.1.0/master-4.1.0
+blurb-template = BRANCH: rhel-av-8.1.1
 blurb-template = UPSTREAM: <upstream status>
 blurb-template = BREW: <brew id>
 blurb-template = *** YOUR MESSAGE HERE ***
