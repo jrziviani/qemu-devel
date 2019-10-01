@@ -71,10 +71,6 @@ done
 # Handle spec file
 cp ${SPECNAME}.template ${SPEC}
 
-if [ -n "${ZRELEASE}" ]; then
-    ZRELEASE=.${ZRELEASE}
-fi
-
 sed -i -e "/%%PATCHLIST%%/r psection
            /%%PATCHLIST%%/d
            s/%%VERSION%%/${VERSION}/
