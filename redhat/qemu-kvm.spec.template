@@ -1014,6 +1014,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Oct 01 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 3.1.0-30.el8_0_1
+- kvm-Fix-heap-overflow-in-ip_reass-on-big-packet-input.patch [bz#1734754]
+- Resolves: bz#1734754
+  (CVE-2019-14378 qemu-kvm: QEMU: slirp: heap buffer overflow during packet reassembly [rhel-av-8.0.1.z])
+
 * Thu Jul 25 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 3.1.0-30.el8
 - kvm-target-ppc-Fix-TCG-temporary-leaks-in-gen_bcond.patch [bz#1732497]
 - kvm-target-ppc-Enable-decrement-and-test-CTR-version-of-.patch [bz#1732497]
