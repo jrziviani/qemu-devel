@@ -10,6 +10,7 @@ import subprocess
 import logging
 import configparser
 import argparse
+import readline
 
 try:
     import bugzilla
@@ -22,7 +23,7 @@ except ModuleNotFoundError:
 
 VERSION = '0.0.2'
 
-GIT_PUBLISH_URL = "https://araw.githubusercontent.com/danilocesar/git-publish/master/git-publish"
+GIT_PUBLISH_URL = "https://raw.githubusercontent.com/danilocesar/git-publish/master/git-publish"
 REDHAT_FOLDER = os.path.dirname(os.path.realpath(__file__))
 GIT_PUBLISH_EXECUTABLE = os.path.join(REDHAT_FOLDER, 'scripts', 'git-publish')
 GIT_PUBLISH_SHA1 = "9a90849a92d78e7bf777a8f8833cec6ed3a14eab"
