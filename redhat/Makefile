@@ -66,7 +66,7 @@ rh-brew: rh-srpm
 	@echo "Build $(SRPM_NAME)$(LOCALVERSION).src.rpm as $(BUILD_TARGET)"
 	$(DS)brew build $(BREW_OPTIONS) $(BUILD_TARGET) $(RPMBUILD)/SRPMS/$(SRPM_NAME)$(LOCALVERSION).src.rpm
 rh-env-prep: rh-prep
-	$(DS)sudo dnf builddep $(RPMBUILD)/SPECS/$(SPECFILE)
+	#$(DS)sudo dnf builddep $(RPMBUILD)/SPECS/$(SPECFILE)
 	$(DS)cd ..; $(shell rpmspec -P $(RPMBUILD)/SPECS/$(SPECFILE) | scripts/extract_build_cmd.py | \
 	              sed "s/--disable-git-update/--enable-git-update/g")
 
