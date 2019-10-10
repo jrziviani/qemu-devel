@@ -298,9 +298,12 @@ def call_git_publish(num, bzlist, brew_id, upstream, branch_name=None, unknown_a
 
     blurb = []
     for bz in bzlist:
-        blurb.append("BZ: bz#{}".format(bz))
+        blurb.append(
+            "BZ: https://bugzilla.redhat.com/show_bug.cgi?id={}".format(bz))
     blurb.append("BRANCH: {}".format(REMOTE_BRANCH))
-    blurb.append("BREW: {}".format(brew_id))
+    if brew_id:
+        blurb.append(
+            "BREW: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID={}".format(brew_id))
     blurb.append("UPSTREM: {}".format(upstream))
     blurb.append("")
     blurb.append("**** WRITE YOUR MESSAGE HERE ****")
@@ -400,7 +403,7 @@ def parse_args():
 def main():
     options, unknown_args = parse_args()
 
-    print ("Warning: This tool *does not* provide to support to send patches for multiple-queues!")
+    print("Warning: This tool *does not* provide to support to send patches for multiple-queues!")
 
     if options.verbose:
         logger.setLevel(logging.DEBUG)
@@ -444,7 +447,8 @@ def main():
     upstream = ""
 
     if not tag_exists("{}-staging".format(current_branch)):
-        bz = input("Provide a list of BZ IDs you're fixing in this series (space separated): ")
+        bz = input(
+            "Provide a list of BZ IDs you're fixing in this series (space separated): ")
         bz_list = bz.strip().split()
         for bz in bz_list:
             if not bz.isdigit():
