@@ -896,7 +896,8 @@ M: Thomas Huth <thuth@redhat.com>
 S: Supported
 F: pc-bios/s390-ccw/
 F: pc-bios/s390-ccw.img
-T: git git://github.com/borntraeger/qemu.git s390-next
+F: docs/devel/s390-dasd-ipl.txt
+T: git https://github.com/borntraeger/qemu.git s390-next
 L: qemu-s390x@nongnu.org
 
 UniCore32 Machines
