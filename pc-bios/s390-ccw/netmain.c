@@ -32,6 +32,7 @@
 #include <time.h>
 
 #include "s390-ccw.h"
+#include "cio.h"
 #include "virtio.h"
 
 #define DEFAULT_BOOT_RETRIES 10
