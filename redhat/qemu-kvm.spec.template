@@ -991,6 +991,48 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Oct 14 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-89.el8
+- kvm-accel-use-g_strsplit-for-parsing-accelerator-names.patch [bz#1749022]
+- kvm-opts-don-t-silently-truncate-long-parameter-keys.patch [bz#1749022]
+- kvm-opts-don-t-silently-truncate-long-option-values.patch [bz#1749022]
+- kvm-i386-fix-regression-parsing-multiboot-initrd-modules.patch [bz#1749022]
+- kvm-i386-only-parse-the-initrd_filename-once-for-multibo.patch [bz#1749022]
+- kvm-opts-remove-redundant-check-for-NULL-parameter.patch [bz#1749022]
+- kvm-Using-ip_deq-after-m_free-might-read-pointers-from-a.patch [bz#1749724]
+- kvm-virtio-blk-Cancel-the-pending-BH-when-the-dataplane-.patch [bz#1708459]
+- kvm-s390x-cpumodel-Rework-CPU-feature-definition.patch [bz#1660909]
+- kvm-s390x-cpumodel-Set-up-CPU-model-for-AQIC-interceptio.patch [bz#1660909]
+- kvm-ccid-Fix-dwProtocols-advertisement-of-T-0.patch [bz#1746361]
+- kvm-s390-PCI-fix-IOMMU-region-init.patch [bz#1754643]
+- kvm-fw_cfg-Improve-error-message-when-can-t-load-splash-.patch [bz#1607367]
+- kvm-fw_cfg-Fix-boot-bootsplash-error-checking.patch [bz#1607367]
+- kvm-fw_cfg-Fix-boot-reboot-timeout-error-checking.patch [bz#1607367]
+- kvm-hw-nvram-fw_cfg-Store-reboot-timeout-as-little-endia.patch [bz#1607367]
+- kvm-intel_iommu-Correct-caching-mode-error-message.patch [bz#1738440]
+- kvm-intel_iommu-Sanity-check-vfio-pci-config-on-machine-.patch [bz#1738440]
+- kvm-qdev-machine-Introduce-hotplug_allowed-hook.patch [bz#1738440]
+- kvm-pc-q35-Disallow-vfio-pci-hotplug-without-VT-d-cachin.patch [bz#1738440]
+- kvm-intel_iommu-Remove-the-caching-mode-check-during-fla.patch [bz#1738440]
+- kvm-pseries-do-not-allow-memory-less-cpu-less-NUMA-node.patch [bz#1651474]
+- Resolves: bz#1607367
+  (After boot failed, guest should not reboot when set reboot-timeout < -1)
+- Resolves: bz#1651474
+  (RHEL8.0 Beta - [4.18.0-32.el8.ppc64le] Guest VM crashes during vcpu hotplug with specific numa configuration (kvm))
+- Resolves: bz#1660909
+  ([IBM 8.2 FEAT] KVM s390x: Crypto Passthrough Interrupt Support - qemu part)
+- Resolves: bz#1708459
+  (qemu-kvm core dumped when repeat "system_reset" multiple times during guest boot)
+- Resolves: bz#1738440
+  (For intel-iommu, qemu shows conflict behaviors between booting a guest with vfio and hot plugging vfio device)
+- Resolves: bz#1746361
+  (ccid: Fix incorrect dwProtocol advertisement of T=0)
+- Resolves: bz#1749022
+  (Please backport 950c4e6c94b1 ("opts: don't silently truncate long option values", 2018-05-09))
+- Resolves: bz#1749724
+  (CVE-2019-15890 qemu-kvm: QEMU: Slirp: use-after-free during packet reassembly [rhel-8])
+- Resolves: bz#1754643
+  (RHEL8.1 Snapshot3 - Passthrough PCI card goes into error state if used in domain (kvm))
+
 * Fri Sep 13 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-88.el8
 - Revert fix for bz#1749724 - this got delayed to 8.2
 
