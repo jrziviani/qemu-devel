@@ -304,7 +304,7 @@ def call_git_publish(num, bzlist, brew_id, upstream, branch_name=None, unknown_a
     if brew_id:
         blurb.append(
             "BREW: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID={}".format(brew_id))
-    blurb.append("UPSTREM: {}".format(upstream))
+    blurb.append("UPSTREAM: {}".format(upstream))
     blurb.append("")
     blurb.append("**** WRITE YOUR MESSAGE HERE ****")
 
@@ -403,7 +403,7 @@ def parse_args():
 def main():
     options, unknown_args = parse_args()
 
-    print("Warning: This tool *does not* provide to support to send patches for multiple-queues!")
+    print("Warning: This tool *does not* provide support to send patches for multiple queues!")
 
     if options.verbose:
         logger.setLevel(logging.DEBUG)
