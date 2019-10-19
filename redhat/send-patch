@@ -343,7 +343,10 @@ def check_bugzilla_info(bz_list):
     if not bzapi.logged_in:
         logger.warning("Bugzilla is not signed in.")
         print("You need Bugilla login credentials.")
-        print("To avoid providing it at every usage, we suggest define an API-KEY in ~/.config/python-bugzilla/bugzillarc")
+        print("To avoid providing it at every usage, we suggest define an API-KEY in ~/.config/python-bugzilla/bugzillarc like:")
+        print("[bugzilla.redhat.com]")
+        print("api_key = <API-KEY-CODE>")
+        print("")
         print("You can create one in https://bugzilla.redhat.com/userprefs.cgi?tab=apikey")
 
         bzapi.interactive_login()
