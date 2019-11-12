@@ -1054,6 +1054,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Tue Nov 12 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-14.el8
+- kvm-blockdev-reduce-aio_context-locked-sections-in-bitma.patch [bz#1756413]
+- kvm-qapi-implement-block-dirty-bitmap-remove-transaction.patch [bz#1756413]
+- kvm-iotests-test-bitmap-moving-inside-254.patch [bz#1756413]
+- kvm-spapr-xive-skip-partially-initialized-vCPUs-in-prese.patch [bz#1754710]
+- kvm-nbd-Grab-aio-context-lock-in-more-places.patch [bz#1741094]
+- kvm-tests-Use-iothreads-during-iotest-223.patch [bz#1741094]
+- Resolves: bz#1741094
+  ([Upstream]Incremental backup: Qemu coredump when expose an active bitmap via pull mode(data plane enable))
+- Resolves: bz#1754710
+  (qemu core dumped when hotpluging vcpus)
+- Resolves: bz#1756413
+  (backport support for transactionable block-dirty-bitmap-remove for incremental backup support)
+
 * Fri Sep 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-13.el8
 - kvm-nbd-server-attach-client-channel-to-the-export-s-Aio.patch [bz#1748253]
 - kvm-virtio-blk-schedule-virtio_notify_config-to-run-on-m.patch [bz#1744955]
