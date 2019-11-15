@@ -1054,6 +1054,16 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Thu Nov 14 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-15.el8
+- kvm-virtio-blk-Add-blk_drain-to-virtio_blk_device_unreal.patch [bz#1706759]
+- kvm-Revert-qcow2-skip-writing-zero-buffers-to-empty-COW-.patch [bz#1772473]
+- kvm-coroutine-Add-qemu_co_mutex_assert_locked.patch [bz#1772473]
+- kvm-qcow2-Fix-corruption-bug-in-qcow2_detect_metadata_pr.patch [bz#1772473]
+- Resolves: bz#1706759
+  (qemu core dump when unplug a 16T GPT type disk from win2019 guest)
+- Resolves: bz#1772473
+  (Import fixes from 8.1.0 into 8.1.1 branch)
+
 * Tue Nov 12 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-14.el8
 - kvm-blockdev-reduce-aio_context-locked-sections-in-bitma.patch [bz#1756413]
 - kvm-qapi-implement-block-dirty-bitmap-remove-transaction.patch [bz#1756413]
