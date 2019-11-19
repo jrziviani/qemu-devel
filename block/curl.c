@@ -89,6 +89,7 @@ static CURLMcode __curl_multi_socket_action(CURLM *multi_handle,
 #define CURL_BLOCK_OPT_PROXY_PASSWORD_SECRET "proxy-password-secret"
 
 struct BDRVCURLState;
+struct CURLState;
 
 static bool libcurl_initialized;
 
@@ -106,6 +107,7 @@ typedef struct CURLAIOCB {
 
 typedef struct CURLSocket {
     int fd;
+    struct CURLState *state;
     QLIST_ENTRY(CURLSocket) next;
 } CURLSocket;
 
@@ -189,6 +191,7 @@ static int curl_sock_cb(CURL *curl, curl_socket_t fd, int action,
     if (!socket) {
         socket = g_new0(CURLSocket, 1);
         socket->fd = fd;
+        socket->state = state;
         QLIST_INSERT_HEAD(&state->sockets, socket, next);
     }
     socket = NULL;
