@@ -968,6 +968,16 @@ extern void igd_passthrough_isa_bridge_create(PCIBus *bus, uint16_t gpu_dev_id);
 #define PC_RHEL_COMPAT \
         { /* PC_RHEL_COMPAT */ \
             .driver = TYPE_X86_CPU,\
+            .property = "vmx-exit-load-perf-global-ctrl",\
+            .value = "off",\
+        },\
+        { /* PC_RHEL_COMPAT */ \
+            .driver = TYPE_X86_CPU,\
+            .property = "vmx-entry-load-perf-global-ctrl",\
+            .value = "off",\
+        },\
+        { /* PC_RHEL_COMPAT */ \
+            .driver = TYPE_X86_CPU,\
             .property = "host-phys-bits",\
             .value = "on",\
         },\
