@@ -1054,6 +1054,30 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Nov 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-16.el8
+- kvm-curl-Keep-pointer-to-the-CURLState-in-CURLSocket.patch [bz#1745209]
+- kvm-curl-Keep-socket-until-the-end-of-curl_sock_cb.patch [bz#1745209]
+- kvm-curl-Check-completion-in-curl_multi_do.patch [bz#1745209]
+- kvm-curl-Pass-CURLSocket-to-curl_multi_do.patch [bz#1745209]
+- kvm-curl-Report-only-ready-sockets.patch [bz#1745209]
+- kvm-curl-Handle-success-in-multi_check_completion.patch [bz#1745209]
+- kvm-curl-Check-curl_multi_add_handle-s-return-code.patch [bz#1745209]
+- kvm-vhost-user-save-features-if-the-char-dev-is-closed.patch [bz#1738768]
+- kvm-block-snapshot-Restrict-set-of-snapshot-nodes.patch [bz#1658981]
+- kvm-iotests-Test-internal-snapshots-with-blockdev.patch [bz#1658981]
+- kvm-qapi-Add-feature-flags-to-commands-in-qapi-introspec.patch [bz#1658981]
+- kvm-qapi-Allow-introspecting-fix-for-savevm-s-cooperatio.patch [bz#1658981]
+- kvm-block-Remove-backing-null-from-bs-explicit_-options.patch [bz#1773925]
+- kvm-iotests-Test-multiple-blockdev-snapshot-calls.patch [bz#1773925]
+- Resolves: bz#1658981
+  (qemu failed to create internal snapshot via 'savevm' when using blockdev)
+- Resolves: bz#1738768
+  (Guest fails to recover receiving packets after vhost-user reconnect)
+- Resolves: bz#1745209
+  (qemu-img gets stuck when stream-converting from http)
+- Resolves: bz#1773925
+  (Fail to do blockcommit with more than one snapshots)
+
 * Thu Nov 14 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-15.el8
 - kvm-virtio-blk-Add-blk_drain-to-virtio_blk_device_unreal.patch [bz#1706759]
 - kvm-Revert-qcow2-skip-writing-zero-buffers-to-empty-COW-.patch [bz#1772473]
