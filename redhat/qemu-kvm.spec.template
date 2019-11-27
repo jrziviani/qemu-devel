@@ -991,6 +991,20 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Wed Nov 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-91.el8
+- kvm-qapi-fill-in-CpuInfoFast.arch-in-query-cpus-fast.patch [bz#1730969]
+- kvm-curl-Keep-pointer-to-the-CURLState-in-CURLSocket.patch [bz#1744602]
+- kvm-curl-Keep-socket-until-the-end-of-curl_sock_cb.patch [bz#1744602]
+- kvm-curl-Check-completion-in-curl_multi_do.patch [bz#1744602]
+- kvm-curl-Pass-CURLSocket-to-curl_multi_do.patch [bz#1744602]
+- kvm-curl-Report-only-ready-sockets.patch [bz#1744602]
+- kvm-curl-Handle-success-in-multi_check_completion.patch [bz#1744602]
+- kvm-curl-Check-curl_multi_add_handle-s-return-code.patch [bz#1744602]
+- Resolves: bz#1730969
+  ([ppc] qmp: The 'arch' value returned by the command 'query-cpus-fast' does not match)
+- Resolves: bz#1744602
+  (qemu-img gets stuck when stream-converting from http)
+
 * Tue Nov 12 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-90.el8
 - kvm-i386-Don-t-print-warning-if-phys-bits-was-set-automa.patch [bz#1719127]
 - kvm-Disable-CONFIG_I2C-and-CONFIG_IOH3420.patch [bz#1693140]
