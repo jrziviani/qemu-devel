@@ -1054,6 +1054,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Dec 02 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-17.el8
+- kvm-qemu-pr-helper-fix-crash-in-mpath_reconstruct_sense.patch [bz#1772322]
+- Resolves: bz#1772322
+  (qemu-pr-helper: fix crash in mpath_reconstruct_sense)
+
 * Wed Nov 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.1.0-16.el8
 - kvm-curl-Keep-pointer-to-the-CURLState-in-CURLSocket.patch [bz#1745209]
 - kvm-curl-Keep-socket-until-the-end-of-curl_sock_cb.patch [bz#1745209]
