@@ -991,6 +991,11 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Dec 02 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-88.el8_1_0.1
+- kvm-s390-PCI-fix-IOMMU-region-init.patch [bz#1764829]
+- Resolves: bz#1764829
+  (RHEL8.1 Snapshot3 - Passthrough PCI card goes into error state if used in domain (kvm) [rhel-8.1.0.z])
+
 * Fri Sep 13 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-88.el8
 - Revert fix for bz#1749724 - this got delayed to 8.2
 
