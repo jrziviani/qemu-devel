@@ -1,7 +1,7 @@
 include Makefile.common
 
-rh-brew rh-env-prep: SRPM_NAME=$(NAME)-$(VERSION)$(RELEASE_SEPARATOR)$(RELEASE)$(DIST)
-rh-brew: BUILD_TARGET=rhel-8.1.0-candidate
+rh-brew rh-env-prep: SRPM_NAME=$(NAME)-$(VERSION)$(RELEASE_SEPARATOR)$(RELEASE)$(DIST).$(ZRELEASE)
+rh-brew: BUILD_TARGET=rhel-8.1.0-z-candidate
 
 REDHAT:=$(shell pwd)
 SCRIPTS:=$(REDHAT)/scripts
