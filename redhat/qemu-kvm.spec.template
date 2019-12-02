@@ -991,6 +991,28 @@ useradd -r -u 107 -g qemu -G kvm -d / -s /sbin/nologin \
 
 
 %changelog
+* Mon Dec 02 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-92.el8
+- kvm-x86-cpu-use-FeatureWordArray-to-define-filtered_feat.patch [bz#1689270]
+- kvm-i386-Add-x-force-features-option-for-testing.patch [bz#1689270]
+- kvm-target-i386-define-a-new-MSR-based-feature-word-FEAT.patch [bz#1689270]
+- kvm-i386-display-known-CPUID-features-linewrapped-in-alp.patch [bz#1689270]
+- kvm-target-i386-kvm-kvm_get_supported_msrs-cleanup.patch [bz#1689270]
+- kvm-target-i386-handle-filtered_features-in-a-new-functi.patch [bz#1689270]
+- kvm-target-i386-introduce-generic-feature-dependency-mec.patch [bz#1689270]
+- kvm-target-i386-expand-feature-words-to-64-bits.patch [bz#1689270]
+- kvm-target-i386-add-VMX-definitions.patch [bz#1689270]
+- kvm-vmxcap-correct-the-name-of-the-variables.patch [bz#1689270]
+- kvm-target-i386-add-VMX-features.patch [bz#1689270]
+- kvm-target-i386-work-around-KVM_GET_MSRS-bug-for-seconda.patch [bz#1689270]
+- kvm-target-i386-adjust-for-missing-VMX-features.patch [bz#1689270]
+- kvm-target-i386-add-VMX-features-to-named-CPU-models.patch [bz#1689270]
+- kvm-target-i386-add-VMX-features-to-named-CPU-models-RHE.patch [bz#1689270]
+- kvm-vhost-fix-vhost_log-size-overflow-during-migration.patch [bz#1776808]
+- Resolves: bz#1689270
+  (Nested KVM: limit VMX features according to CPU models - Slow Train)
+- Resolves: bz#1776808
+  (qemu-kvm crashes when Windows VM is migrated with multiqueue)
+
 * Wed Nov 27 2019 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 2.12.0-91.el8
 - kvm-qapi-fill-in-CpuInfoFast.arch-in-query-cpus-fast.patch [bz#1730969]
 - kvm-curl-Keep-pointer-to-the-CURLState-in-CURLSocket.patch [bz#1744602]
